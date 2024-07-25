@@ -29,17 +29,14 @@ module.exports = {
     indent: 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
     'react/prop-types': 'off',
-  //   @typescript-eslint/prefer-ts-expect-error
     '@typescript-eslint/prefer-ts-expect-error': 'off',
-  //   react/no-children-prop
     'react/no-children-prop': 'off',
-  //   @typescript-eslint/ban-ts-comment
-    '@typescript-eslint/ban-ts-comment': 'off'
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'semi': ['error', 'never'], // 禁用分号
+    'space-before-function-paren': ['error', 'always'] // 函数括号前需要空格
   },
   settings: {
     'mdx/code-blocks': false,
-    // optional, if you want to disable language mapper, set it to `false`
-    // if you want to override the default language mapper inside, you can provide your own
     'mdx/language-mapper': {}
   }
 }
