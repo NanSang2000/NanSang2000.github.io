@@ -48,8 +48,8 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Add react-pdf
-        run: pnpm add react-pdf@9.1.0
-             pnpm add pdfjs-dist@2.6.347 
+        #run: pnpm add react-pdf@9.1.0
+        run: pnpm add pdfjs-dist@2.6.347 
       
       - name: Add PDF  
         run: pnpm add @react-pdf-viewer/core @react-pdf-viewer/default-layout
