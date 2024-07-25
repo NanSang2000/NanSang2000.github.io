@@ -1,4 +1,4 @@
-import './global.css'
+import '../styles/globals.css'
 import '../styles/TextLayer.css'
 import '../styles/AnnotationLayer.css'
 import '../style.css'

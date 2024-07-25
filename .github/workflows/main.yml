@@ -51,8 +51,7 @@ jobs:
         run: pnpm add react-pdf@9.1.0
       
       - name: Add PDF  
-        run: pnpm add pdfjs-dist@2.6.347
-
+        run: pnpm add @react-pdf-viewer/core @react-pdf-viewer/default-layout
 
       - name: Update Browserslist DB
         run: npx browserslist@latest --update-db
