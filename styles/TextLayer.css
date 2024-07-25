@@ -1,13 +1,6 @@
-/* TextLayer.css */
-@font-face {
-    font-family: 'pdfjsFont';
-    src: url('pdfjsFont.woff') format('woff');
-  }
-  
-  div.textLayer {
-    color: transparent;
-    font-family: 'pdfjsFont';
-    font-size: 1px;
-    text-rendering: optimizeLegibility;
-  }
-  
+div.textLayer {
+  color: transparent;
+  font-family: 'pdfjsFont';
+  font-size: 1px;
+  text-rendering: optimizeLegibility;
+}
