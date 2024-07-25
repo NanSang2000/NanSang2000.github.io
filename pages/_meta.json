@@ -1,0 +1,62 @@
+{
+  "index": {
+    "title": "Home",
+    "type": "page",
+    "theme": {
+      "sidebar": false,
+      "toc": false,
+      "footer": true,
+      "pagination": true,
+      "breadcrumb": false,
+      "layout": "full"
+    }
+  },
+  "note": {
+    "title": "Note",
+    "type": "page"
+  },
+  "blog": {
+    "title": "Blog",
+    "type": "page"
+  },
+  "CurriculumVitae": {
+    "title": "CurriculumVitae",
+    "type": "page",
+    "theme": {
+      "sidebar": false,
+      "toc": false,
+      "footer": true,
+      "pagination": true,
+      "breadcrumb": false,
+      "layout": "full"
+    }
+  },
+  "CodeSnippets": {
+    "title": "CodeSnippet",
+    "type": "page"
+  },
+  "projects": {
+    "title": "Projects",
+    "type": "page",
+    "theme": {
+      "sidebar": false,
+      "toc": false,
+      "footer": true,
+      "pagination": true,
+      "breadcrumb": false,
+      "layout": "full"
+    }
+  },
+  "nav": {
+    "title": "Navigation",
+    "type": "page",
+    "theme": {
+      "sidebar": false,
+      "toc": false,
+      "footer": true,
+      "pagination": true,
+      "breadcrumb": false,
+      "layout": "full"
+    }
+  }
+}
