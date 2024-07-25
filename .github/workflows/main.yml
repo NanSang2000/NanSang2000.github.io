@@ -53,9 +53,6 @@ jobs:
       - name: Add PDF  
         run: pnpm add @react-pdf-viewer/core @react-pdf-viewer/default-layout
 
-      - name: Update Browserslist DB
-        run: npx browserslist@latest --update-db
-
       - name: Build with Next.js
         run: pnpm run build
 
