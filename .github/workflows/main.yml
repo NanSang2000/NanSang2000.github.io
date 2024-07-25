@@ -56,7 +56,7 @@ jobs:
         
       - name: Install plug-pdf  
       
-        run: pnpm install react-pdf-monorepo
+        run: pnpm add @react-pdf-viewer/react-pdf
 
       - name: Build with Next.js
         run: pnpm run build
