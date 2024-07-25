@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import '../styles/TextLayer.css';
-import '../styles/AnnotationLayer.css';
+import React, { useState } from 'react'
+import { Document, Page, pdfjs } from 'react-pdf'
+import '../styles/TextLayer.css'
+import '../styles/AnnotationLayer.css'
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
-function PDFViewer(props) {
-  const [numPages, setNumPages] = useState(null);
+function PDFViewer (props) {
+  const [numPages, setNumPages] = useState(null)
 
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
+  function onDocumentLoadSuccess ({ numPages }) {
+    setNumPages(numPages)
   }
 
   return (
@@ -23,7 +23,7 @@ function PDFViewer(props) {
         ))}
       </Document>
     </div>
-  );
+  )
 }
 
-export default PDFViewer;
+export default PDFViewer
