@@ -54,6 +54,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Add react-pdf
+      - run: pnpm add react-pdf
+
       - name: Update Browserslist DB
         run: npx browserslist@latest --update-db
 
