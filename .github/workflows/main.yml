@@ -55,7 +55,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile 
         
       - name: Install plug-pdf  
-        run: pnpm install react-pdf
+        run: pnpm add pdfjs-dist@2.10.377
 
       - name: Build with Next.js
         run: pnpm run build
