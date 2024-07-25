@@ -4,7 +4,7 @@ import '../styles/AnnotationLayer.css'
 import '../style.css'
 import React from 'react'
 import localFont from '@next/font/local'
-import { AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import { Analytics } from '@vercel/analytics/react'
 
 const myFont = localFont({ src: './PingFangSC.ttf' })
