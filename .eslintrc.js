@@ -32,8 +32,10 @@ module.exports = {
     '@typescript-eslint/prefer-ts-expect-error': 'off',
     'react/no-children-prop': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
-    'semi': ['error', 'never'], // 禁用分号
-    'space-before-function-paren': ['error', 'always'] // 函数括号前需要空格
+    'semi': ['error', 'never'],
+    'space-before-function-paren': ['error', 'always'],
+    'no-multiple-empty-lines': ['error', { max: 1 }],
+    'eol-last': ['error', 'always']
   },
   settings: {
     'mdx/code-blocks': false,
