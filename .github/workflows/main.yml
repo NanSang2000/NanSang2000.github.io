@@ -49,6 +49,10 @@ jobs:
 
       - name: Add react-pdf
         run: pnpm add react-pdf@9.1.0
+      
+      - name: Add PDF  
+        run: pnpm add pdfjs-dist@2.7.570
+
 
       - name: Update Browserslist DB
         run: npx browserslist@latest --update-db
