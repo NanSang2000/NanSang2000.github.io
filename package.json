@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
-    "@react-pdf-viewer/react-pdf":"^9.1.0", 
+    "react-pdf": "^5.3.0"，
     "@codesandbox/sandpack-react": "^2.6.9",
     "@codesandbox/sandpack-themes": "^2.0.21",
     "@emotion/react": "^11.10.6",
