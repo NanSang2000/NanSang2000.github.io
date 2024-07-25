@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
-import '../../styles/TextLayer.css'
-import '../../styles/AnnotationLayer.css'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 
-function PDFViewer (props) {
-  const [numPages, setNumPages] = useState(null)
+function PDFViewer (props: { file: string }) {
+  const [numPages, setNumPages] = useState<number | null>(null)
 
-  function onDocumentLoadSuccess ({ numPages }) {
+  function onDocumentLoadSuccess ({ numPages }: { numPages: number }) {
     setNumPages(numPages)
   }
 
