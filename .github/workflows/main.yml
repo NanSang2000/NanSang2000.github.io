@@ -52,11 +52,10 @@ jobs:
             ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile 
-        
-      - name: Install plug-pdf  
-      
-        run: pnpm add @react-pdf-viewer/react-pdf
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Update Browserslist DB
+        run: npx browserslist@latest --update-db
 
       - name: Build with Next.js
         run: pnpm run build
