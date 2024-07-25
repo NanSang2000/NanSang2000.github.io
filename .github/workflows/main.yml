@@ -48,7 +48,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Add react-pdf
-        run: pnpm add react-pdf@4.2.0
+        run: pnpm add react-pdf@9.1.0
 
       - name: Update Browserslist DB
         run: npx browserslist@latest --update-db
