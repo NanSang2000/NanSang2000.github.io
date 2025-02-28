@@ -4,26 +4,103 @@ import { createClient } from '@supabase/supabase-js'
 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 const supabaseUrl = `https://${process.env.NEXT_PUBLIC_SUPABASE_URL}.supabase.co`
 const supabaseKey = String(process.env.NEXT_PUBLIC_SUPABASE_KEY)
+
+// 检查环境变量是否正确设置
+if (process.env.NEXT_PUBLIC_SUPABASE_URL === undefined || process.env.NEXT_PUBLIC_SUPABASE_URL === '' || process.env.NEXT_PUBLIC_SUPABASE_KEY === undefined || process.env.NEXT_PUBLIC_SUPABASE_KEY === '') {
+  console.error('Supabase 环境变量未正确设置')
+}
+
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-function Visitors (): any {
-  // 当刚进入页面时，获取数据表 visitors 的 id 为 1 的数据
-  // eslint-disable-next-line
-  const [visitors, setVisitors] = useState<any>()
-  // @ts-ignore
-  useEffect(async () => {
-    const {
-      // eslint-disable-next-line
-      data,
-      // eslint-disable-next-line
-      error
-    } = await supabase
-      .from('visitor')
-      .select('*')
-    // console.log(data)
-    // console.log(error)
+// 访问计数的本地存储键名
+const VISITOR_COUNT_KEY = 'visitor_counted'
+// 计数有效期（24小时，单位毫秒）
+const COUNT_EXPIRY = 24 * 60 * 60 * 1000
+
+function Visitors (): { count: number } {
+  const [visitorCount, setVisitorCount] = useState<number>(0)
+
+  useEffect((): void => {
+    const fetchAndUpdateVisitors = async (): Promise<void> => {
+      try {
+        console.log('正在连接 Supabase...')
+        // 获取当前访问计数
+        let { data: visitorData, error: fetchError } = await supabase
+          .from('visitor')
+          .select('count')
+          .eq('id', 1)
+          .maybeSingle()
+        // 如果记录不存在，创建一条初始记录
+        if (visitorData === null) {
+          const { data: insertData, error: insertError } = await supabase
+            .from('visitor')
+            .insert([{ id: 1, count: 0 }])
+            .select('count')
+            .single()
+
+          if (insertError !== null) {
+            console.error('创建访问计数记录失败:', insertError.message)
+            throw new Error(insertError.message)
+          }
+          visitorData = insertData
+        } else if (fetchError !== null) {
+          console.error('获取访问计数失败:', fetchError.message)
+          throw new Error(fetchError.message)
+        }
+        if (fetchError !== null) {
+          console.error('获取访问计数失败:', fetchError.message)
+          throw new Error(fetchError.message)
+        }
+
+        // 检查用户是否已经被计数过
+        let shouldCount = true
+        if (typeof window !== 'undefined') {
+          const lastCounted = localStorage.getItem(VISITOR_COUNT_KEY)
+          if (lastCounted !== null) {
+            const lastCountedTime = parseInt(lastCounted, 10)
+            // 如果上次计数时间在有效期内，不再计数
+            if (Date.now() - lastCountedTime < COUNT_EXPIRY) {
+              console.log('用户在24小时内已被计数')
+              shouldCount = false
+            }
+          }
+        }
+
+        let newCount = visitorData?.count ?? 0
+
+        // 只有在需要计数时才更新数据库
+        if (shouldCount) {
+          console.log('更新访问计数...')
+          newCount = Number(newCount) + 1 // 增加访问计数
+          const { error: updateError } = await supabase
+            .from('visitor')
+            .update({ count: newCount })
+            .eq('id', 1)
+
+          if (updateError !== null) {
+            console.error('更新访问计数失败:', updateError.message)
+            throw new Error(updateError.message)
+          }
+
+          // 记录本次计数时间
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(VISITOR_COUNT_KEY, Date.now().toString())
+            console.log('访问计数已更新')
+          }
+        }
+
+        setVisitorCount(newCount)
+      } catch (error) {
+        console.error('访问计数出错:', error)
+        // 如果发生错误，至少显示获取到的数据
+        setVisitorCount(0)
+      }
+    }
+
+    void fetchAndUpdateVisitors()
   }, [])
-  return visitors
+
+  return { count: visitorCount }
 }
 
 export default Visitors

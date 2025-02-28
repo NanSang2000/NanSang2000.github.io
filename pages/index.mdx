@@ -499,15 +499,12 @@ export function TechCards () {
     </div>
   </div>
 </div>
-
 export function VistorDemo () {
-
-  // url 为您的后端服务地址
-    const v = Visitors()
-    console.log(v)
+  const { count } = Visitors()
   return (
-    <div className="">
-        你好
+    <div className="flex flex-col items-center justify-center text-black dark:text-white">
+      <div className="text-6xl font-bold">{count}</div>
+      <div className="text-xl mt-2">Visitor Count</div>
     </div>
   )
 }
@@ -520,7 +517,7 @@ export function VistorDemo () {
         Visitors
       </div>
 
-[//]: # (<VistorDemo />)
+<VistorDemo />
       <div className={'absolute w-max text-[20rem] left-8 top-72 opacity-30 hover:opacity-20 transition-all ease duration-500'}>
 
       </div>
