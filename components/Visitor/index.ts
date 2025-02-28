@@ -7,7 +7,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 // 构建Supabase URL
 // 确保URL格式正确，避免undefined.supabase.co的问题
-const supabaseUrl = SUPABASE_URL
+const supabaseUrl = `https://${SUPABASE_URL}.supabase.co`
 const supabaseKey = SUPABASE_KEY
 
 // 记录环境变量状态
