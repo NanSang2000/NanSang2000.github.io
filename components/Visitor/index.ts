@@ -6,14 +6,14 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL !== undefined && proce
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY !== undefined && process.env.NEXT_PUBLIC_SUPABASE_KEY !== '' ? process.env.NEXT_PUBLIC_SUPABASE_KEY : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc'
 
 // 构建Supabase URL
-const supabaseUrl = `https://${SUPABASE_URL}.supabase.co`
+const supabaseUrl = SUPABASE_URL.includes('https://') ? SUPABASE_URL : `https://${SUPABASE_URL}.supabase.co`
 const supabaseKey = String(SUPABASE_KEY)
 
 // 记录环境变量状态
 console.log(`Supabase 配置状态: URL=${process.env.NEXT_PUBLIC_SUPABASE_URL !== undefined && process.env.NEXT_PUBLIC_SUPABASE_URL !== '' ? '已设置' : '未设置'}, KEY=${process.env.NEXT_PUBLIC_SUPABASE_KEY !== undefined && process.env.NEXT_PUBLIC_SUPABASE_KEY !== '' ? '已设置' : '未设置'}`)
 
 // 检查环境变量是否正确设置
-if ((process.env.NEXT_PUBLIC_SUPABASE_URL === undefined || process.env.NEXT_PUBLIC_SUPABASE_URL === '') || (process.env.NEXT_PUBLIC_SUPABASE_KEY === undefined || process.env.NEXT_PUBLIC_SUPABASE_KEY === '')) {
+if ((typeof process.env.NEXT_PUBLIC_SUPABASE_URL !== 'string' || process.env.NEXT_PUBLIC_SUPABASE_URL === '') || (typeof process.env.NEXT_PUBLIC_SUPABASE_KEY !== 'string' || process.env.NEXT_PUBLIC_SUPABASE_KEY === '')) {
   console.error('Supabase 环境变量未正确设置，使用了硬编码的备用值')
 }
 
