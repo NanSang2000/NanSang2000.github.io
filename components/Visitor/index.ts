@@ -7,7 +7,7 @@ const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY !== undefined && proce
 
 // 构建Supabase URL
 // 确保URL格式正确，避免undefined.supabase.co的问题
-const supabaseUrl = SUPABASE_URL.includes('https://') ? SUPABASE_URL : (SUPABASE_URL ? `https://${SUPABASE_URL}.supabase.co` : 'https://lptqykocinwlojjzfqhy.supabase.co')
+const supabaseUrl = SUPABASE_URL.includes('https://') ? SUPABASE_URL : (SUPABASE_URL !== '' ? `https://${SUPABASE_URL}.supabase.co` : 'https://lptqykocinwlojjzfqhy.supabase.co')
 const supabaseKey = String(SUPABASE_KEY)
 
 // 记录环境变量状态
