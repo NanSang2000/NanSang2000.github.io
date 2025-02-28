@@ -29,13 +29,13 @@ export default function Vestor ({ url }: VestorProps): count {
   const [ip, setIp] = useState<string>()
 
   useEffect(() => {
-    void fetch('http://ip-api.com/json', {
+    void fetch('https://api.ipify.org?format=json', {
       method: 'GET',
       mode: 'cors'
     }).then(async (response) => {
       return await response.json()
     }).then((data) => {
-      setIp(data.query)
+      setIp(data.ip)
     })
   }, [page_name])
 

@@ -17,28 +17,47 @@ console.log(`Supabase 配置状态: URL=${process.env.NEXT_PUBLIC_SUPABASE_URL !
 if ((typeof process.env.NEXT_PUBLIC_SUPABASE_URL !== 'string' || process.env.NEXT_PUBLIC_SUPABASE_URL === '') || (typeof process.env.NEXT_PUBLIC_SUPABASE_KEY !== 'string' || process.env.NEXT_PUBLIC_SUPABASE_KEY === '')) {
   console.error('Supabase 环境变量未正确设置，使用了硬编码的备用值')
 }
-
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-// 访问计数的本地存储键名
+// 访问计数的本地存储键名和有效期配置
 const VISITOR_COUNT_KEY = 'visitor_counted'
-// 计数有效期（24小时，单位毫秒）
-const COUNT_EXPIRY = 24 * 60 * 60 * 1000
+const COUNT_EXPIRY = 24 * 60 * 60 * 1000 // 24小时
 
-function Visitors (): { count: number } {
+interface VisitorResult {
+  count: number
+  loading: boolean
+  error: string | null
+}
+
+function Visitors (): VisitorResult {
   const [visitorCount, setVisitorCount] = useState<number>(0)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
-  useEffect((): void => {
+  useEffect(() => {
     const fetchAndUpdateVisitors = async (): Promise<void> => {
+      if (supabaseUrl === undefined || supabaseUrl === '') {
+        setError('Supabase配置无效')
+        setLoading(false)
+        return
+      }
+
       try {
-        console.log('正在连接 Supabase...')
+        setLoading(true)
+        setError(null)
+
         // 获取当前访问计数
-        let { data: visitorData, error: fetchError } = await supabase
+        const { data: visitorData, error: fetchError } = await supabase
           .from('visitor')
           .select('count')
           .eq('id', 1)
           .maybeSingle()
-        // 如果记录不存在，创建一条初始记录
+
+        if (fetchError !== null) {
+          throw new Error(`获取访问计数失败: ${fetchError.message}`)
+        }
+
+        // 如果记录不存在，创建初始记录
         if (visitorData === null) {
           const { data: insertData, error: insertError } = await supabase
             .from('visitor')
@@ -47,68 +66,60 @@ function Visitors (): { count: number } {
             .single()
 
           if (insertError !== null) {
-            console.error('创建访问计数记录失败:', insertError.message)
-            throw new Error(insertError.message)
+            throw new Error(`创建访问计数记录失败: ${insertError.message}`)
           }
-          visitorData = insertData
-        } else if (fetchError !== null) {
-          console.error('获取访问计数失败:', fetchError.message)
-          throw new Error(fetchError.message)
-        }
-        if (fetchError !== null) {
-          console.error('获取访问计数失败:', fetchError.message)
-          throw new Error(fetchError.message)
+
+          const count = insertData?.count ?? 0
+          setVisitorCount(count)
+          setLoading(false)
+          return
         }
 
-        // 检查用户是否已经被计数过
-        let shouldCount = true
-        if (typeof window !== 'undefined') {
-          const lastCounted = localStorage.getItem(VISITOR_COUNT_KEY)
-          if (lastCounted !== null) {
-            const lastCountedTime = parseInt(lastCounted, 10)
-            // 如果上次计数时间在有效期内，不再计数
-            if (Date.now() - lastCountedTime < COUNT_EXPIRY) {
-              console.log('用户在24小时内已被计数')
-              shouldCount = false
-            }
-          }
-        }
+        // 检查是否需要更新计数
+        const shouldCount = await checkShouldCount()
+        let newCount = visitorData.count
 
-        let newCount = visitorData?.count ?? 0
-
-        // 只有在需要计数时才更新数据库
         if (shouldCount) {
-          console.log('更新访问计数...')
-          newCount = Number(newCount) + 1 // 增加访问计数
+          newCount = Number(newCount) + 1
           const { error: updateError } = await supabase
             .from('visitor')
             .update({ count: newCount })
             .eq('id', 1)
 
           if (updateError !== null) {
-            console.error('更新访问计数失败:', updateError.message)
-            throw new Error(updateError.message)
+            throw new Error(`更新访问计数失败: ${updateError.message}`)
           }
 
-          // 记录本次计数时间
+          // 更新本地存储
           if (typeof window !== 'undefined') {
             localStorage.setItem(VISITOR_COUNT_KEY, Date.now().toString())
-            console.log('访问计数已更新')
           }
         }
 
         setVisitorCount(newCount)
-      } catch (error) {
-        console.error('访问计数出错:', error)
-        // 如果发生错误，至少显示获取到的数据
-        setVisitorCount(0)
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : '访问计数出错'
+        console.error(errorMessage)
+        setError(errorMessage)
+      } finally {
+        setLoading(false)
       }
+    }
+
+    const checkShouldCount = async (): Promise<boolean> => {
+      if (typeof window === 'undefined') return true
+
+      const lastCounted = localStorage.getItem(VISITOR_COUNT_KEY)
+      if (lastCounted === null) return true
+
+      const lastCountedTime = parseInt(lastCounted, 10)
+      return Date.now() - lastCountedTime >= COUNT_EXPIRY
     }
 
     void fetchAndUpdateVisitors()
   }, [])
 
-  return { count: visitorCount }
+  return { count: visitorCount, loading, error }
 }
 
 export default Visitors
