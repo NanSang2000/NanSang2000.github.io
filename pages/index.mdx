@@ -14,6 +14,7 @@ import { Stacks } from '../components/TextSwiper'
 import { frontEnd, OtherStacks } from '../components/TextSwiper/data'
 import TextTurn from '../components/TextTurn'
 import Visitors from '../components/Visitor'
+import VisitorCard from '../components/Visitor/VisitorCard'
 
 export function TopTag () {
   return (
@@ -246,8 +247,8 @@ export function WakaTime () {
         className={'flex p-3 justify-center relative overflow-hidden items-center bg-white col-span-3 h-96 w-full rounded-2xl forest-bg'}
     >
         <div className={'bg-black dark:bg-white dark:bg-black absolute w-full h-full opacity-30 '}></div>
-        <div className={'font-bold text-2xl lg:text-4xl text-white dark:text-black z-10 underline decoration-emerald-400 underline-offset-4 leading-relaxed'}>
-           Chemistry .
+        <div className={'font-bold text-2xl lg:text-2xl text-white dark:text-black z-10 underline decoration-emerald-400 underline-offset-4 leading-relaxed'}>
+           Data Scientist | Test Engineer | Software Engineer | Product Manager .
         </div>
     </div>
     <div className={'flex h-96 w-full justify-center items-center lg:col-span-2 shadow-inner relative bg-gray-600 dark:bg-gray-900 rounded-2xl overflow-hidden'}>
@@ -500,11 +501,19 @@ export function TechCards () {
   </div>
 </div>
 export function VistorDemo () {
-  const { count } = Visitors()
+  const { count, ip, loading, error } = Visitors()
   return (
     <div className="flex flex-col items-center justify-center text-black dark:text-white">
       <div className="text-6xl font-bold">{count}</div>
       <div className="text-xl mt-2">Visitor Count</div>
+      {ip && (
+        <div className="mt-4 flex flex-col items-center">
+          <div className="text-sm text-gray-600 dark:text-gray-400">最近访问IP</div>
+          <div className="text-lg font-medium">{ip}</div>
+        </div>
+      )}
+      {loading && <div className="mt-2 text-sm text-gray-500">加载中...</div>}
+      {error && <div className="mt-2 text-sm text-red-500">{error}</div>}
     </div>
   )
 }

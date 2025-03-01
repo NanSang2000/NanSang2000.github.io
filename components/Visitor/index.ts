@@ -27,12 +27,28 @@ interface VisitorResult {
   count: number
   loading: boolean
   error: string | null
+  ip: string | null
 }
 
 function Visitors (): VisitorResult {
   const [visitorCount, setVisitorCount] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
+  const [ipAddress, setIpAddress] = useState<string | null>(null)
+
+  // 获取访问者IP地址的函数
+  const getVisitorIp = async (): Promise<string> => {
+    try {
+      // 使用公共API获取IP地址
+      const response = await fetch('https://api.ipify.org?format=json')
+      const data = await response.json()
+      console.log('获取到的IP地址:', data.ip)
+      return data.ip
+    } catch (err) {
+      console.error('获取IP地址失败:', err)
+      return 'Unknown'
+    }
+  }
 
   useEffect(() => {
     const fetchAndUpdateVisitors = async (): Promise<void> => {
@@ -47,22 +63,29 @@ function Visitors (): VisitorResult {
         setError(null)
 
         // 获取当前访问计数
-        const { data: visitorData, error: fetchError } = await supabase
+        const { data: visitorDataArray, error: fetchError } = await supabase
           .from('visitor')
           .select('count')
           .eq('id', 1)
-          .maybeSingle()
+          .limit(1)
 
         if (fetchError !== null) {
           throw new Error(`获取访问计数失败: ${fetchError.message}`)
         }
 
+        // 处理可能的空结果或多结果情况
+        const visitorData = visitorDataArray !== null && visitorDataArray !== undefined && visitorDataArray.length > 0 ? visitorDataArray[0] : null
+
+        // 获取访问者IP地址
+        const ip = await getVisitorIp()
+        setIpAddress(ip)
+
         // 如果记录不存在，创建初始记录
         if (visitorData === null) {
           const { data: insertData, error: insertError } = await supabase
             .from('visitor')
-            .insert([{ id: 1, count: 0 }])
-            .select('count')
+            .insert([{ id: 1, count: 1, ip }])
+            .select('count, ip')
             .single()
 
           if (insertError !== null) {
@@ -83,7 +106,7 @@ function Visitors (): VisitorResult {
           newCount = Number(newCount) + 1
           const { error: updateError } = await supabase
             .from('visitor')
-            .update({ count: newCount })
+            .update({ count: newCount, ip })
             .eq('id', 1)
 
           if (updateError !== null) {
@@ -119,7 +142,7 @@ function Visitors (): VisitorResult {
     void fetchAndUpdateVisitors()
   }, [])
 
-  return { count: visitorCount, loading, error }
+  return { count: visitorCount, loading, error, ip: ipAddress }
 }
 
 export default Visitors

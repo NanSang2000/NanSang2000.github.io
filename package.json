@@ -37,6 +37,7 @@
     "clsx": "^1.2.1",
     "cobe": "^0.6.3",
     "dns": "^0.2.2",
+    "dotenv": "^16.4.7",
     "file-loader": "^6.2.0",
     "framer-motion": "^10.10.0",
     "fs": "0.0.1-security",

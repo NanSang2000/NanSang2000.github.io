@@ -59,16 +59,19 @@ async function saveArticle(article) {
     };
     
     // 检查文章是否已存在
-    const { data: existingArticle, error: selectError } = await supabase
+    const { data: existingArticles, error: selectError } = await supabase
       .from('articles')
       .select('id')
       .eq('slug', article.slug)
-      .maybeSingle();
+      .limit(1);
     
     if (selectError) {
       console.error(`查询文章 ${article.slug} 失败:`, selectError.message);
       throw new Error(selectError.message);
     }
+    
+    // 获取第一个匹配的文章（如果存在）
+    const existingArticle = existingArticles && existingArticles.length > 0 ? existingArticles[0] : null;
     
     let result;
     
