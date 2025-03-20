@@ -1,0 +1,102 @@
+import React from 'react'
+import { Top } from '../../components/Top'
+import { motion } from 'framer-motion'
+
+
+<div className="w-full">
+  <div className="h-96 w-3/4 bg-gradient-to-r -z-10 from-blue-500 to-red-800 absolute right-0 -top-12 opacity-10 dark:opacity-20 !blur-3xl rounded-full"></div>
+  <div className="flex flex-col w-full justify-start h-24 items-center my-3 mt-12">
+    <h1 className="text-5xl font-bold underline decoration-orange-400 underline-offset-4">
+      Intern and Work Experience
+    </h1>
+    <div className="mt-6">
+      My professional journey and work experiences
+    </div>
+  </div>
+  
+  <div className="mt-10 space-y-12">
+    {/* You can add your work experiences here */}
+    
+    <motion.div 
+      className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="/companies/kingsoft.svg" alt="Company Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">Kingsoft CLoud</h2>
+        <p className="text-gray-600 dark:text-gray-400">Position • Jan 2023 - Present</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Responsibility or achievement 1</li>
+          <li>Responsibility or achievement 2</li>
+          <li>Responsibility or achievement 3</li>
+        </ul>
+      </div>
+    </motion.div>
+    
+    <motion.div 
+      className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="/companies/previous-company.svg" alt="Previous Company Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">Previous Company</h2>
+        <p className="text-gray-600 dark:text-gray-400">Position • Jan 2020 - Dec 2022</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Responsibility or achievement 1</li>
+          <li>Responsibility or achievement 2</li>
+          <li>Responsibility or achievement 3</li>
+        </ul>
+      </div>
+    </motion.div>
+
+      <motion.div 
+      className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="/companies/previous-company.svg" alt="Previous Company Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">Previous Company</h2>
+        <p className="text-gray-600 dark:text-gray-400">Position • Jan 2020 - Dec 2022</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Responsibility or achievement 1</li>
+          <li>Responsibility or achievement 2</li>
+          <li>Responsibility or achievement 3</li>
+        </ul>
+      </div>
+    </motion.div>
+
+      <motion.div 
+      className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="/companies/previous-company.svg" alt="Previous Company Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">Previous Company</h2>
+        <p className="text-gray-600 dark:text-gray-400">Position • Jan 2020 - Dec 2022</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Responsibility or achievement 1</li>
+          <li>Responsibility or achievement 2</li>
+          <li>Responsibility or achievement 3</li>
+        </ul>
+      </div>
+    </motion.div>
+  </div>
+  
+  <Top />
+</div>
