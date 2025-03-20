@@ -1,0 +1,82 @@
+import React from 'react'
+import { Top } from '../../components/Top'
+import { motion } from 'framer-motion'
+
+
+<div className="w-full">
+  <div className="h-96 w-3/4 bg-gradient-to-r -z-10 from-purple-500 to-blue-800 absolute right-0 -top-12 opacity-10 dark:opacity-20 !blur-3xl rounded-full"></div>
+  <div className="flex flex-col w-full justify-start h-24 items-center my-3 mt-12">
+    <h1 className="text-5xl font-bold underline decoration-blue-400 underline-offset-4">
+      Research Experience
+    </h1>
+    <div className="mt-6">
+      My academic journey and research experiences
+    </div>
+  </div>
+  
+  <div className="mt-10 space-y-12">
+    {/* Research experiences */}
+    
+    <motion.div 
+      className="rounded-lg border border-blue-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="/stack/python.svg" alt="Research Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">Research Project Title</h2>
+        <p className="text-gray-600 dark:text-gray-400">University/Institution • Jan 2022 - Present</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Research achievement or contribution 1</li>
+          <li>Research achievement or contribution 2</li>
+          <li>Research achievement or contribution 3</li>
+        </ul>
+      </div>
+    </motion.div>
+    
+    <motion.div 
+      className="rounded-lg border border-blue-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="/stack/react.svg" alt="Research Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">Another Research Project</h2>
+        <p className="text-gray-600 dark:text-gray-400">University/Institution • Jan 2020 - Dec 2021</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Research achievement or contribution 1</li>
+          <li>Research achievement or contribution 2</li>
+          <li>Research achievement or contribution 3</li>
+        </ul>
+      </div>
+    </motion.div>
+
+    <motion.div 
+      className="rounded-lg border border-blue-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.6 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="/stack/typescript.svg" alt="Research Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">Academic Publication</h2>
+        <p className="text-gray-600 dark:text-gray-400">Journal/Conference • Published 2021</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Brief description of the publication</li>
+          <li>Key findings or contributions</li>
+          <li>Impact or citations</li>
+        </ul>
+      </div>
+    </motion.div>
+  </div>
+  
+  <Top />
+</div>
