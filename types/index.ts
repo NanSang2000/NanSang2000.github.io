@@ -48,14 +48,6 @@ export interface Repository {
   languages_url: string
   stargazers_url: string
   contributors_url: string
-
-}
-
-export interface TranslationsType {
-  [key: string]: {
-    [key: string]: string;
-  };
-}
   subscribers_url: string
   subscription_url: string
   commits_url: string
@@ -107,6 +99,12 @@ export interface TranslationsType {
   open_issues: number
   watchers: number
   default_branch: string
+}
+
+export interface TranslationsType {
+  [key: string]: {
+    [key: string]: string;
+  };
 }
 
 export interface Project {
