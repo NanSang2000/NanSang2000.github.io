@@ -121,7 +121,7 @@ const config: DocsThemeConfig = {
     }
   },
   footer: {
-    text: ({ locale }) => {
+    text: ({ locale }: { locale?: string }) => {
       const translations = {
         'en': {
           rights: 'All rights reserved.',
