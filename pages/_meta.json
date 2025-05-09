@@ -19,7 +19,7 @@
     "title": "Blog",
     "type": "page"
   },
-  "WorkExperience": {
+  "workExperience": {
     "title": "Work Experience",
     "type": "page",
     "theme": {
@@ -31,8 +31,8 @@
       "layout": "full"
     }
   },
-  "CurriculumVitae": {
-    "title": "CurriculumVitae",
+  "curriculumVitae": {
+    "title": "Curriculum Vitae",
     "type": "page",
     "theme": {
       "sidebar": false,
@@ -43,8 +43,8 @@
       "layout": "full"
     }
   },
-  "CodeSnippets": {
-    "title": "CodeSnippet",
+  "codeSnippets": {
+    "title": "Code Snippets",
     "type": "page",
     "theme": {
       "sidebar": false,
@@ -68,18 +68,9 @@
     }
   },
   "nav": {
-    "title": "Navigation",
-    "type": "page",
-    "theme": {
-      "sidebar": false,
-      "toc": false,
-      "footer": true,
-      "pagination": true,
-      "breadcrumb": false,
-      "layout": "full"
-    }
+    "title": "Navigation"
   },
-  "Research": {
+  "researchExperience": {
     "title": "Research Experience",
     "type": "page",
     "theme": {

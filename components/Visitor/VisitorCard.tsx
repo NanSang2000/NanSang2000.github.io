@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Visitors from './index'
+import { motion } from 'framer-motion'
 
 // 定义组件属性接口
 interface VisitorCardProps {
@@ -55,75 +56,120 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
   }, [count, loading, showAnimation, animatedCount])
 
   return (
-    <div className={`visitor-card relative ${className}`}>
+    <motion.div 
+      className={`visitor-card relative ${className}`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ 
+        scale: 1.02,
+        transition: { duration: 0.2 }
+      }}
+    >
       {/* 卡片容器 */}
-      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
-        {/* 装饰元素 */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-200 dark:bg-green-700 rounded-full opacity-30"></div>
-        <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-green-300 dark:bg-green-600 rounded-full opacity-20"></div>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900 dark:to-indigo-950 shadow-lg p-6 transition-all duration-300 hover:shadow-xl border border-blue-100 dark:border-blue-800">
+        {/* 装饰元素 - 更现代的设计 */}
+        <div className="absolute -top-16 -right-16 w-48 h-48 bg-blue-200 dark:bg-blue-700 rounded-full opacity-20 blur-xl"></div>
+        <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-indigo-300 dark:bg-indigo-600 rounded-full opacity-20 blur-xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-purple-200 dark:bg-purple-700 rounded-full opacity-10 blur-lg"></div>
 
         {/* 内容容器 */}
         <div className="relative z-10">
           {/* 标题 */}
           {showTitle && (
-            <h3 className="text-2xl font-bold text-green-800 dark:text-green-300 mb-4 border-b border-green-200 dark:border-green-700 pb-2">
+            <motion.h3 
+              className="text-2xl font-bold text-blue-800 dark:text-blue-300 mb-4 border-b border-blue-200 dark:border-blue-700 pb-2 flex items-center"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              <span className="mr-2">✨</span>
               {titleText}
-            </h3>
+            </motion.h3>
           )}
 
           {/* 计数显示 */}
-          <div className="flex flex-col items-center justify-center py-4">
+          <motion.div 
+            className="flex flex-col items-center justify-center py-4"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
             {loading
               ? (
                   <div className="flex items-center justify-center h-24">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 shadow-lg"></div>
                   </div>
                 )
               : (
-                  <div className="relative">
-                    <div className="text-7xl font-bold text-green-600 dark:text-green-400 transition-all duration-300 hover:scale-110 transform">
+                  <motion.div 
+                    className="relative"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    <div className="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300 transition-all duration-300 transform">
                       {animatedCount}
                     </div>
-                    <div className="absolute -right-2 -top-2 text-xs px-2 py-1 bg-green-500 text-white rounded-full animate-pulse">
-                      在线
-                    </div>
-                  </div>
+                    <motion.div 
+                      className="absolute -right-2 -top-2 text-xs px-2 py-1 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                    >
+                      All
+                    </motion.div>
+                  </motion.div>
                 )}
-            <div className="text-xl mt-2 text-green-700 dark:text-green-300 font-medium">
+            <div className="text-xl mt-2 text-blue-700 dark:text-blue-300 font-medium">
               Visitor Count
             </div>
-          </div>
+          </motion.div>
 
           {/* IP地址显示 */}
           {ip != null && (
-            <div className="mt-4 flex flex-col items-center bg-white dark:bg-green-950 rounded-lg p-3 shadow-inner">
-              <div className="text-sm text-green-600 dark:text-green-400 font-medium">
-                最近访问IP
+            <motion.div 
+              className="mt-4 flex flex-col items-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-xl p-4 shadow-inner border border-blue-50 dark:border-blue-900"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+              whileHover={{ y: -2, transition: { duration: 0.2 } }}
+            >
+              <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">
+                Recent Visit IP
               </div>
               <div className="text-lg font-mono tracking-wider text-gray-700 dark:text-gray-300">
                 {ip}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* 错误信息 */}
           {error != null && (
-            <div className="mt-4 text-sm text-red-500 bg-red-50 dark:bg-red-900 dark:text-red-300 p-2 rounded border border-red-200 dark:border-red-800">
+            <motion.div 
+              className="mt-4 text-sm text-red-500 bg-red-50 dark:bg-red-900/30 dark:text-red-300 p-3 rounded-xl border border-red-200 dark:border-red-800/50 shadow-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               {error}
-            </div>
+            </motion.div>
           )}
 
           {/* 底部装饰 */}
-          <div className="flex justify-between items-center mt-6 text-xs text-green-500 dark:text-green-400">
-            <div>更新频率: 24h</div>
-            <div className="flex items-center">
-              <span className="inline-block w-2 h-2 rounded-full bg-green-400 mr-1 animate-pulse"></span>
+          <motion.div 
+            className="flex justify-between items-center mt-6 text-xs text-blue-500 dark:text-blue-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.4 }}
+          >
+            <div className="px-2 py-1 bg-blue-100 dark:bg-blue-900/50 rounded-full">更新频率: 24h</div>
+            <div className="flex items-center px-2 py-1 bg-blue-100 dark:bg-blue-900/50 rounded-full">
+              <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-1 animate-pulse"></span>
               实时统计
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

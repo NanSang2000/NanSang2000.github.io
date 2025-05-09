@@ -1,31 +1,43 @@
 {
-  "index": "引入",
-  "-- Basic": {
-    "type": "separator",
-    "title": "基础"
+  "*": {
+    "theme": {
+      "navbar": true,
+      "footer": true,
+      "sidebar": true,
+      "toc": true,
+      "pagination": true
+    }
   },
-  "html": "HTML",
-  "css": "CSS",
-  "javascript": "JavaScript",
-  "typescript": "TypeScript",
-  "network": "网络",
-  "-- FrameWork": {
-    "type": "separator",
-    "title": "框架"
+  "index": {
+    "title": "Introduction"
   },
-  "react": "React",
-  "minpro": "微信小程序",
-  "-- Advanced": {
-    "type": "separator",
-    "title": "进阶"
+  "-- Basic": "Basics",
+
+  "network": {
+    "title": "Network"
   },
-  "jsfunc": "函数式编程",
-  "minireact": "实现 Mini React",
-  "-- Backend": {
-    "type": "separator",
-    "title": "后端"
+  "github": {
+    "title": "Git & GitHub"
   },
-  "nodejs": "Node.js",
-  "express": "Express",
-  "java": "Java"
+  "-- Backend": "Programming Languages",
+
+  "golang": {
+    "title": "Go"
+  },
+  "typescript": {
+    "title":  "TypeScript"
+  },
+  "python": {
+    "title":  "Python"
+  },
+  "-- FrameWork": "Frameworks",
+  "learnreact": {
+    "title": "React"
+  },
+  "minpro": {
+    "title": "微信小程序"
+  },
+  "nodejs": {
+    "title": "Node.js"
+  }
 }

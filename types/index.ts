@@ -48,6 +48,14 @@ export interface Repository {
   languages_url: string
   stargazers_url: string
   contributors_url: string
+
+}
+
+export interface TranslationsType {
+  [key: string]: {
+    [key: string]: string;
+  };
+}
   subscribers_url: string
   subscription_url: string
   commits_url: string

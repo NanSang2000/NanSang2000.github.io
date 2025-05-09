@@ -27,7 +27,7 @@ export interface TechStacks {
 
 export function Stacks ({ stacks, direction }: { stacks: TechStacks[], direction: 'left' | 'right' }): JSX.Element {
   return (
-    <Marquee gradient={false} speed={50} direction={direction}>
+    <Marquee gradient={false} speed={30} direction={direction}>
         <div className={'grid grid-flow-col auto-cols-max'}>
           {stacks.map((stack, index) => (
             <div key={index} className={'flex items-center mx-6'}>
@@ -35,11 +35,11 @@ export function Stacks ({ stacks, direction }: { stacks: TechStacks[], direction
                 content={stack.name}
                 animate={{
                   mount: { scale: 1, y: 0 },
-                  unmount: { scale: 0, y: 25 }
+                  unmount: { scale: 0, y: 10 }
                 }}
                 className={'bg-gray-100 text-black dark:bg-gray-800 dark:text-white'}
               >
-                <img src={stack.img} className={'w-20 h-20 mr-2 opacity-30 cursor-pointer hover:opacity-60 transition-all ease-in-out duration-700'} alt={stack.name} />
+                <img src={stack.img} className={'w-20 h-20 mr-2 opacity-30 cursor-pointer hover:opacity-60 transition-all ease-in-out duration-300'} alt={stack.name} />
                 {/* <div className={'text-sm'}>{stack.name}</div> */}
               </Tooltip>
             </div>

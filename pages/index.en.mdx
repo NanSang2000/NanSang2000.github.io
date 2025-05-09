@@ -1,0 +1,469 @@
+import React, { useState, useRef, useEffect } from 'react'
+import { FiArrowRight, FiBookOpen, FiCommand, FiGlobe, FiLoader } from 'react-icons/fi'
+import Link from 'next/link'
+import createGlobe from 'cobe'
+import { useSpring } from 'react-spring'
+import { GoStar, GoRepoForked, GoRepo, GoEye } from 'react-icons/go'
+import { getGitHubStates, useFollowPointer } from '../utils'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FaReact } from 'react-icons/fa'
+import { MdOutlineScience } from 'react-icons/md'
+import { SiNestjs } from 'react-icons/si'
+import { Logo } from '../theme.config'
+import { Stacks } from '../components/TextSwiper'
+import { frontEnd, OtherStacks } from '../components/TextSwiper/data'
+import TextTurn from '../components/TextTurn'
+import Visitors from '../components/Visitor'
+import VisitorCard from '../components/Visitor/VisitorCard'
+import CloudVanta from 'vanta/dist/vanta.clouds.min'
+import * as THREE from 'three'
+import { useTheme } from 'nextra-theme-docs'
+import { useLanguage } from '../components/LanguageContext'
+
+export function Cloud () {
+  const [vantaEffect, setVantaEffect] = useState(null)
+  const vantaRef = useRef(null)
+  const { theme } = useTheme()
+  
+  useEffect(() => {
+    // Prevent execution in SSR environment
+    if (typeof window === 'undefined' || !vantaRef.current) return
+    
+    // Clean up previous effect instance
+    if (vantaEffect) {
+      vantaEffect.destroy()
+      // Ensure THREE.js releases WebGL context
+      if (vantaEffect.renderer) {
+        vantaEffect.renderer.dispose()
+        vantaEffect.renderer = null
+      }
+      // Force garbage collection
+      setVantaEffect(null)
+    }
+    
+    // Create new effect instance, using requestAnimationFrame to ensure DOM is fully loaded
+    let effect = null
+    const initEffect = () => {
+      effect = CloudVanta({
+        el: vantaRef.current,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 300.00,
+        minWidth: 200.00,
+        backgroundColor: theme === 'dark' ? 0x0 : 0xffffff,
+        skyColor: theme === 'dark' ? 0x141718 : 0xaad5e5,
+        speed: theme === 'dark' ? 2.5 : 1.8, // Increase cloud movement speed
+        cloudColor: theme === 'dark' ? 0x7b7b8e : 0xadc4de,
+        sunColor: theme === 'dark' ? 0x654826 : 0xff9c21,
+        sunGlareColor: theme === 'dark' ? 0xb38181 : 0xfce9e2,
+        sunlightColor: theme === 'dark' ? 0x0 : 0xff9933,
+        cloudShadowColor: theme === 'dark' ? 0x20282e : 0x5682ac,
+        // Add cloud animation parameters
+        cloudSize: 1.2, // Cloud size
+        scale: 1.0, // Overall scale
+        scaleMobile: 1.0,
+        zoom: 0.8, // Zoom effect
+        mouseEase: true, // Smoother mouse interaction
+        cloudDensity: theme === 'dark' ? 0.04 : 0.03, // Cloud density
+        cloudDepth: 30, // Cloud depth
+        quantity: theme === 'dark' ? 8 : 6, // Number of clouds
+        THREE
+      })
+      
+      setVantaEffect(effect)
+    }
+    
+    // Use requestAnimationFrame to ensure DOM is fully ready
+    const animationId = requestAnimationFrame(initEffect)
+    
+    // Clean up all resources when component unmounts
+    return () => {
+      cancelAnimationFrame(animationId)
+      if (effect) {
+        effect.destroy()
+        // Ensure THREE.js releases WebGL context
+        if (effect.renderer) {
+          effect.renderer.dispose()
+          effect.renderer = null
+        }
+      }
+    }
+  }, [theme])
+  return (
+    <motion.div 
+      className={'h-[15rem] w-full rounded-2xl flex overflow-hidden'}
+      whileHover={{ 
+        scale: 1.02, 
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        transition: { duration: 0.3, ease: "easeOut" }
+      }}
+    >
+      <div 
+        ref={vantaRef} 
+        className={'w-full h-full flex justify-center items-center transition-all duration-700 ease-in-out'}
+      >
+        <motion.div 
+          className={'font-bold text-4xl nx-font-mono text-white dark:text-gray-500 animate-pulse'}
+          whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+        >
+          Dream on the sky
+        </motion.div>
+      </div>
+    </motion.div>
+  )
+}
+
+export function TopTag () {
+  return (
+        <div className={'w-max px-3 h-8 gap-2 bg-sky-300 bg-opacity-30 border-2 border-solid border-blue-400 rounded-lg flex justify-center items-center text-center'}>
+            <FiLoader className={'animate-spin'} />
+          Running...
+        </div>
+  )
+
+}
+
+export function Button ({ children, href, className }) {
+  return (
+        
+          <Link href={href} className={'w-max px-4 py-2 font-bold bg-blue-200 bg-opacity-30 hover:bg-opacity-80 rounded-lg flex justify-center items-center text-center ' + className}>
+              {children}
+          </Link>
+       
+  )
+
+}
+
+export function CodeModel () {
+  const canvasRef = useRef()
+  const pointerInteracting = useRef(null)
+  const pointerInteractionMovement = useRef(0)
+  const globeRef = useRef(null)
+  const [{ r }, api] = useSpring(() => ({
+    r: 0,
+    config: {
+      mass: 1,
+      tension: 280,
+      friction: 40,
+      precision: 0.01 
+    }
+  }))
+  
+  useEffect(() => {
+    // Prevent execution in SSR environment
+    if (typeof window === 'undefined' || !canvasRef.current) return
+    
+    let phi = 0
+    let width = 0
+    
+    // Clean up previous globe instance
+    if (globeRef.current) {
+      globeRef.current.destroy()
+      globeRef.current = null
+    }
+    
+    const onResize = () => {
+      if (!canvasRef.current) return
+      width = canvasRef.current.offsetWidth
+      
+      // If globe exists, update size
+      if (globeRef.current && globeRef.current.renderer) {
+        globeRef.current.renderer.setSize(width * 2, width * 2)
+      }
+    }
+    
+    window.addEventListener('resize', onResize)
+    onResize()
+    
+    // Use requestAnimationFrame to ensure DOM is fully loaded
+    const initGlobe = () => {
+      if (!canvasRef.current) return
+      
+      const globe = createGlobe(canvasRef.current, {
+        devicePixelRatio: window.devicePixelRatio || 1,
+        width: width * 2,
+        height: width * 2,
+        phi: 0,
+        theta: 0.3,
+        dark: 1,
+        diffuse: 3,
+        mapSamples: 8000,
+        mapBrightness: 1.2,
+        baseColor: [1, 1, 1],
+        markerColor: [251 / 255, 100 / 255, 21 / 255],
+        glowColor: [1.2, 1.2, 1.2],
+        markers: [
+          { location: [39.9042, 116.4074], size: 0.05 }
+        ],
+        onRender: (state) => {
+          // This prevents rotation while dragging
+          if (!pointerInteracting.current) {
+            phi += 0.002
+          }
+          state.phi = phi + r.get()
+          state.width = width * 2
+          state.height = width * 2
+        }
+      })
+      
+      // Save globe instance to ref
+      globeRef.current = globe
+      
+      // Fade in display
+      if (canvasRef.current) {
+        setTimeout(() => {
+          if (canvasRef.current) {
+            canvasRef.current.style.opacity = '1'
+          }
+        }, 100)
+      }
+    }
+    
+    const animationId = requestAnimationFrame(initGlobe)
+    
+    // Clean up all resources when component unmounts
+    return () => {
+      cancelAnimationFrame(animationId)
+      window.removeEventListener('resize', onResize)
+      
+      if (globeRef.current) {
+        globeRef.current.destroy()
+        globeRef.current = null
+      }
+    }
+  }, [])
+  return <div
+    className={'animate-in slide-in-from-bottom ease-in duration-[3s]'}
+  style={{
+    width: '100%',
+    maxWidth: 600,
+    aspectRatio: 1,
+    margin: 'auto',
+    position: 'relative'
+  }}>
+        <canvas
+            ref={canvasRef}
+            onPointerDown={(e) => {
+              pointerInteracting.current =
+                    e.clientX - pointerInteractionMovement.current
+              canvasRef.current.style.cursor = 'grabbing'
+            }}
+            onPointerUp={() => {
+              pointerInteracting.current = null
+              canvasRef.current.style.cursor = 'grab'
+            }}
+            onPointerOut={() => {
+              pointerInteracting.current = null
+              canvasRef.current.style.cursor = 'grab'
+            }}
+            onMouseMove={(e) => {
+              if (pointerInteracting.current !== null) {
+                const delta = e.clientX - pointerInteracting.current
+                pointerInteractionMovement.current = delta
+                api.start({
+                  r: delta / 200
+                })
+              }
+            }}
+            onTouchMove={(e) => {
+              if (pointerInteracting.current !== null && e.touches[0]) {
+                const delta = e.touches[0].clientX - pointerInteracting.current
+                pointerInteractionMovement.current = delta
+                api.start({
+                  r: delta / 100
+                })
+              }
+            }}
+            style={{
+              width: '100%',
+              height: '100%',
+              cursor: 'grab',
+              contain: 'layout paint size',
+              opacity: 0,
+              transition: 'opacity 1s ease'
+            }}
+        />
+    </div>
+
+}
+
+export function GitHubStats () {
+  const [requested, setRequested] = useState(false)
+  const [requested2, setRequested2] = useState(false)
+  const [stars, setStars] = useState(0)
+  const [repos, setRepos] = useState(0)
+  const [forks, setForks] = useState(0)
+  const [followers, setFollowers] = useState(0)
+  const [animatedStars, setAnimatedStars] = useState(0)
+  const [animatedRepos, setAnimatedRepos] = useState(0)
+  const [animatedForks, setAnimatedForks] = useState(0)
+  const [animatedFollowers, setAnimatedFollowers] = useState(0)
+  
+  useEffect(() => {
+    if (!requested) {
+      setRequested(true)
+      getGitHubStates().then((data) => {
+        setStars(data.stars)
+        setRepos(data.repos)
+        setForks(data.forks)
+        setFollowers(data.followers)
+      })
+    }
+  }, [requested])
+  
+  useEffect(() => {
+    if (!requested2 && stars > 0) {
+      setRequested2(true)
+      
+      // Create animation effect
+      const duration = 2000 // Animation duration (milliseconds)
+      const frames = 60 // Animation frames
+      const interval = duration / frames
+      
+      let frame = 0
+      const timer = setInterval(() => {
+        frame++
+        const progress = frame / frames
+        // Use easeOutExpo easing function
+        const easeProgress = 1 - Math.pow(1 - progress, 3)
+        
+        setAnimatedStars(Math.round(stars * easeProgress))
+        setAnimatedRepos(Math.round(repos * easeProgress))
+        setAnimatedForks(Math.round(forks * easeProgress))
+        setAnimatedFollowers(Math.round(followers * easeProgress))
+        
+        if (frame >= frames) {
+          clearInterval(timer)
+          setAnimatedStars(stars)
+          setAnimatedRepos(repos)
+          setAnimatedForks(forks)
+          setAnimatedFollowers(followers)
+        }
+      }, interval)
+      
+      return () => clearInterval(timer)
+    }
+  }, [stars, repos, forks, followers, requested2])
+  
+  return (
+    <div className={'w-full grid grid-cols-2 md:grid-cols-4 gap-4 mt-8'}>
+      <div className={'flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200'}>
+        <div className={'flex items-center mb-2'}>
+          <GoStar className={'mr-2 text-yellow-500'} size={24} />
+          <span className={'text-2xl font-bold'}>{animatedStars}</span>
+        </div>
+        <span className={'text-sm text-gray-600 dark:text-gray-400'}>Stars</span>
+      </div>
+      
+      <div className={'flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200'}>
+        <div className={'flex items-center mb-2'}>
+          <GoRepo className={'mr-2 text-blue-500'} size={24} />
+          <span className={'text-2xl font-bold'}>{animatedRepos}</span>
+        </div>
+        <span className={'text-sm text-gray-600 dark:text-gray-400'}>Repositories</span>
+      </div>
+      
+      <div className={'flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200'}>
+        <div className={'flex items-center mb-2'}>
+          <GoRepoForked className={'mr-2 text-green-500'} size={24} />
+          <span className={'text-2xl font-bold'}>{animatedForks}</span>
+        </div>
+        <span className={'text-sm text-gray-600 dark:text-gray-400'}>Forks</span>
+      </div>
+      
+      <div className={'flex flex-col items-center justify-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200'}>
+        <div className={'flex items-center mb-2'}>
+          <GoEye className={'mr-2 text-purple-500'} size={24} />
+          <span className={'text-2xl font-bold'}>{animatedFollowers}</span>
+        </div>
+        <span className={'text-sm text-gray-600 dark:text-gray-400'}>Followers</span>
+      </div>
+    </div>
+  )
+}
+
+# Welcome to My Personal Website
+
+<Cloud />
+
+I'm Nan Sang, a developer passionate about programming and technology. This is my personal website where I share my projects, blog posts, and technical notes.
+
+## About Me
+
+<div className="mt-8 flex flex-col md:flex-row gap-6 items-center">
+  <div className="flex-1">
+    <p className="mb-4">
+      I'm a full-stack developer focused on web development and AI applications. I love learning new technologies, solving complex problems, and building useful applications.
+    </p>
+    <p className="mb-4">
+      My tech stack includes React, Node.js, Python, and more. I'm constantly exploring new tools and frameworks to improve my development efficiency and code quality.
+    </p>
+    <div className="flex gap-4 mt-6">
+      <Button href="/projects" className="flex items-center gap-2">
+        View My Projects <FiArrowRight />
+      </Button>
+      <Button href="/blog" className="flex items-center gap-2">
+        Read My Blog <FiBookOpen />
+      </Button>
+    </div>
+  </div>
+  <div className="w-full md:w-1/3">
+    <CodeModel />
+  </div>
+</div>
+
+## GitHub Stats
+
+<GitHubStats />
+
+## Tech Stack
+
+<div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+    <div className="flex items-center mb-3">
+      <FaReact className="text-blue-500 mr-2" size={24} />
+      <h3 className="text-lg font-semibold">Frontend Development</h3>
+    </div>
+    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Building responsive, high-performance user interfaces with modern frontend frameworks and tools</p>
+    <Stacks stacks={frontEnd} />
+  </div>
+  
+  <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+    <div className="flex items-center mb-3">
+      <SiNestjs className="text-red-500 mr-2" size={24} />
+      <h3 className="text-lg font-semibold">Backend Development</h3>
+    </div>
+    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Building scalable, secure APIs and server-side applications</p>
+    <TextTurn texts={['Node.js', 'Express', 'NestJS', 'Django', 'Flask']} />
+  </div>
+  
+  <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+    <div className="flex items-center mb-3">
+      <MdOutlineScience className="text-green-500 mr-2" size={24} />
+      <h3 className="text-lg font-semibold">Other Skills</h3>
+    </div>
+    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Data science, machine learning, and DevOps tools</p>
+    <Stacks stacks={OtherStacks} />
+  </div>
+</div>
+
+## Visitor Statistics
+
+<div className="mt-8">
+  <Visitors />
+  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <VisitorCard title="Total Visits" value="loading..." icon={<FiGlobe className="text-blue-500" />} />
+    <VisitorCard title="Today's Visits" value="loading..." icon={<FiCommand className="text-green-500" />} />
+    <VisitorCard title="Running Time" value="loading..." icon={<FiLoader className="text-purple-500 animate-spin" />} />
+  </div>
+</div>
+
+## Contact Me
+
+If you have any questions or collaboration opportunities, please feel free to contact me through:
+
+- Email: nansang2013@163.com
+- GitHub: [NanSang2000](https://github.com/NanSang2000)
+
+Thank you for visiting my website!

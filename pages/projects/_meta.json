@@ -1,0 +1,15 @@
+{
+  "index": {
+    "title": "Projects"
+  },
+
+  "*": {
+    "theme": {
+      "navbar": true,
+      "footer": true,
+      "sidebar": false,
+      "toc": true,
+      "pagination": true
+    }
+  }
+}

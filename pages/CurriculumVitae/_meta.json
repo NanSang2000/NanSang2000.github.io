@@ -1,0 +1,12 @@
+{
+  "index": "简历",
+  "*": {
+    "theme": {
+      "navbar": true,
+      "footer": true,
+      "sidebar": false,
+      "toc": true,
+      "pagination": true
+    }
+  }
+}
