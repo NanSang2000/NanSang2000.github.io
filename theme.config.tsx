@@ -100,7 +100,7 @@ const config: DocsThemeConfig = {
         'en': 'Edit this page on GitHub',
         'zh': '帮我在 GitHub 改进文章'
       }
-      return translations[locale as keyof typeof translations] || translations.zh
+      return <>{translations[locale as keyof typeof translations] || translations.zh}</>
     }
   },
   primaryHue: { dark: 205, light: 205 },
