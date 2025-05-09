@@ -95,7 +95,7 @@ const config: DocsThemeConfig = {
     toggleButton: true
   },
   editLink: {
-    text: ({ locale }) => {
+    text: ({ locale }: { locale?: string }) => {
       const translations = {
         'en': 'Edit this page on GitHub',
         'zh': '帮我在 GitHub 改进文章'
