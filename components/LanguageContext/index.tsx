@@ -5,21 +5,21 @@ import globalTranslations from '../../utils/translations'
 type Language = 'zh' | 'en'
 
 interface LanguageContextType {
-  language: Language;
-  setLanguage: (language: Language) => void;
-  t: (key: string) => string;
+  language: Language
+  setLanguage: (language: Language) => void
+  t: (key: string) => string
 }
 
 const LanguageContext = createContext<LanguageContextType>({
   language: 'zh',
   setLanguage: () => {},
-  t: () => '',
+  t: () => ''
 })
 
 export const useLanguage = (): LanguageContextType => useContext(LanguageContext)
 
 interface LanguageProviderProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }): JSX.Element => {

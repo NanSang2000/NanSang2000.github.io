@@ -79,8 +79,8 @@ function Visitors (): VisitorResult {
         
         if (shouldCount) {
           // 计算新的访问计数
-          const currentCount = (lastVisitorRecord !== null && lastVisitorRecord.length > 0) 
-            ? Number(lastVisitorRecord[0].count) + 1 
+          const currentCount = (lastVisitorRecord !== null && lastVisitorRecord.length > 0)
+            ? Number(lastVisitorRecord[0].count) + 1
             : 1
           
           // 插入新的访问记录
@@ -98,7 +98,7 @@ function Visitors (): VisitorResult {
           if (typeof window !== 'undefined') {
             localStorage.setItem(VISITOR_COUNT_KEY, Date.now().toString())
           }
-          
+
           setVisitorCount(currentCount)
         } else if (lastVisitorRecord !== null && lastVisitorRecord.length > 0) {
           // 如果不需要更新计数，使用最后一条记录的计数
