@@ -56,7 +56,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
   }, [count, loading, showAnimation, animatedCount])
 
   return (
-    <motion.div 
+    <motion.div
       className={`visitor-card relative ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
         <div className="relative z-10">
           {/* 标题 */}
           {showTitle && (
-            <motion.h3 
+            <motion.h3
               className="text-2xl font-bold text-blue-800 dark:text-blue-300 mb-4 border-b border-blue-200 dark:border-blue-700 pb-2 flex items-center"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -89,7 +89,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
           )}
 
           {/* 计数显示 */}
-          <motion.div 
+          <motion.div
             className="flex flex-col items-center justify-center py-4"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -102,7 +102,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
                   </div>
                 )
               : (
-                  <motion.div 
+                  <motion.div
                     className="relative"
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 10 }}
@@ -110,7 +110,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
                     <div className="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300 transition-all duration-300 transform">
                       {animatedCount}
                     </div>
-                    <motion.div 
+                    <motion.div
                       className="absolute -right-2 -top-2 text-xs px-2 py-1 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-full"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ repeat: Infinity, duration: 2 }}
@@ -126,7 +126,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
 
           {/* IP地址显示 */}
           {ip != null && (
-            <motion.div 
+            <motion.div
               className="mt-4 flex flex-col items-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-xl p-4 shadow-inner border border-blue-50 dark:border-blue-900"
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -144,7 +144,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
 
           {/* 错误信息 */}
           {error != null && (
-            <motion.div 
+            <motion.div
               className="mt-4 text-sm text-red-500 bg-red-50 dark:bg-red-900/30 dark:text-red-300 p-3 rounded-xl border border-red-200 dark:border-red-800/50 shadow-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -155,7 +155,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
           )}
 
           {/* 底部装饰 */}
-          <motion.div 
+          <motion.div
             className="flex justify-between items-center mt-6 text-xs text-blue-500 dark:text-blue-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

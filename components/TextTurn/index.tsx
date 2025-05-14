@@ -39,7 +39,7 @@ interface TextTurnProps {
 export default function TextTurn ({ texts }: TextTurnProps = {}): JSX.Element {
   const [index, setIndex] = useState(0)
   const { language } = useLanguage()
-  
+
   // 如果传入了texts数组，则使用texts，否则使用默认的Projects
   const items = (texts !== undefined)
     ? texts.map(text => ({ name: text, description: '', color: 'text-blue-500' }))
@@ -64,14 +64,14 @@ export default function TextTurn ({ texts }: TextTurnProps = {}): JSX.Element {
                 <div key={`project-content-${i}`}>
                   <div className={`animate-in fade-in-10 duration-300 text-3xl lg:text-6xl ${item.color} opacity-90 font-mono font-bold`}>
                     {typeof item.name === 'object'
-                      ? ((item.name[language] && item.name[language] !== '') ? item.name[language] : ((item.name.en && item.name.en !== '') ? item.name.en : ((Object.values(item.name)[0] && Object.values(item.name)[0] !== '') ? Object.values(item.name)[0] : '')))
+                      ? ((item.name[language] !== undefined && item.name[language] !== '') ? item.name[language] : ((item.name.en !== undefined && item.name.en !== '') ? item.name.en : ((Object.values(item.name)[0] !== undefined && Object.values(item.name)[0] !== '') ? Object.values(item.name)[0] : '')))
                       : item.name}
                   </div>
                   {((typeof item.description === 'string' && item.description !== '') || (typeof item.description === 'object' && item.description !== null)) && (
                     <div className={'animate-in fade-in-10 duration-300 text-black opacity-30 hover:opacity-60 mt-3'}>
                       {typeof item.description === 'object'
-                        ? ((item.description[language] && item.description[language] !== '') ? item.description[language] : ((item.description.en && item.description.en !== '') ? item.description.en : ((Object.values(item.description)[0] && Object.values(item.description)[0] !== '') ? Object.values(item.description)[0] : '')))
-                        : (item.description || '')}
+                        ? ((item.description[language] !== undefined && item.description[language] !== '') ? item.description[language] : ((item.description.en !== undefined && item.description.en !== '') ? item.description.en : ((Object.values(item.description)[0] !== undefined && Object.values(item.description)[0] !== '') ? Object.values(item.description)[0] : '')))
+                        : (item.description !== undefined && item.description !== '' ? item.description : '')}
                     </div>
                   )}
                 </div>

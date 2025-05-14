@@ -4,7 +4,6 @@ import { createClient } from '@supabase/supabase-js'
 const SUPABASE_URL = 'lptqykocinwlojjzfqhy'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc'
 
-
 const supabaseUrl = `https://${SUPABASE_URL}.supabase.co`
 const supabaseKey = SUPABASE_KEY
 
@@ -101,7 +100,7 @@ function Visitors (): VisitorResult {
           }
           
           setVisitorCount(currentCount)
-        } else if (lastVisitorRecord && lastVisitorRecord.length > 0) {
+        } else if (lastVisitorRecord !== null && lastVisitorRecord.length > 0) {
           // 如果不需要更新计数，使用最后一条记录的计数
           setVisitorCount(Number(lastVisitorRecord[0].count))
         } else {
@@ -121,7 +120,7 @@ function Visitors (): VisitorResult {
       if (typeof window === 'undefined') return true
 
       const lastCounted = localStorage.getItem(VISITOR_COUNT_KEY)
-      if (lastCounted === null) return true
+      if (lastCounted === null || lastCounted === '') return true
 
       const lastCountedTime = parseInt(lastCounted, 10)
       return isNaN(lastCountedTime) ? true : Date.now() - lastCountedTime >= COUNT_EXPIRY

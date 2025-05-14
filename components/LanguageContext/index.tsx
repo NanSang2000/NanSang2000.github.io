@@ -5,9 +5,9 @@ import globalTranslations from '../../utils/translations'
 type Language = 'zh' | 'en'
 
 interface LanguageContextType {
-  language: Language,
-  setLanguage: (language: Language) => void,
-  t: (key: string) => string,
+  language: Language;
+  setLanguage: (language: Language) => void;
+  t: (key: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType>({
@@ -19,18 +19,18 @@ const LanguageContext = createContext<LanguageContextType>({
 export const useLanguage = (): LanguageContextType => useContext(LanguageContext)
 
 interface LanguageProviderProps {
-  children: ReactNode,
+  children: ReactNode;
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }): JSX.Element => {
   const router = useRouter()
   console.log('=', router)
-  const [language, setLanguageState] = useState<Language>((router.locale as Language) || 'zh')
+  const [language, setLanguageState] = useState<Language>((router.locale as Language) !== undefined ? (router.locale as Language) : 'zh')
 
   useEffect(() => {
     // 从本地存储中获取语言设置，如果没有则使用默认值
     const savedLanguage = localStorage.getItem('language') as Language
-    if (savedLanguage && (savedLanguage === 'zh' || savedLanguage === 'en')) {
+    if (savedLanguage !== null && savedLanguage !== '' && (savedLanguage === 'zh' || savedLanguage === 'en')) {
       setLanguageState(savedLanguage)
       // 如果本地存储的语言与当前路由的语言不同，则更新路由
       if (savedLanguage !== router.locale) {
@@ -42,7 +42,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }):
 
   // 当路由的locale变化时，同步更新语言状态
   useEffect(() => {
-    if (router.locale && (router.locale === 'zh' || router.locale === 'en')) {
+    if (router.locale !== undefined && router.locale !== '' && (router.locale === 'zh' || router.locale === 'en')) {
       setLanguageState(router.locale as Language)
       localStorage.setItem('language', router.locale)
     }
@@ -55,10 +55,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }):
 
   // 翻译函数
   const t = (key: string): string => {
-    if (globalTranslations[language]?.[key]) {
+    if (globalTranslations[language]?.[key] !== undefined && globalTranslations[language]?.[key] !== '') {
       return globalTranslations[language][key]
     }
-    if (globalTranslations.en?.[key]) {
+    if (globalTranslations.en?.[key] !== undefined && globalTranslations.en?.[key] !== '') {
       return globalTranslations.en[key]
     }
     return key
