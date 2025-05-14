@@ -76,13 +76,13 @@ function Visitors (): VisitorResult {
 
         // 检查是否需要更新计数
         const shouldCount = await checkShouldCount()
-        
+
         if (shouldCount) {
           // 计算新的访问计数
           const currentCount = (lastVisitorRecord !== null && lastVisitorRecord.length > 0)
             ? Number(lastVisitorRecord[0].count) + 1
             : 1
-          
+
           // 插入新的访问记录
           const { error: insertError } = await supabase
             .from('visitor')
