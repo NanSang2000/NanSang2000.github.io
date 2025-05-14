@@ -1,19 +1,19 @@
-import React from 'react';
-import { useLanguage } from '../LanguageContext';
-import { useRouter } from 'next/router';
+import React from 'react'
+import { useLanguage } from '../LanguageContext'
+import { useRouter } from 'next/router'
 
-const LanguageSwitcher: React.FC = () => {
-  const { language, setLanguage, t } = useLanguage();
-  const router = useRouter();
+const LanguageSwitcher: React.FC = (): JSX.Element => {
+  const { language, setLanguage, t } = useLanguage()
+  const router = useRouter()
 
-  const toggleLanguage = () => {
-    const newLanguage = language === 'zh' ? 'en' : 'zh';
-    setLanguage(newLanguage);
-    
+  const toggleLanguage = (): void => {
+    const newLanguage = language === 'zh' ? 'en' : 'zh'
+    setLanguage(newLanguage)
+
     // 同时更新 Next.js 的 locale
-    const { pathname, asPath, query } = router;
-    router.push({ pathname, query }, asPath, { locale: newLanguage });
-  };
+    const { pathname, asPath, query } = router
+    void router.push({ pathname, query }, asPath, { locale: newLanguage })
+  }
 
   return (
     <button
@@ -25,7 +25,7 @@ const LanguageSwitcher: React.FC = () => {
     >
       {language === 'zh' ? 'EN' : '中文'}
     </button>
-  );
-};
+  )
+}
 
-export default LanguageSwitcher;
+export default LanguageSwitcher

@@ -80,12 +80,12 @@ function Visitors (): VisitorResult {
         
         if (shouldCount) {
           // 计算新的访问计数
-          const currentCount = lastVisitorRecord && lastVisitorRecord.length > 0 
+          const currentCount = (lastVisitorRecord !== null && lastVisitorRecord.length > 0) 
             ? Number(lastVisitorRecord[0].count) + 1 
             : 1
           
           // 插入新的访问记录
-          const { data: insertData, error: insertError } = await supabase
+          const { error: insertError } = await supabase
             .from('visitor')
             .insert([{ count: currentCount, ip, created_at: new Date().toISOString() }])
             .select('count')
@@ -124,7 +124,7 @@ function Visitors (): VisitorResult {
       if (lastCounted === null) return true
 
       const lastCountedTime = parseInt(lastCounted, 10)
-      return Date.now() - lastCountedTime >= COUNT_EXPIRY
+      return isNaN(lastCountedTime) ? true : Date.now() - lastCountedTime >= COUNT_EXPIRY
     }
 
     void fetchAndUpdateVisitors()

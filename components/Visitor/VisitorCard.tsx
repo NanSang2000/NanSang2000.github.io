@@ -105,7 +105,7 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
                   <motion.div 
                     className="relative"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                   >
                     <div className="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300 transition-all duration-300 transform">
                       {animatedCount}

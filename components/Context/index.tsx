@@ -1,4 +1,3 @@
-import { type Context as TypeContext } from '../../types'
 import { generateContext } from '../../utils'
 import React from 'react'
 import Link from 'next/link'

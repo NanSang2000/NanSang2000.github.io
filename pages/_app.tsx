@@ -12,7 +12,6 @@ const myFont = localFont({ src: './PingFangSC.ttf' })
 
 export default function App ({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    
     <LanguageProvider>
       <main className={myFont.className}>
         <Component {...pageProps} />
