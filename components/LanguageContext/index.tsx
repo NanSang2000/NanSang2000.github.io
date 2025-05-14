@@ -30,7 +30,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }):
   useEffect(() => {
     // 从本地存储中获取语言设置，如果没有则使用默认值
     const savedLanguage = localStorage.getItem('language') as Language
-    if (savedLanguage !== null && savedLanguage !== '' && (savedLanguage === 'zh' || savedLanguage === 'en')) {
+    if (savedLanguage !== null && (savedLanguage === 'zh' || savedLanguage === 'en')) {
       setLanguageState(savedLanguage)
       // 如果本地存储的语言与当前路由的语言不同，则更新路由
       if (savedLanguage !== router.locale) {
