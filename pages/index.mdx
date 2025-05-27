@@ -15,6 +15,103 @@ import { frontEnd, OtherStacks } from '../components/TextSwiper/data'
 import TextTurn from '../components/TextTurn'
 import Visitors from '../components/Visitor'
 import VisitorCard from '../components/Visitor/VisitorCard'
+import CloudVanta from 'vanta/dist/vanta.clouds.min'
+import * as THREE from 'three'
+import { useTheme } from 'nextra-theme-docs'
+
+export function Cloud () {
+  const [vantaEffect, setVantaEffect] = useState(null)
+  const vantaRef = useRef(null)
+  const { theme } = useTheme()
+
+  useEffect(() => {
+    // 防止在SSR环境下执行
+    if (typeof window === 'undefined' || !vantaRef.current) return  
+    // 清理之前的效果实例
+    if (vantaEffect) {
+      vantaEffect.destroy()
+      // 确保THREE.js释放WebGL上下文
+      if (vantaEffect.renderer) {
+        vantaEffect.renderer.dispose()
+        vantaEffect.renderer = null
+      }
+      // 强制垃圾回收
+      setVantaEffect(null)
+    }
+
+    // 创建新的效果实例，使用requestAnimationFrame确保DOM已完全加载
+    let effect = null
+    const initEffect = () => {
+      effect = CloudVanta({
+        el: vantaRef.current,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 300.00,
+        minWidth: 200.00,
+        backgroundColor: theme === 'dark' ? 0x0 : 0xffffff,
+        skyColor: theme === 'dark' ? 0x141718 : 0xaad5e5,
+        speed: theme === 'dark' ? 2.5 : 1.8, // 增加云朵移动速度
+        cloudColor: theme === 'dark' ? 0x7b7b8e : 0xadc4de,
+        sunColor: theme === 'dark' ? 0x654826 : 0xff9c21,
+        sunGlareColor: theme === 'dark' ? 0xb38181 : 0xfce9e2,
+        sunlightColor: theme === 'dark' ? 0x0 : 0xff9933,
+        cloudShadowColor: theme === 'dark' ? 0x20282e : 0x5682ac,
+        // 添加云朵动画参数
+        cloudSize: 1.2, // 云朵大小
+        scale: 1.0, // 整体缩放
+        scaleMobile: 1.0,
+        zoom: 0.8, // 缩放效果
+        mouseEase: true, // 鼠标交互更平滑
+        cloudDensity: theme === 'dark' ? 0.04 : 0.03, // 云朵密度
+        cloudDepth: 30, // 云朵深度
+        quantity: theme === 'dark' ? 8 : 6, // 云朵数量
+        THREE
+      })
+      
+      setVantaEffect(effect)
+    }
+    
+    // 使用requestAnimationFrame确保DOM已完全准备好
+    const animationId = requestAnimationFrame(initEffect)
+    
+    // 组件卸载时清理所有资源
+    return () => {
+      cancelAnimationFrame(animationId)
+      if (effect) {
+        effect.destroy()
+        // 确保THREE.js释放WebGL上下文
+        if (effect.renderer) {
+          effect.renderer.dispose()
+          effect.renderer = null
+        }
+      }
+    }
+
+  }, [theme])
+  return (
+    <motion.div 
+      className={'h-[15rem] w-full rounded-2xl flex overflow-hidden'}
+      whileHover={{ 
+        scale: 1.02, 
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        transition: { duration: 0.3, ease: "easeOut" }
+      }}
+    >
+      <div 
+        ref={vantaRef} 
+        className={'w-full h-full flex justify-center items-center transition-all duration-700 ease-in-out'}
+      >
+        <motion.div 
+          className={'font-bold text-4xl nx-font-mono text-white dark:text-gray-500 animate-pulse'}
+          whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+        >
+          Dream on the sky
+        </motion.div>
+      </div>
+    </motion.div>
+  )
+}
 
 export function TopTag () {
   return (
@@ -367,6 +464,10 @@ export function WakaTime () {
     <div className={'w-full h-max py-12 lg:mt-8'}>
         <img alt={'banner'} className={'w-full h-full'} src={'/banner.svg'} />
     </div>
+</div>
+
+<div className={'my-3'}>
+  <Cloud/>
 </div>
 
 <motion.div 
