@@ -1,7 +1,16 @@
 import LarkList from '../../components/LarkList'
 import Link from 'next/link'
-import React from 'react';
-import PDFViewer from '../../components/PDFViewer';
+import React from 'react'
+import dynamic from 'next/dynamic'
+
+export const PDFViewer = dynamic(() => import('../../components/PDFViewer'), { 
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-64 bg-gray-100 dark:bg-gray-800 rounded-lg">
+      <div className="text-gray-500">Loading PDF viewer...</div>
+    </div>
+  )
+})
 
 <div id='content-start' className={'w-full'}>
   <div className={'h-96 w-3/4 bg-gradient-to-r -z-10 from-cyan-800 to-pink-800 absolute right-0 -top-12 opacity-10 dark:opacity-20 !blur-3xl rounded-full'}></div>
