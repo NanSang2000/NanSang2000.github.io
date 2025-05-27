@@ -101,12 +101,6 @@ export interface Repository {
   default_branch: string
 }
 
-export interface TranslationsType {
-  [key: string]: {
-    [key: string]: string;
-  };
-}
-
 export interface Project {
   banner: string
   name: string

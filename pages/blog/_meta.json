@@ -1,44 +1,14 @@
 {
-  "*": {
+  "index": {
+    "title": "Blog",
+    "type": "page",
     "theme": {
-      "navbar": true,
+      "sidebar": false,
+      "toc": false,
       "footer": true,
-      "sidebar": true,
-      "toc": true,
-      "pagination": true
+      "pagination": true,
+      "breadcrumb": false,
+      "layout": "full"
     }
-  },
-  "-- Development": "Development",
-
-  "unityPlugin": {
-    "title": "How to Create Custom Unity Plugins"
-  },
-  "2022-10-27-flask-back": {
-    "title": "Flask Backend Development Practice"
-  },
-  "2022-9-21-PythonCrawl": {
-    "title": "Python Web Scraping Tutorial"
-  },
-  "2022-9-16-gitrules": {
-    "title": "Git Usage Guidelines and Tips"
-  },
-  "-- Server": "Server",
-
-  "2023-01-27-aliserver": {
-    "title": "Alibaba Cloud Server Configuration Guide"
-  },
-  "-- Tools": "Tools & Applications",
-
-  "2022-9-24.reportPeace": {
-    "title": "Game of Peace Report Analysis"
-  },
-  "2022-9-21-1wxpush": {
-    "title": "WeChat Push Service Implementation"
-  },
-  "2022-07-12-movepic": {
-    "title": "Image Processing and Moving Guide"
-  },
-  "2022-07-12-baiduApi": {
-    "title": "Baidu API Usage Tutorial"
   }
 }

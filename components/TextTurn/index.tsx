@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useLanguage } from '../LanguageContext'
 
 interface Project {
-  name: string | { zh: string, en: string }
-  description: string | { zh: string, en: string }
+  name: string
+  description: string
   color: string
 }
 
@@ -30,50 +29,34 @@ const Projects: Project[] = [
   }
 ]
 
-const INTERVAL = 5000 // 增加切换间隔，减少动画频率
+const INTERVAL = 3000
 
-interface TextTurnProps {
-  texts?: string[] // 添加可选的texts属性，用于接收字符串数组
-}
-
-export default function TextTurn ({ texts }: TextTurnProps = {}): JSX.Element {
+export default function TextTurn (): JSX.Element {
   const [index, setIndex] = useState(0)
-  const { language } = useLanguage()
-
-  // 如果传入了texts数组，则使用texts，否则使用默认的Projects
-  const items = (texts !== undefined)
-    ? texts.map(text => ({ name: text, description: '', color: 'text-blue-500' }))
-    : Projects
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setIndex((currentIndex) => (Number(currentIndex) + 1) % items.length)
+      setIndex((index) => (Number(index) + 1) % Projects.length)
     }, INTERVAL)
     return () => { clearInterval(intervalId) }
-  }, [items.length])
+  }, [])
 
   return (
     <div className="flex items-start justify-start w-max text-start">
         {
-          items.map((item, i) => (
+          Projects.map((item, i) => (
             <div
-              key={`project-container-${i}`}
+              key={i}
               className={'flex flex-col items-start justify-start text-start'}
             >
               {(index === i) && (
-                <div key={`project-content-${i}`}>
-                  <div className={`animate-in fade-in-10 duration-300 text-3xl lg:text-6xl ${item.color} opacity-90 font-mono font-bold`}>
-                    {typeof item.name === 'object'
-                      ? ((item.name[language] !== undefined && item.name[language] !== '') ? item.name[language] : ((item.name.en !== undefined && item.name.en !== '') ? item.name.en : ((Object.values(item.name)[0] !== undefined && Object.values(item.name)[0] !== '') ? Object.values(item.name)[0] : '')))
-                      : item.name}
+                <div key={i}>
+                  <div className={`animate-in fade-in-20 zoom-in text-3xl lg:text-6xl ${item.color} opacity-90 font-mono font-bold`}>
+                    {item.name}
                   </div>
-                  {((typeof item.description === 'string' && item.description !== '') || (typeof item.description === 'object' && item.description !== null)) && (
-                    <div className={'animate-in fade-in-10 duration-300 text-black opacity-30 hover:opacity-60 mt-3'}>
-                      {typeof item.description === 'object'
-                        ? ((item.description[language] !== undefined && item.description[language] !== '') ? item.description[language] : ((item.description.en !== undefined && item.description.en !== '') ? item.description.en : ((Object.values(item.description)[0] !== undefined && Object.values(item.description)[0] !== '') ? Object.values(item.description)[0] : '')))
-                        : (item.description !== undefined && item.description !== '' ? item.description : '')}
-                    </div>
-                  )}
+                  <div className={'animate-in text-black fade-in-20 opacity-30 hover:opacity-60 mt-3'}>
+                    {item.description}
+                  </div>
                 </div>
               )}
             </div>

@@ -1,45 +1,24 @@
 {
-  "*": {
-    "theme": {
-      "navbar": true,
-      "footer": true,
-      "sidebar": true,
-      "toc": true,
-      "pagination": true
-    }
+  "index": "引入",
+  "-- reference": {
+    "type": "separator",
+    "title": "速查"
   },
-  "index": {
-    "title": "Introduction"
+  "prisma": "Prisma",
+  "redux": "Redux",
+  "reactRouter": "React Router",
+  "certbot": "Let's Encrypt",
+  "regex": "正则表达式",
+  "-- handwriting": {
+    "type": "separator",
+    "title": "手写代码"
   },
-  "-- reference": "Quick Reference",
-
-  "prisma": {
-    "title": "Prisma"
+  "PromiseArray": "Promise Array",
+  "Filter": "filter",
+  "changethis": "call、apply、bind",
+  "-- algorithm": {
+    "type": "separator",
+    "title": "算法"
   },
-  "redux": {
-    "title": "Redux"
-  },
-  "reactRouter": {
-    "title": "React Router"
-  },
-  "certbot": {
-    "title": "Let's Encrypt"
-  },
-  "regex": {
-    "title": "Regular Expressions"
-  },
-  "-- handwriting": "Handwritten Code",
-  "PromiseArray": {
-    "title": "Promise Array"
-  },
-  "Filter": {
-    "title": "filter"
-  },
-  "changethis": {
-    "title": "call, apply, bind"
-  },
-  "-- algorithm": "Algorithms",
-  "gcd": {
-    "title": "Greatest Common Divisor"
-  }
+  "gcd": "最大公约数"
 }

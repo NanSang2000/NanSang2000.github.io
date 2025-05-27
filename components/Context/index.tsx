@@ -1,3 +1,4 @@
+// import { type Context as TypeContext } from '../../types'
 import { generateContext } from '../../utils'
 import React from 'react'
 import Link from 'next/link'
@@ -7,7 +8,6 @@ export default function Context ({ json, title }: {
   title: string
 }): JSX.Element {
   const res = generateContext(json, title)
-  console.log(res)
   return (
     <div className={'w-full flex flex-col'}>
       {

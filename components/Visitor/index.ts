@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
+// 确保环境变量存在，如果不存在则使用硬编码的值（仅用于生产环境）
 const SUPABASE_URL = 'lptqykocinwlojjzfqhy'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc'
 
+// 构建Supabase URL
+// 确保URL格式正确，避免undefined.supabase.co的问题
 const supabaseUrl = `https://${SUPABASE_URL}.supabase.co`
 const supabaseKey = SUPABASE_KEY
 
@@ -59,54 +62,64 @@ function Visitors (): VisitorResult {
         setLoading(true)
         setError(null)
 
-        // 获取最后一条访问记录
-        const { data: lastVisitorRecord, error: fetchError } = await supabase
+        // 获取当前访问计数
+        const { data: visitorDataArray, error: fetchError } = await supabase
           .from('visitor')
-          .select('*')
-          .order('created_at', { ascending: false })
+          .select('count')
+          .eq('id', 1)
           .limit(1)
 
         if (fetchError !== null) {
-          throw new Error(`获取访问记录失败: ${fetchError.message}`)
+          throw new Error(`获取访问计数失败: ${fetchError.message}`)
         }
+
+        // 处理可能的空结果或多结果情况
+        const visitorData = visitorDataArray !== null && visitorDataArray !== undefined && visitorDataArray.length > 0 ? visitorDataArray[0] : null
 
         // 获取访问者IP地址
         const ip = await getVisitorIp()
         setIpAddress(ip)
 
-        // 检查是否需要更新计数
-        const shouldCount = await checkShouldCount()
-
-        if (shouldCount) {
-          // 计算新的访问计数
-          const currentCount = (lastVisitorRecord !== null && lastVisitorRecord.length > 0)
-            ? Number(lastVisitorRecord[0].count) + 1
-            : 1
-
-          // 插入新的访问记录
-          const { error: insertError } = await supabase
+        // 如果记录不存在，创建初始记录
+        if (visitorData === null) {
+          const { data: insertData, error: insertError } = await supabase
             .from('visitor')
-            .insert([{ count: currentCount, ip, created_at: new Date().toISOString() }])
-            .select('count')
+            .insert([{ id: 1, count: 1, ip }])
+            .select('count, ip')
             .single()
 
           if (insertError !== null) {
-            throw new Error(`创建新访问记录失败: ${insertError.message}`)
+            throw new Error(`创建访问计数记录失败: ${insertError.message}`)
+          }
+
+          const count = insertData?.count ?? 0
+          setVisitorCount(count)
+          setLoading(false)
+          return
+        }
+
+        // 检查是否需要更新计数
+        const shouldCount = await checkShouldCount()
+        let newCount = visitorData.count
+
+        if (shouldCount) {
+          newCount = Number(newCount) + 1
+          const { error: updateError } = await supabase
+            .from('visitor')
+            .update({ count: newCount, ip })
+            .eq('id', 1)
+
+          if (updateError !== null) {
+            throw new Error(`更新访问计数失败: ${updateError.message}`)
           }
 
           // 更新本地存储
           if (typeof window !== 'undefined') {
             localStorage.setItem(VISITOR_COUNT_KEY, Date.now().toString())
           }
-
-          setVisitorCount(currentCount)
-        } else if (lastVisitorRecord !== null && lastVisitorRecord.length > 0) {
-          // 如果不需要更新计数，使用最后一条记录的计数
-          setVisitorCount(Number(lastVisitorRecord[0].count))
-        } else {
-          // 如果没有记录且不需要更新，设置为0
-          setVisitorCount(0)
         }
+
+        setVisitorCount(newCount)
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : '访问计数出错'
         console.error(errorMessage)
@@ -120,10 +133,10 @@ function Visitors (): VisitorResult {
       if (typeof window === 'undefined') return true
 
       const lastCounted = localStorage.getItem(VISITOR_COUNT_KEY)
-      if (lastCounted === null || lastCounted === '') return true
+      if (lastCounted === null) return true
 
       const lastCountedTime = parseInt(lastCounted, 10)
-      return isNaN(lastCountedTime) ? true : Date.now() - lastCountedTime >= COUNT_EXPIRY
+      return Date.now() - lastCountedTime >= COUNT_EXPIRY
     }
 
     void fetchAndUpdateVisitors()
