@@ -17,6 +17,26 @@ import { motion } from 'framer-motion'
   <div className="mt-10 space-y-12">
     {/* You can add your work experiences here */}
     
+     <motion.div 
+      className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="https://img0.baidu.com/it/u=610977220,2909857421&fm=253&fmt=auto&app=138&f=PNG?w=500&h=500" alt="Company Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">Umetrip</h2>
+        <p className="text-gray-600 dark:text-gray-400">Beijing • Product Manager • April 2025 - Present</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Carry out daily iterative updates to the U community</li>
+          <li>Added a new review section and iterated the chat room</li>
+          <li>Track new features and increase DAU through data analysis</li>
+        </ul>
+      </div>
+    </motion.div>
+     
     <motion.div 
       className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
       initial={{ opacity: 0, y: 20 }}
@@ -28,11 +48,11 @@ import { motion } from 'framer-motion'
       </div>
       <div className="flex flex-col items-start text-left">
         <h2 className="text-2xl font-bold">Kingsoft CLoud</h2>
-        <p className="text-gray-600 dark:text-gray-400">Position • Dec 2024 - Present</p>
+        <p className="text-gray-600 dark:text-gray-400">Beijing • Product Manager • Dec 2024 - April 2025</p>
         <ul className="list-disc list-inside mt-2">
-          <li>Responsibility or achievement 1</li>
-          <li>Responsibility or achievement 2</li>
-          <li>Responsibility or achievement 3</li>
+          <li>Iterate the functions of Kingsoft Cloud Container 1.0 to meet customer needs</li>
+          <li>Researching cloud vendors’ AI assistants to help AI land in Kingsoft Cloud’s container group</li>
+          <li>Optimize the product demand management platform to ensure on-time delivery of customer needs</li>
         </ul>
       </div>
     </motion.div>
@@ -44,58 +64,19 @@ import { motion } from 'framer-motion'
       transition={{ duration: 0.5, delay: 0.4 }}
     >
       <div className="flex-shrink-0 w-20 h-20">
-        <img src="/companies/previous-company.svg" alt="Previous Company Logo" className="w-full h-full object-contain" />
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAAA5UlEQVR4AWJgxQMGrSQDCGBQACbIEAZhIAiC44N3aCxeIFF4gay3SGQ1DoWqF/h6hW2CT6pqzzS5/xzbpv9BbS4z2WxuY5NZamAw8xb62eaODXKNlGc4KAKInOJUYR8eb3gpPnAPz2OphZQ8LjBljxsMcp4V3qROcA5PAbtwj32FH6kdvBU9PBRfgRXCoh7BVN7AKNhW2OoaoVGrwXFRqfAr+KBM7tbJ24fYL+oOslrPZXKBT6kDZfJF5YkKR6l31smvMnl7PKe/nx1gVlwr7PTlHlo3G6BJZtNvsOjAHlsQMLRSHwCKSbzTeC3BegAAAABJRU5ErkJggg==" alt="Previous Company Logo" className="w-full h-full object-contain" />
       </div>
       <div className="flex flex-col items-start text-left">
-        <h2 className="text-2xl font-bold">Previous Company</h2>
-        <p className="text-gray-600 dark:text-gray-400">Position • Jan 2020 - Dec 2022</p>
+        <h2 className="text-2xl font-bold">AW3C</h2>
+        <p className="text-gray-600 dark:text-gray-400">Melbourne • Game developer • Nov 2024 - Dec 2024</p>
         <ul className="list-disc list-inside mt-2">
-          <li>Responsibility or achievement 1</li>
-          <li>Responsibility or achievement 2</li>
-          <li>Responsibility or achievement 3</li>
+          <li>Developed a game with Unity</li>
+          <li>Worked with a team of 6 to develop a game</li>
+          <li>Collaborated with the design team to create a game</li>
         </ul>
       </div>
     </motion.div>
 
-      <motion.div 
-      className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
-    >
-      <div className="flex-shrink-0 w-20 h-20">
-        <img src="/companies/previous-company.svg" alt="Previous Company Logo" className="w-full h-full object-contain" />
-      </div>
-      <div className="flex flex-col items-start text-left">
-        <h2 className="text-2xl font-bold">Previous Company</h2>
-        <p className="text-gray-600 dark:text-gray-400">Position • Jan 2020 - Dec 2022</p>
-        <ul className="list-disc list-inside mt-2">
-          <li>Responsibility or achievement 1</li>
-          <li>Responsibility or achievement 2</li>
-          <li>Responsibility or achievement 3</li>
-        </ul>
-      </div>
-    </motion.div>
-
-      <motion.div 
-      className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
-    >
-      <div className="flex-shrink-0 w-20 h-20">
-        <img src="/companies/previous-company.svg" alt="Previous Company Logo" className="w-full h-full object-contain" />
-      </div>
-      <div className="flex flex-col items-start text-left">
-        <h2 className="text-2xl font-bold">Previous Company</h2>
-        <p className="text-gray-600 dark:text-gray-400">Position • Jan 2020 - Dec 2022</p>
-        <ul className="list-disc list-inside mt-2">
-          <li>Responsibility or achievement 1</li>
-          <li>Responsibility or achievement 2</li>
-          <li>Responsibility or achievement 3</li>
-        </ul>
-      </div>
-    </motion.div>
   </div>
   
   <Top />
