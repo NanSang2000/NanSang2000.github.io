@@ -98,3 +98,115 @@ article > main > h2, article > main > h3, article > main > h4, article > main > 
 strong {
     color: #0086E6 !important;
 }
+
+/* 导航栏当前页面指示器样式 */
+.nextra-nav-container a,
+.nextra-navbar a,
+nav a {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* 当前页面导航链接字体加粗 */
+.nextra-nav-container a[aria-current="page"],
+.nextra-navbar a[aria-current="page"],
+nav a[aria-current="page"],
+.nextra-nav-container a[data-active="true"],
+.nextra-navbar a[data-active="true"],
+nav a[data-active="true"],
+.nextra-nav-container a.active,
+.nextra-navbar a.active,
+nav a.active,
+.nextra-nav-container a.nx-text-primary-600,
+.nextra-navbar a.nx-text-primary-600,
+nav a.nx-text-primary-600 {
+    font-weight: 700 !important;
+}
+
+/* 当前页面的蓝色横线指示器 - 多种选择器覆盖不同场景 */
+.nextra-nav-container a[aria-current="page"]::after,
+.nextra-navbar a[aria-current="page"]::after,
+nav a[aria-current="page"]::after,
+.nextra-nav-container a[data-active="true"]::after,
+.nextra-navbar a[data-active="true"]::after,
+nav a[data-active="true"]::after,
+.nextra-nav-container a.active::after,
+.nextra-navbar a.active::after,
+nav a.active::after,
+.nextra-nav-container a.nx-text-primary-600::after,
+.nextra-navbar a.nx-text-primary-600::after,
+nav a.nx-text-primary-600::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2979E3, #1E40AF);
+    border-radius: 2px;
+    animation: slideIn 0.3s ease-out;
+    z-index: 1;
+}
+
+/* 悬停时的效果 */
+.nextra-nav-container a:hover::after,
+.nextra-navbar a:hover::after,
+nav a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #2979E3, #60A5FA);
+    border-radius: 1px;
+    opacity: 0.6;
+    animation: slideIn 0.2s ease-out;
+    z-index: 1;
+}
+
+/* 避免悬停时与当前页面指示器冲突 */
+.nextra-nav-container a[aria-current="page"]:hover::after,
+.nextra-navbar a[aria-current="page"]:hover::after,
+nav a[aria-current="page"]:hover::after,
+.nextra-nav-container a[data-active="true"]:hover::after,
+.nextra-navbar a[data-active="true"]:hover::after,
+nav a[data-active="true"]:hover::after,
+.nextra-nav-container a.active:hover::after,
+.nextra-navbar a.active:hover::after,
+nav a.active:hover::after {
+    height: 3px;
+    background: linear-gradient(90deg, #2979E3, #1E40AF);
+    opacity: 1;
+}
+
+/* 滑入动画 */
+@keyframes slideIn {
+    from {
+        transform: scaleX(0);
+        opacity: 0;
+    }
+    to {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+}
+
+/* 针对移动端的适配 */
+@media (max-width: 768px) {
+    .nextra-nav-container a::after,
+    .nextra-navbar a::after,
+    nav a::after {
+        bottom: -1px;
+        height: 2px;
+    }
+    
+    .nextra-nav-container a[aria-current="page"]::after,
+    .nextra-navbar a[aria-current="page"]::after,
+    nav a[aria-current="page"]::after,
+    .nextra-nav-container a[data-active="true"]::after,
+    .nextra-navbar a[data-active="true"]::after,
+    nav a[data-active="true"]::after {
+        height: 3px;
+    }
+}

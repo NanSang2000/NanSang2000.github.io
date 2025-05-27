@@ -1,31 +1,3 @@
 {
-  "index": "引入",
-  "-- Basic": {
-    "type": "separator",
-    "title": "基础"
-  },
-  "html": "HTML",
-  "css": "CSS",
-  "javascript": "JavaScript",
-  "typescript": "TypeScript",
-  "network": "网络",
-  "-- FrameWork": {
-    "type": "separator",
-    "title": "框架"
-  },
-  "react": "React",
-  "minpro": "微信小程序",
-  "-- Advanced": {
-    "type": "separator",
-    "title": "进阶"
-  },
-  "jsfunc": "函数式编程",
-  "minireact": "实现 Mini React",
-  "-- Backend": {
-    "type": "separator",
-    "title": "后端"
-  },
-  "nodejs": "Node.js",
-  "express": "Express",
-  "java": "Java"
+  "index": "引入"
 }
