@@ -7,7 +7,7 @@ import localFont from '@next/font/local'
 import type { AppProps } from 'next/app'
 import { Analytics } from '@vercel/analytics/react'
 
-const myFont = localFont({ src: './PingFangSC.ttf' })
+const myFont = localFont({ src: '../public/fonts/PingFangSC.ttf' })
 
 export default function App ({ Component, pageProps }: AppProps): JSX.Element {
   return (
