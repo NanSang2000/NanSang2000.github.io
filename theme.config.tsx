@@ -44,10 +44,16 @@ export const Logo = ({ height, color }: { height: number, color: string }): JSX.
 const config: DocsThemeConfig = {
   head: (
         <>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+            <meta name="apple-mobile-web-app-title" content="Nan's Blog" />
+            <meta name="mobile-web-app-capable" content="yes" />
+            <meta name="format-detection" content="telephone=no" />
             <meta property="og:title" content="Blog" />
             <meta property="og:description" content="Personal Blog" />
             <link rel="icon" href="/leaves.svg" />
+            <link rel="apple-touch-icon" href="/leaves.svg" />
         </>
   ),
   project: {
@@ -87,21 +93,21 @@ const config: DocsThemeConfig = {
     }
   },
   footer: {
-    text: <div className={'flex flex-col lg:flex-row w-full'}>
+    text: <div className={'flex flex-col lg:flex-row w-full gap-4 lg:gap-0'}>
       <div className={'flex flex-col w-full justify-between'}>
-        <div className={'flex h-max'}>
+        <div className={'flex h-max items-center'}>
           <Logo height={30} color={'#2979E3'}/>
           <div
-            className={'ml-3 font-bold nx-font-mono text-2xl hover:underline hover:decoration-pink-500 transition-all ease'}>Nan's
+            className={'ml-3 font-bold nx-font-mono text-xl md:text-2xl hover:underline hover:decoration-pink-500 transition-all ease'}>Nan's
           </div>
         </div>
-        <div className={'mt-3 font-sans font-thin'}>
+        <div className={'mt-3 font-sans font-thin text-sm md:text-base'}>
           @{new Date().getFullYear()} Nan Sang. All rights reserved.
         </div>
       </div>
-      <div className={'h-full w-max flex justify-center items-center mt-3 lg:mt-0'}>
+      <div className={'h-full w-full lg:w-max flex justify-center lg:justify-end items-center mt-3 lg:mt-0'}>
         <div
-          className={'text-black dark:text-white w-max h-10 flex justify-center items-center mr-3 text-center whitespace-nowrap'}>Powered
+          className={'text-black dark:text-white w-max h-10 flex justify-center items-center mr-3 text-center whitespace-nowrap text-sm md:text-base'}>Powered
           by
         </div>
         <VercelLogo/>

@@ -274,7 +274,7 @@ export function TopTag () {
 
 export function Button ({ children, href, className }) {
   return (
-        <Link href={href} className={'w-max px-4 py-2 font-bold bg-blue-200 bg-opacity-30 hover:bg-opacity-80 rounded-lg flex justify-center items-center text-center ' + className}>
+        <Link href={href} className={'w-max px-4 py-3 md:px-6 md:py-3 font-bold bg-blue-200 bg-opacity-30 hover:bg-opacity-80 rounded-lg flex justify-center items-center text-center transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 text-sm md:text-base ' + className}>
             {children}
         </Link>
   )
@@ -300,15 +300,19 @@ export function CodeModel () {
     const onResize = () => canvasRef.current && (width = canvasRef.current.offsetWidth)
     window.addEventListener('resize', onResize)
     onResize()
+    
+    // 移动端检测
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768
+    
     const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
+      devicePixelRatio: isMobile ? 1 : 2, // 移动端降低分辨率
+      width: width * (isMobile ? 1.5 : 2),
+      height: width * (isMobile ? 1.5 : 2),
       phi: 0,
       theta: 0.3,
       dark: 1,
       diffuse: 3,
-      mapSamples: 16000,
+      mapSamples: isMobile ? 8000 : 16000, // 移动端减少采样
       mapBrightness: 1.2,
       baseColor: [1, 1, 1],
       markerColor: [251 / 255, 100 / 255, 21 / 255],
@@ -321,11 +325,11 @@ export function CodeModel () {
         if (!pointerInteracting.current) {
           // Called on every animation frame.
           // `state` will be an empty object, return updated params.
-          phi += 0.005
+          phi += isMobile ? 0.003 : 0.005 // 移动端较慢旋转
         }
         state.phi = phi + r.get()
-        state.width = width * 2
-        state.height = width * 2
+        state.width = width * (isMobile ? 1.5 : 2)
+        state.height = width * (isMobile ? 1.5 : 2)
       }
     })
     // eslint-disable-next-line no-return-assign
@@ -517,37 +521,37 @@ export function GitHubStats () {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className={'w-full h-full lg:ml-5 flex flex-col lg:flex-row justify-center lg:justify-start items-center'}
+          className={'w-full h-full flex flex-col md:flex-row justify-center md:justify-start items-center gap-3 md:gap-5'}
         >
-            <div className={'flex flex-col'}>
-              <div className={'text-sm lg:text-base flex h-max justify-center items-center text-black'}>
+            <div className={'flex flex-col items-center md:items-start'}>
+              <div className={'text-xs md:text-sm lg:text-base flex h-max justify-center items-center text-black'}>
                 Stars Earned
               </div>
-              <div className={'text-2xl gap-2 flex h-max justify-start items-center text-black'}>
+              <div className={'text-lg md:text-xl lg:text-2xl gap-1 md:gap-2 flex h-max justify-center md:justify-start items-center text-black'}>
                 <GoStar className={'text-blue-500'} /> {animatedStars}
               </div>
             </div>
-          <div className={'flex flex-col lg:ml-5'}>
-            <div className={'text-sm lg:text-base flex h-max justify-center items-center text-black'}>
+          <div className={'flex flex-col items-center md:items-start'}>
+            <div className={'text-xs md:text-sm lg:text-base flex h-max justify-center items-center text-black'}>
               Forks Earned
             </div>
-            <div className={'text-2xl gap-2 flex h-max justify-start items-center text-black'}>
+            <div className={'text-lg md:text-xl lg:text-2xl gap-1 md:gap-2 flex h-max justify-center md:justify-start items-center text-black'}>
               <GoRepoForked className={'text-blue-500'} /> {animatedForks}
             </div>
           </div>
-          <div className={'flex flex-col lg:ml-5'}>
-            <div className={'text-sm lg:text-base flex h-max justify-center items-center text-black'}>
+          <div className={'flex flex-col items-center md:items-start'}>
+            <div className={'text-xs md:text-sm lg:text-base flex h-max justify-center items-center text-black'}>
               Repositories
             </div>
-            <div className={'text-2xl gap-2 flex h-max justify-start items-center text-black'}>
+            <div className={'text-lg md:text-xl lg:text-2xl gap-1 md:gap-2 flex h-max justify-center md:justify-start items-center text-black'}>
               <GoRepo className={'text-blue-500'} /> {animatedRepos}
             </div>
           </div>
-          <div className={'flex flex-col lg:ml-5'}>
-            <div className={'text-sm lg:text-base flex h-max justify-center items-center text-black'}>
+          <div className={'flex flex-col items-center md:items-start'}>
+            <div className={'text-xs md:text-sm lg:text-base flex h-max justify-center items-center text-black'}>
               Followers
             </div>
-            <div className={'text-2xl gap-2 flex h-max justify-start items-center text-black'}>
+            <div className={'text-lg md:text-xl lg:text-2xl gap-1 md:gap-2 flex h-max justify-center md:justify-start items-center text-black'}>
               <GoEye className={'text-blue-500'} /> {animatedFollowers}
             </div>
           </div>
@@ -572,7 +576,7 @@ export function WakaTime () {
   className={'h-96 w-3/4 bg-gradient-to-r -z-10 from-blue-500 to-red-800 absolute right-0 top-32 opacity-10 dark:opacity-20 !blur-3xl rounded-full'}
 ></motion.div>
 <div className={'lg:grid lg:grid-cols-2 z-10'}>
-    <div className={'w-full h-max py-12 mt-28'}>
+    <div className={'w-full h-max py-6 md:py-12 mt-16 md:mt-28'}>
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -581,7 +585,7 @@ export function WakaTime () {
           <TopTag />
         </motion.div>
         <motion.div 
-          className={'flex h-max text-3xl lg:text-6xl font-bold w-full justify-start items-center lg:-mt-3'}
+          className={'flex h-max text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold w-full justify-start items-center mt-2 lg:-mt-3'}
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
@@ -591,7 +595,7 @@ export function WakaTime () {
             <div>Sang</div>
         </motion.div>
         <motion.div 
-          className={'text-xl lg:text-4xl font-bold text-gray-600 dark:text-gray-320 -mt-2'}
+          className={'text-lg sm:text-xl md:text-2xl lg:text-4xl font-bold text-gray-600 dark:text-gray-320 mt-2 md:-mt-2 leading-relaxed'}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.4 }}
@@ -603,15 +607,15 @@ export function WakaTime () {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
-          <Button href={'/note'} className={'mt-6'}>
+          <Button href={'/note'} className={'mt-4 md:mt-6'}>
               Get Started
           </Button>
         </motion.div>
 
         [//]: # (<img className={'mt-10 h-20'} src="https://ghchart.rshah.org/409ba5/nansang2000" alt="GitHub Nan Sang" />)
     </div>
-    <div className={'w-full h-max py-12 lg:mt-8'}>
-        <img alt={'banner'} className={'w-full h-full'} src={'/banner.svg'} />
+    <div className={'w-full h-max py-6 md:py-12 mt-4 lg:mt-8'}>
+        <img alt={'banner'} className={'w-full h-full max-w-md mx-auto lg:max-w-none'} src={'/banner.svg'} />
     </div>
 </div>
 
@@ -623,19 +627,19 @@ export function WakaTime () {
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8, delay: 0.8 }}
-  className={'w-full flex flex-col lg:grid lg:grid-flow-row-dense lg:grid-cols-5 gap-2'}
+  className={'w-full flex flex-col lg:grid lg:grid-flow-row-dense lg:grid-cols-5 gap-3 md:gap-2'}
 >
     <motion.div
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300 }}
-        className={'flex p-3 justify-center relative overflow-hidden items-center bg-white col-span-3 h-96 w-full rounded-2xl forest-bg'}
+        className={'flex p-4 md:p-3 justify-center relative overflow-hidden items-center bg-white col-span-3 h-64 md:h-96 w-full rounded-2xl forest-bg'}
     >
         <div className={'bg-black dark:bg-white dark:bg-black absolute w-full h-full opacity-30 '}></div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1 }}
-          className={'font-bold text-2xl lg:text-2xl text-white dark:text-black z-10 underline decoration-emerald-400 underline-offset-4 leading-relaxed'}
+          className={'font-bold text-lg xs:text-xl md:text-2xl lg:text-2xl text-white dark:text-black z-10 underline decoration-emerald-400 underline-offset-4 leading-relaxed text-center px-2'}
         >
            Data Scientist | Test Engineer | Software Engineer | Product Manager .
         </motion.div>
@@ -643,14 +647,14 @@ export function WakaTime () {
     <motion.div 
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300 }}
-        className={'flex h-96 w-full justify-center items-center lg:col-span-2 shadow-inner relative bg-gray-600 dark:bg-gray-900 rounded-2xl overflow-hidden'}
+        className={'flex h-64 md:h-96 w-full justify-center items-center lg:col-span-2 shadow-inner relative bg-gray-600 dark:bg-gray-900 rounded-2xl overflow-hidden'}
     >
         <CodeModel />
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.3 }}
           transition={{ duration: 0.8, delay: 1.2 }}
-          className={'absolute w-full flex justify-center items-center z-0 text-white text-2xl lg:text-4xl font-bold'}
+          className={'absolute w-full flex justify-center items-center z-0 text-white text-lg xs:text-xl md:text-2xl lg:text-4xl font-bold px-4 text-center'}
         >
             Now in Beijing, China.
         </motion.div>
@@ -661,32 +665,32 @@ export function WakaTime () {
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8, delay: 1.2 }}
-  className={'w-full flex flex-col lg:grid lg:grid-flow-row-dense lg:grid-cols-5 gap-2 my-3'}
+  className={'w-full flex flex-col lg:grid lg:grid-flow-row-dense lg:grid-cols-5 gap-3 md:gap-2 my-3'}
 >
     <motion.div 
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300 }}
-      className={'flex relative overflow-hidden bg-gray-800 col-span-2 h-96 w-full rounded-2xl code-bg'}
+      className={'flex relative overflow-hidden bg-gray-800 col-span-2 h-80 md:h-96 w-full rounded-2xl code-bg'}
     >
         <div className={'bg-black bg-gray-900 absolute w-full h-full opacity-80 z-0'}></div>
-        <div className={'h-full z-10 p-6 grid w-full items-stretch content-start'}>
+        <div className={'h-full z-10 p-4 md:p-6 grid w-full items-stretch content-start'}>
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1.4 }}
-              className={'text-3xl font-bold text-white underline decoration-orange-600 underline-offset-4'}
+              className={'text-2xl md:text-3xl font-bold text-white underline decoration-orange-600 underline-offset-4'}
             >
                 About me
             </motion.div>
-            <div className={'flex w-full flex-col'}>
+            <div className={'flex w-full flex-col space-y-3 mt-3'}>
               <motion.div 
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 1.6 }}
-                className={'mt-3 w-full bg-gray-800 px-3 py-3 bg-opacity-90 rounded-md flex justify-between items-center'}
+                className={'w-full bg-gray-800 px-3 py-3 bg-opacity-90 rounded-md flex justify-between items-center'}
               >
-                    <FiCommand className={'text-2xl text-white'} />
-                    <div className={'text-white font-bold text-base lg:text-lg'}>
+                    <FiCommand className={'text-xl md:text-2xl text-white flex-shrink-0'} />
+                    <div className={'text-white font-bold text-sm md:text-base lg:text-lg ml-3'}>
                         A <b className={'text-red-600'}>full-stack developer.</b>
                     </div>
               </motion.div>
@@ -694,10 +698,10 @@ export function WakaTime () {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 1.8 }}
-                className={'mt-3 w-full bg-gray-800 px-3 py-3 bg-opacity-90 rounded-md flex justify-between items-center'}
+                className={'w-full bg-gray-800 px-3 py-3 bg-opacity-90 rounded-md flex justify-between items-center'}
               >
-                    <FiGlobe className={'text-2xl text-white'} />
-                    <div className={'text-white font-bold text-base lg:text-lg'}>
+                    <FiGlobe className={'text-xl md:text-2xl text-white flex-shrink-0'} />
+                    <div className={'text-white font-bold text-sm md:text-base lg:text-lg ml-3'}>
                         Now Studying at <b className={'text-blue-600'}>Unimelb.</b>
                     </div>
                 </motion.div>
@@ -705,10 +709,10 @@ export function WakaTime () {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 2.0 }}
-                className={'mt-3 w-full bg-gray-800 px-3 py-3 bg-opacity-90 rounded-md flex justify-between items-center'}
+                className={'w-full bg-gray-800 px-3 py-3 bg-opacity-90 rounded-md flex justify-between items-center'}
               >
-                    <FiBookOpen className={'text-2xl text-white'} />
-                    <div className={'text-white font-bold text-base lg:text-lg'}>
+                    <FiBookOpen className={'text-xl md:text-2xl text-white flex-shrink-0'} />
+                    <div className={'text-white font-bold text-sm md:text-base lg:text-lg ml-3'}>
                         Major in <b className={'text-orange-600'}>Data Science.</b>
                     </div>
                 </motion.div>
@@ -718,7 +722,7 @@ export function WakaTime () {
     <motion.div 
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300 }}
-      className={'flex relative overflow-hidden bg-blue-100 col-span-3 h-max lg:h-96 w-full rounded-2xl'}
+      className={'flex relative overflow-hidden bg-blue-100 col-span-3 h-max min-h-80 lg:h-96 w-full rounded-2xl'}
     >
         <div className={'bg-black bg-gray-300 absolute w-full h-full opacity-80 z-0 backdrop-blur-lg'}></div>
         <motion.div 
@@ -733,12 +737,12 @@ export function WakaTime () {
           transition={{ duration: 1.5, delay: 1.6 }}
           className={'w-96 h-96 bg-pink-200 rounded-full absolute blur-3xl right-24'}
         ></motion.div>
-        <div className={'h-full z-10 p-6 grid  w-full items-stretch content-start'}>
+        <div className={'h-full z-10 p-4 md:p-6 grid w-full items-stretch content-start'}>
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1.4 }}
-              className={'text-3xl font-bold text-white underline decoration-blue-600 underline-offset-4 w-max px-2 py-2'}
+              className={'text-2xl md:text-3xl font-bold text-white underline decoration-blue-600 underline-offset-4 w-max px-2 py-2'}
             >
                 GitHub
             </motion.div>
@@ -746,29 +750,31 @@ export function WakaTime () {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1.6 }}
-              className={'flex flex-col lg:flex-row w-full mt-8 justify-start items-center'}
+              className={'flex flex-col md:flex-row lg:flex-row w-full mt-4 md:mt-8 justify-start items-center space-y-4 md:space-y-0'}
             >
                   <motion.img 
                     whileHover={{ scale: 1.1, rotate: 10 }}
                     transition={{ type: "spring", stiffness: 300 }}
                     src={'https://avatars.githubusercontent.com/u/125345731'} 
-                    className={'w-20 h-20 rounded-full'} 
+                    className={'w-16 h-16 md:w-20 md:h-20 rounded-full flex-shrink-0'} 
                   />
-                  <div className={'flex flex-col h-max ml-3 pr-3'}>
+                  <div className={'flex flex-col h-max md:ml-3 pr-3 text-center md:text-left'}>
                       <Link href={'https://github.com/nansang2000'} target={'_blank'} className={'w-full'}>
-                          <div className={'text-2xl font-thin text-black hover:underline hover:decoration-blue-400'}>
+                          <div className={'text-xl md:text-2xl font-thin text-black hover:underline hover:decoration-blue-400'}>
                               nansang2000
                           </div>
                       </Link>
-                      <div className={'text-lg font-thin text-blue-500 font-mono'}>
+                      <div className={'text-base md:text-lg font-thin text-blue-500 font-mono'}>
                            Nan Sang
                       </div>
                   </div>
-                  <GitHubStats />
+                  <div className={'w-full md:flex-1'}>
+                    <GitHubStats />
+                  </div>
             </motion.div>
 
 [//]: # (<img className={'h-32'} src={'https://github-readme-stats-git-masterrstaa-rickstaa.vercel.app/api?username=nansang2000'} alt={'Github'}/>)
-            <img className={'mt-10 w-full'} src="https://ghchart.rshah.org/FF5733/nansang2000" alt="GitHub nansang2000" />
+            <img className={'mt-6 md:mt-10 w-full'} src="https://ghchart.rshah.org/FF5733/nansang2000" alt="GitHub nansang2000" />
         </div>
     </motion.div>
 </motion.div>
@@ -912,12 +918,12 @@ export function TechCards () {
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8, delay: 2.4 }}
-  className={'w-full flex flex-col lg:grid lg:grid-flow-row-dense lg:grid-cols-5 gap-2 my-3'}
+  className={'w-full flex flex-col lg:grid lg:grid-flow-row-dense lg:grid-cols-5 gap-3 md:gap-2 my-3'}
 >
   <motion.div 
     whileHover={{ scale: 1.02 }}
     transition={{ type: "spring", stiffness: 300 }}
-    className={'flex relative overflow-hidden bg-black col-span-3 h-96 lg:h-96 w-full rounded-2xl'}
+    className={'flex relative overflow-hidden bg-black col-span-3 h-80 md:h-96 lg:h-96 w-full rounded-2xl'}
   >
     <div className={'bg-black bg-gray-800 absolute w-full h-full opacity-80 z-0 backdrop-blur-lg'}></div>
     <motion.div 
@@ -936,21 +942,21 @@ export function TechCards () {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 3.0 }}
-      className={'absolute z-[11] top-32 w-full'}
+      className={'absolute z-[11] top-24 md:top-32 w-full px-2'}
     >
       <div className={'w-full'}>
         <Stacks stacks={frontEnd} direction={'left'}/>
       </div>
-      <div className={'w-full mt-6'}>
+      <div className={'w-full mt-4 md:mt-6'}>
         <Stacks stacks={OtherStacks} direction={'right'}/>
       </div>
     </motion.div>
-    <div className={'h-full z-10 p-6 grid w-full items-stretch content-start'}>
+    <div className={'h-full z-10 p-4 md:p-6 grid w-full items-stretch content-start'}>
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 2.6 }}
-        className={'text-3xl font-bold text-white underline decoration-pink-600 underline-offset-4'}
+        className={'text-2xl md:text-3xl font-bold text-white underline decoration-pink-600 underline-offset-4'}
       >
         Tech Stack
       </motion.div>
@@ -959,7 +965,7 @@ export function TechCards () {
         animate={{ opacity: 0.1, rotate: 0 }}
         whileHover={{ opacity: 0.2, rotate: 5 }}
         transition={{ duration: 0.7, delay: 3.0 }}
-        className={'opacity-10 hover:opacity-20 transition-all ease duration-700 absolute -bottom-12 -right-16 z-0'}
+        className={'opacity-10 hover:opacity-20 transition-all ease duration-700 absolute -bottom-12 -right-16 z-0 hidden md:block'}
       >
         <img alt={'tech stack'} src={'/react_ts.svg'} className={'w-96 h-96'} />
       </motion.div>
@@ -969,25 +975,25 @@ export function TechCards () {
   <motion.div 
     whileHover={{ scale: 1.02 }}
     transition={{ type: "spring", stiffness: 300 }}
-    className={'flex relative overflow-hidden bg-gray-800 col-span-2 h-96 w-full rounded-2xl contact-bg'}
+    className={'flex relative overflow-hidden bg-gray-800 col-span-2 h-80 md:h-96 w-full rounded-2xl contact-bg'}
   >
     <div className={'bg-black bg-blue-300 absolute w-full h-full opacity-50 z-0 blur-md'}></div>
-    <div className={'h-full z-10 p-6 grid  w-full items-stretch content-start'}>
-      <div className={'text-3xl font-bold text-blue-800 underline decoration-blue-800 underline-offset-4'}>
+    <div className={'h-full z-10 p-4 md:p-6 grid w-full items-stretch content-start'}>
+      <div className={'text-2xl md:text-3xl font-bold text-blue-800 underline decoration-blue-800 underline-offset-4'}>
         Contact
       </div>
-      <div className={'mt-3 w-full flex flex-col justify-center items-end'}>
-        <Link href={'https://www.linkedin.com/in/nan-sang/'} target={'_blank'} className={'flex w-full justify-end items-center'}>
-          <div className={'text-8xl lg:text-5xl mr-3 opacity-0 hover:opacity-60 transition-all ease-in-out duration-700 text-white'}>Linkedin</div>
-          <img src={'/Linkedin.svg'} className={'w-24 h-24 opacity-25 hover:opacity-60 transition-all ease-in-out duration-700'} />
+      <div className={'mt-4 md:mt-3 w-full flex flex-col justify-center items-end space-y-2 md:space-y-1'}>
+        <Link href={'https://www.linkedin.com/in/nan-sang/'} target={'_blank'} className={'flex w-full justify-end items-center group'}>
+          <div className={'text-base md:text-lg lg:text-5xl mr-2 md:mr-3 opacity-0 group-hover:opacity-60 transition-all ease-in-out duration-700 text-white'}>Linkedin</div>
+          <img src={'/Linkedin.svg'} className={'w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 opacity-25 hover:opacity-60 transition-all ease-in-out duration-700'} />
         </Link>
-        <Link href={'https://github.com/nansang2000'} target={'_blank'} className={'flex w-full justify-end items-center'}>
-          <div className={'text-8xl lg:text-5xl mr-3 opacity-0 hover:opacity-60 transition-all ease-in-out duration-700 text-white'}>GITHUB</div>
-          <img src={'/github.svg'} className={'w-24 h-24 opacity-25 hover:opacity-60 transition-all ease-in-out duration-700'} />
+        <Link href={'https://github.com/nansang2000'} target={'_blank'} className={'flex w-full justify-end items-center group'}>
+          <div className={'text-base md:text-lg lg:text-5xl mr-2 md:mr-3 opacity-0 group-hover:opacity-60 transition-all ease-in-out duration-700 text-white'}>GITHUB</div>
+          <img src={'/github.svg'} className={'w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 opacity-25 hover:opacity-60 transition-all ease-in-out duration-700'} />
         </Link>
-        <Link href={'mailto:nansang2000@gmail.com'} target={'_blank'} className={'flex w-full justify-end items-center'}>
-          <div className={'text-8xl lg:text-5xl mr-3 opacity-0 hover:opacity-60 transition-all ease-in-out duration-700 text-white'}>Gmail</div>
-          <img src={'/email.svg'} className={'w-24 h-24 opacity-25 hover:opacity-60 transition-all ease-in-out duration-700'} />
+        <Link href={'mailto:nansang2000@gmail.com'} target={'_blank'} className={'flex w-full justify-end items-center group'}>
+          <div className={'text-base md:text-lg lg:text-5xl mr-2 md:mr-3 opacity-0 group-hover:opacity-60 transition-all ease-in-out duration-700 text-white'}>Gmail</div>
+          <img src={'/email.svg'} className={'w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 opacity-25 hover:opacity-60 transition-all ease-in-out duration-700'} />
         </Link>
       </div>
     </div>
@@ -998,16 +1004,16 @@ export function VistorDemo () {
   const { count, ip, loading, error } = Visitors()
   return (
     <div className="flex flex-col items-center justify-center text-black dark:text-white">
-      <div className="text-6xl font-bold">{count}</div>
-      <div className="text-xl mt-2">Visitor Count</div>
+      <div className="text-4xl md:text-5xl lg:text-6xl font-bold">{count}</div>
+      <div className="text-base md:text-lg lg:text-xl mt-2">Visitor Count</div>
       {ip && (
-        <div className="mt-4 flex flex-col items-center">
-          <div className="text-sm text-gray-600 dark:text-gray-400">最近访问IP</div>
-          <div className="text-lg font-medium">{ip}</div>
+        <div className="mt-3 md:mt-4 flex flex-col items-center">
+          <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">最近访问IP</div>
+          <div className="text-sm md:text-base lg:text-lg font-medium">{ip}</div>
         </div>
       )}
-      {loading && <div className="mt-2 text-sm text-gray-500">加载中...</div>}
-      {error && <div className="mt-2 text-sm text-red-500">{error}</div>}
+      {loading && <div className="mt-2 text-xs md:text-sm text-gray-500">加载中...</div>}
+      {error && <div className="mt-2 text-xs md:text-sm text-red-500">{error}</div>}
     </div>
   )
 }
@@ -1016,12 +1022,12 @@ export function VistorDemo () {
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8, delay: 3.2 }}
-  className={'w-full flex flex-col lg:grid lg:grid-flow-row-dense lg:grid-cols-5 gap-2 my-3'}
+  className={'w-full flex flex-col lg:grid lg:grid-flow-row-dense lg:grid-cols-5 gap-3 md:gap-2 my-3'}
 >
   <motion.div 
     whileHover={{ scale: 1.02, y: -5 }}
     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    className={'group relative overflow-hidden col-span-2 h-96 w-full rounded-[2rem]'}
+    className={'group relative overflow-hidden col-span-2 h-80 md:h-96 w-full rounded-[2rem]'}
   >
     {/* 外层发光边框 */}
     <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-[2rem] opacity-30 group-hover:opacity-50 transition-all duration-500 blur-sm" />
@@ -1081,14 +1087,14 @@ export function VistorDemo () {
         />
       ))}
 
-      <div className={'h-full z-10 p-6 grid relative w-full items-stretch content-start'}>
+      <div className={'h-full z-10 p-4 md:p-6 grid relative w-full items-stretch content-start'}>
         <motion.div 
           initial={{ opacity: 0, y: -25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 3.4 }}
-          className={'flex items-center justify-between mb-6'}
+          className={'flex items-center justify-between mb-4 md:mb-6'}
         >
-          <h3 className="text-3xl font-black bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
+          <h3 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
             ✨ Visitors
           </h3>
           <motion.div

@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 移动端基础优化 */
+@media (max-width: 768px) {
+    /* 基础文字大小调整 */
+    html {
+        font-size: 14px;
+    }
+    
+    /* 滚动条优化 */
+    body {
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+    
+    /* 触控优化 */
+    button, 
+    a, 
+    [role="button"] {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+    }
+    
+    /* 输入框优化 */
+    input, 
+    textarea, 
+    select {
+        font-size: 16px; /* 防止iOS缩放 */
+    }
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 480px) {
+    html {
+        font-size: 13px;
+    }
+    
+    /* 容器内边距调整 */
+    .container, 
+    .nx-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
 
 .linear-gradient-text {
     background: linear-gradient(to right, orange, orangered);
@@ -29,6 +73,17 @@
     background-repeat: no-repeat;
     background-size: cover;
     backdrop-opacity: 0.5;
+}
+
+/* 移动端背景图片优化 */
+@media (max-width: 768px) {
+    .forest-bg,
+    .code-bg,
+    .contact-bg {
+        background-size: cover;
+        background-position: center;
+        background-attachment: scroll; /* 避免移动端性能问题 */
+    }
 }
 
 /*::-webkit-scrollbar {*/
@@ -68,6 +123,14 @@
     opacity: 0.7;
 }
 
+/* 移动端卡片标题优化 */
+@media (max-width: 768px) {
+    .card_title {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+}
+
 /*.card_title:hover::after {*/
 /*    content: "↗";*/
 /*    font-size: 1rem;*/
@@ -81,6 +144,13 @@
     font-weight: normal;
 }
 
+/* 移动端内容标题优化 */
+@media (max-width: 768px) {
+    .content_title:hover::after {
+        font-size: 1rem;
+    }
+}
+
 /*.nextra-scrollbar 的滚动条样式修改 */
 .nextra-scrollbar {
     scrollbar-width: thin;
@@ -89,6 +159,13 @@
 
 .flex-box{
     @apply flex flex-row flex-wrap justify-center items-center;
+}
+
+/* 移动端Flex布局优化 */
+@media (max-width: 768px) {
+    .flex-box {
+        @apply flex-col gap-2;
+    }
 }
 
 article > main > h2, article > main > h3, article > main > h4, article > main > h5, article > main > h6 {
@@ -208,5 +285,76 @@ nav a.active:hover::after {
     .nextra-navbar a[data-active="true"]::after,
     nav a[data-active="true"]::after {
         height: 3px;
+    }
+    
+    /* 移动端导航链接增大触控区域 */
+    .nextra-nav-container a,
+    .nextra-navbar a,
+    nav a {
+        padding: 0.75rem 1rem;
+        margin: 0.25rem;
+    }
+}
+
+/* 移动端专用样式 */
+@media (max-width: 768px) {
+    /* 图片响应式优化 */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* 表格横向滚动 */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    /* 代码块优化 */
+    pre {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 避免文字被截断 */
+    .truncate {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+    }
+}
+
+/* 中等屏幕优化 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        max-width: 95%;
+    }
+}
+
+/* 性能优化 - 减少不必要的动画 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 暗色模式移动端优化 */
+@media (max-width: 768px) {
+    .dark {
+        /* 确保暗色模式下的对比度 */
+        color-scheme: dark;
+    }
+    
+    .dark img {
+        opacity: 0.9;
+    }
+    
+    .dark .bg-white {
+        background-color: rgb(17 24 39) !important;
     }
 }
