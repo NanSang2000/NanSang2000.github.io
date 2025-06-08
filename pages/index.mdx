@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { FiArrowRight, FiBookOpen, FiCommand, FiGlobe, FiLoader } from 'react-icons/fi'
 import Link from 'next/link'
 import createGlobe from 'cobe'
@@ -21,90 +21,239 @@ import { useTheme } from 'nextra-theme-docs'
 
 export function Cloud () {
   const [vantaEffect, setVantaEffect] = useState(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [useSimpleMode, setUseSimpleMode] = useState(false)
   const vantaRef = useRef(null)
   const { theme } = useTheme()
+  const initTimeoutRef = useRef(null)
 
+  // 简单的设备检测
+  const isLowEndDevice = useMemo(() => {
+    if (typeof window === 'undefined') return false
+    
+    const checks = [
+      navigator.hardwareConcurrency <= 2, // CPU核心数少于等于2
+      navigator.deviceMemory && navigator.deviceMemory <= 2, // 内存少于等于2GB
+      /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent), // 移动设备
+      window.devicePixelRatio <= 1, // 低像素比屏幕
+      navigator.connection && ['slow-2g', '2g', '3g'].includes(navigator.connection.effectiveType) // 慢网络
+    ]
+    
+    // 满足2个或以上条件就认为是低端设备
+    const lowEndIndicators = checks.filter(Boolean).length
+    const isLowEnd = lowEndIndicators >= 2
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Device detection:', {
+        hardwareConcurrency: navigator.hardwareConcurrency,
+        deviceMemory: navigator.deviceMemory,
+        isMobile: /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+        devicePixelRatio: window.devicePixelRatio,
+        connectionType: navigator.connection?.effectiveType,
+        lowEndIndicators,
+        isLowEnd
+      })
+    }
+    
+    return isLowEnd
+  }, [])
+
+  // 使用 Intersection Observer 来检测组件是否可见
   useEffect(() => {
-    // 防止在SSR环境下执行
-    if (typeof window === 'undefined' || !vantaRef.current) return  
-    // 清理之前的效果实例
-    if (vantaEffect) {
-      vantaEffect.destroy()
-      // 确保THREE.js释放WebGL上下文
-      if (vantaEffect.renderer) {
-        vantaEffect.renderer.dispose()
-        vantaEffect.renderer = null
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting)
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px'
       }
-      // 强制垃圾回收
-      setVantaEffect(null)
+    )
+
+    if (vantaRef.current) {
+      observer.observe(vantaRef.current)
     }
 
-    // 创建新的效果实例，使用requestAnimationFrame确保DOM已完全加载
-    let effect = null
-    const initEffect = () => {
-      effect = CloudVanta({
+    return () => {
+      if (vantaRef.current) {
+        observer.unobserve(vantaRef.current)
+      }
+    }
+  }, [])
+
+  // 简化的配置参数
+  const vantaConfig = useMemo(() => {
+    if (isLowEndDevice) {
+      // 低端设备使用最简配置
+      return {
+        el: vantaRef.current,
+        mouseControls: false,
+        touchControls: false,
+        gyroControls: false,
+        minHeight: 300,
+        minWidth: 200,
+        backgroundColor: theme === 'dark' ? 0x0 : 0xffffff,
+        skyColor: theme === 'dark' ? 0x141718 : 0xaad5e5,
+        cloudColor: theme === 'dark' ? 0x7b7b8e : 0xadc4de,
+        speed: 0.5, // 极低速度
+        cloudSize: 0.6,
+        scale: 0.5,
+        scaleMobile: 0.3,
+        zoom: 1.5,
+        mouseEase: false,
+        cloudDensity: 0.005, // 极低密度
+        cloudDepth: 5,
+        quantity: 1, // 只有1个云朵
+        showDots: false,
+        THREE
+      }
+    } else {
+      // 普通设备使用中等配置
+      return {
         el: vantaRef.current,
         mouseControls: true,
         touchControls: true,
         gyroControls: false,
-        minHeight: 300.00,
-        minWidth: 200.00,
+        minHeight: 300,
+        minWidth: 200,
         backgroundColor: theme === 'dark' ? 0x0 : 0xffffff,
         skyColor: theme === 'dark' ? 0x141718 : 0xaad5e5,
-        speed: theme === 'dark' ? 2.5 : 1.8, // 增加云朵移动速度
         cloudColor: theme === 'dark' ? 0x7b7b8e : 0xadc4de,
         sunColor: theme === 'dark' ? 0x654826 : 0xff9c21,
-        sunGlareColor: theme === 'dark' ? 0xb38181 : 0xfce9e2,
-        sunlightColor: theme === 'dark' ? 0x0 : 0xff9933,
-        cloudShadowColor: theme === 'dark' ? 0x20282e : 0x5682ac,
-        // 添加云朵动画参数
-        cloudSize: 1.2, // 云朵大小
-        scale: 1.0, // 整体缩放
-        scaleMobile: 1.0,
-        zoom: 0.8, // 缩放效果
-        mouseEase: true, // 鼠标交互更平滑
-        cloudDensity: theme === 'dark' ? 0.04 : 0.03, // 云朵密度
-        cloudDepth: 30, // 云朵深度
-        quantity: theme === 'dark' ? 8 : 6, // 云朵数量
+        speed: theme === 'dark' ? 1.0 : 0.8,
+        cloudSize: 0.8,
+        scale: 0.7,
+        scaleMobile: 0.5,
+        zoom: 1.1,
+        mouseEase: false,
+        cloudDensity: theme === 'dark' ? 0.015 : 0.01,
+        cloudDepth: 15,
+        quantity: theme === 'dark' ? 3 : 2,
+        showDots: false,
         THREE
-      })
-      
-      setVantaEffect(effect)
+      }
     }
-    
-    // 使用requestAnimationFrame确保DOM已完全准备好
-    const animationId = requestAnimationFrame(initEffect)
-    
-    // 组件卸载时清理所有资源
-    return () => {
-      cancelAnimationFrame(animationId)
-      if (effect) {
-        effect.destroy()
-        // 确保THREE.js释放WebGL上下文
-        if (effect.renderer) {
-          effect.renderer.dispose()
-          effect.renderer = null
-        }
+  }, [theme, isLowEndDevice])
+
+  // 简化的初始化函数
+  const initEffect = useCallback(() => {
+    // 如果是低端设备且已经有3秒没成功初始化，使用简单模式
+    if (isLowEndDevice && !vantaEffect) {
+      const timer = setTimeout(() => {
+        setUseSimpleMode(true)
+      }, 3000)
+      
+      if (useSimpleMode) {
+        clearTimeout(timer)
+        return
       }
     }
 
-  }, [theme])
+    if (!isVisible || typeof window === 'undefined' || !vantaRef.current || useSimpleMode) return
+
+    // 清理之前的超时
+    if (initTimeoutRef.current) {
+      clearTimeout(initTimeoutRef.current)
+    }
+
+    initTimeoutRef.current = setTimeout(() => {
+      try {
+        // 清理之前的效果实例
+        if (vantaEffect) {
+          vantaEffect.destroy()
+          setVantaEffect(null)
+        }
+
+        // 创建新的效果实例
+        const effect = CloudVanta(vantaConfig)
+        
+        if (effect) {
+          setVantaEffect(effect)
+          
+          // 在低端设备上大幅降低渲染质量
+          if (effect.renderer && isLowEndDevice) {
+            effect.renderer.setPixelRatio(0.3) // 极低像素比
+            effect.renderer.antialias = false
+            effect.renderer.precision = 'lowp'
+            effect.renderer.powerPreference = 'low-power'
+          }
+        }
+      } catch (error) {
+        console.warn('Cloud effect failed, switching to simple mode:', error)
+        setUseSimpleMode(true)
+      }
+    }, isLowEndDevice ? 500 : 100)
+  }, [isVisible, vantaConfig, vantaEffect, isLowEndDevice, useSimpleMode])
+
+  useEffect(() => {
+    initEffect()
+    
+    return () => {
+      if (initTimeoutRef.current) {
+        clearTimeout(initTimeoutRef.current)
+      }
+      
+      if (vantaEffect) {
+        try {
+          vantaEffect.destroy()
+        } catch (error) {
+          console.warn('Error cleaning up vanta effect:', error)
+        }
+      }
+    }
+  }, [initEffect])
+
+  // 当组件不可见时暂停动画
+  useEffect(() => {
+    if (vantaEffect && vantaEffect.renderer) {
+      if (isVisible) {
+        vantaEffect.renderer.setAnimationLoop(vantaEffect.animationLoop)
+      } else {
+        vantaEffect.renderer.setAnimationLoop(null)
+      }
+    }
+  }, [isVisible, vantaEffect])
+
+  // 如果使用简单模式，显示静态背景
+  if (useSimpleMode || isLowEndDevice) {
+    return (
+      <motion.div 
+        className={'h-[15rem] w-full rounded-2xl flex overflow-hidden relative'}
+        style={{
+          background: theme === 'dark' 
+            ? 'linear-gradient(135deg, #141718 0%, #2a3f5f 100%)'
+            : 'linear-gradient(135deg, #aad5e5 0%, #87ceeb 100%)'
+        }}
+      >
+        <div className={'w-full h-full flex justify-center items-center'}>
+          <motion.div 
+            className={'font-bold text-4xl nx-font-mono text-white dark:text-gray-500 z-10 relative'}
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ repeat: Infinity, duration: 3 }}
+          >
+            Dream on the sky
+          </motion.div>
+        </div>
+      </motion.div>
+    )
+  }
+
   return (
     <motion.div 
-      className={'h-[15rem] w-full rounded-2xl flex overflow-hidden'}
+      className={'h-[15rem] w-full rounded-2xl flex overflow-hidden relative'}
       whileHover={{ 
-        scale: 1.02, 
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        scale: 1.01,
         transition: { duration: 0.3, ease: "easeOut" }
       }}
     >
       <div 
         ref={vantaRef} 
-        className={'w-full h-full flex justify-center items-center transition-all duration-700 ease-in-out'}
+        className={'w-full h-full flex justify-center items-center'}
       >
         <motion.div 
-          className={'font-bold text-4xl nx-font-mono text-white dark:text-gray-500 animate-pulse'}
-          whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
+          className={'font-bold text-4xl nx-font-mono text-white dark:text-gray-500 z-10 relative'}
+          animate={isVisible ? { opacity: [0.7, 1, 0.7] } : { opacity: 0.7 }}
+          transition={isVisible ? { repeat: Infinity, duration: 2.5 } : { duration: 0.5 }}
         >
           Dream on the sky
         </motion.div>
@@ -1016,3 +1165,5 @@ export function VistorDemo () {
     </div>
   </motion.div>
 </motion.div>
+
+
