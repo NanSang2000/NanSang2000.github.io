@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect } from 'react'
 import { type NavCatagory } from '../../types'
 import Card from '../card'

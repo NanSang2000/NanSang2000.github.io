@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import Visitors from './index'
 import { motion } from 'framer-motion'

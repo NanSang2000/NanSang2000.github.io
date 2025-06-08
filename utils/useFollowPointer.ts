@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, type RefObject, useEffect } from 'react'
 
 export default function useFollowPointer (ref: RefObject<HTMLElement>): { x: number, y: number } {

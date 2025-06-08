@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect } from 'react'
 import { type NavCatagory } from '../../types'
 import smoothscroll from 'smoothscroll-polyfill'
