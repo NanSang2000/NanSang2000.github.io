@@ -88,11 +88,24 @@ export default function LarkList (): JSX.Element {
     setPostsGroup(group)
   }, [posts])
 
+  // 如果不是客户端，返回简化版本
+  if (!isClient) {
+    return (
+      <div className={'w-full'}>
+        <div className={'w-full flex items-center justify-center py-8'}>
+          <div className={'bg-gray-100 dark:bg-gray-600 opacity-40 dark:opacity-25 rounded-full p-8 flex items-center justify-center'}>
+            <div className={'animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900 dark:border-gray-100'}></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={'w-full'}>
       {fetched === false && (
         <div className={'w-full flex items-center justify-center'}>
-                            {(isClient === true && animationData != null && Lottie)
+          {(animationData != null && Lottie)
             ? (
             <Lottie
               className={'bg-gray-100 dark:bg-gray-600 opacity-40 dark:opacity-25 rounded-full p-2 flex items-center justify-center'}

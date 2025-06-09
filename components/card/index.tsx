@@ -10,7 +10,7 @@ export default function Card ({ item }: { item: NavItem }): JSX.Element {
   const [showTooltip, setShowTooltip] = useState(false)
 
   const handleClick = () => {
-    if (safeLink !== '#') {
+    if (safeLink !== '#' && typeof window !== 'undefined') {
       window.open(safeLink, '_blank', 'noopener,noreferrer')
     }
   }

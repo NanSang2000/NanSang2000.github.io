@@ -25,6 +25,12 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
 }) => {
   const { count, ip, loading, error } = Visitors()
   const [animatedCount, setAnimatedCount] = useState(0)
+  const [isClient, setIsClient] = useState(false)
+
+  // 确保组件只在客户端渲染动画
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // 数字增长动画效果
   useEffect(() => {
@@ -51,6 +57,27 @@ const VisitorCard: React.FC<VisitorCardProps> = ({
 
     return () => { clearInterval(timer) }
   }, [count, loading, showAnimation, animatedCount])
+
+  // 如果不是客户端，返回简化版本避免hydration mismatch
+  if (!isClient) {
+    return (
+      <div className={`visitor-card-loading relative ${className}`}>
+        <div className="w-full p-6 bg-gray-100 dark:bg-gray-800 rounded-3xl">
+          <div className="text-center">
+            <div className="text-lg font-bold text-gray-600 dark:text-gray-300 mb-4">
+              {titleText}
+            </div>
+            <div className="text-4xl font-black text-gray-400 dark:text-gray-500">
+              ---
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+              Loading...
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   // 紧凑模式 - 极简玻璃风格
   if (compact) {

@@ -35,13 +35,32 @@ const INTERVAL = 3000
 
 export default function TextTurn (): JSX.Element {
   const [index, setIndex] = useState(0)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    setIsClient(true)
     const intervalId = setInterval(() => {
       setIndex((index) => (Number(index) + 1) % Projects.length)
     }, INTERVAL)
     return () => { clearInterval(intervalId) }
   }, [])
+
+  // 如果不是客户端，显示第一个项目避免hydration mismatch
+  if (!isClient) {
+    const firstProject = Projects[0]
+    return (
+      <div className="flex items-start justify-start w-max text-start">
+        <div className={'flex flex-col items-start justify-start text-start'}>
+          <div className={`text-3xl lg:text-6xl ${firstProject.color} opacity-90 font-mono font-bold`}>
+            {firstProject.name}
+          </div>
+          <div className={'text-black opacity-30 hover:opacity-60 mt-3'}>
+            {firstProject.description}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="flex items-start justify-start w-max text-start">

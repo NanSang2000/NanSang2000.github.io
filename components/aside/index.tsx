@@ -9,7 +9,7 @@ export function Aside ({ data }: { data: NavCatagory[] }): JSX.Element {
     smoothscroll.polyfill()
   }, [])
   const scrollToAnchor = (anchorName: string): void => {
-    if (anchorName !== '') {
+    if (anchorName !== '' && typeof window !== 'undefined') {
       const anchorElement = document.getElementById(anchorName)
       if (anchorElement != null) {
         anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' })
