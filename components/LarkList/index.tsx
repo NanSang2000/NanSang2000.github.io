@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { type TypeLark } from '../../types'
 import dynamic from 'next/dynamic'
 import { FiArrowLeft, FiArrowRight, FiFileText, FiList, FiLayout, FiMap } from 'react-icons/fi'
-import Link from 'next/link'
 
 // 动态导入Lottie组件，禁用SSR
 const Lottie = dynamic(async () => await import('lottie-react'), { ssr: false })
@@ -127,9 +126,10 @@ export default function LarkList (): JSX.Element {
               if (!post.node_token) return null
               
               return (
-                <Link
+                <a
                   href={`https://x0v86ddnier.feishu.cn/wiki/${post.node_token}`}
                   target={'_blank'}
+                  rel="noreferrer"
                   key={index}
                   className={'w-full'}
                 >
@@ -147,7 +147,7 @@ export default function LarkList (): JSX.Element {
                       {new Date(Number(post.node_create_time) * 1000).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
                     </div>
                   </div>
-                </Link>
+                </a>
               )
             })
           }

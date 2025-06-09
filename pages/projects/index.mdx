@@ -24,11 +24,11 @@ export function ProjectCard (item) {
         <img src={item.banner} className={'h-48 w-full rounded-t-md object-cover'} alt={item.name} />
       </div>
       <div className={'px-3 mt-2 h-12 w-full flex justify-between items-center'}>
-        <Link href={item.link} target={'_blank'} >
+        <a href={item.link} target={'_blank'} rel="noreferrer">
           <div className={'border-l-4 w-max border-l-blue-600 pl-3 text-xl font-bold hover:underline hover:decoration-blue-600 transition-all ease duration-500'}>
             {item.name}
           </div>
-        </Link>
+        </a>
         <div
           className={'h-8 w-max bg-gray-300 dark:bg-gray-700 px-3 py-1 rounded-md flex justify-center items-center cursor-pointer hover:bg-gray-400'}>
           <AiFillStar className={'inline-block mr-1 text-xl'} color={'orange'} />
