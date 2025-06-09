@@ -7,25 +7,18 @@ import localFont from 'next/font/local'
 import type { AppProps } from 'next/app'
 import { Analytics } from '@vercel/analytics/react'
 import ErrorBoundary from '../components/ErrorBoundary'
-import PageLoader from '../components/PageLoader'
 
 const myFont = localFont({
-  src: '../public/fonts/PingFangSC.ttf',
-  display: 'swap',
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-  preload: true,
-  variable: '--font-pingfang'
+  src: '../public/fonts/PingFangSC.ttf'
 })
 
 export default function App ({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <ErrorBoundary>
-      <PageLoader>
-        <main className={`${myFont.variable} font-sans`}>
-          <Component {...pageProps} />
-          <Analytics />
-        </main>
-      </PageLoader>
+      <main className={myFont.className}>
+        <Component {...pageProps} />
+        <Analytics />
+      </main>
     </ErrorBoundary>
   )
 }

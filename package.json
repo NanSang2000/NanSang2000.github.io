@@ -5,10 +5,7 @@
   "scripts": {
     "dev": "next dev -p 6070",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "clean": "rm -rf .next out",
-    "deploy": "pnpm run clean && pnpm run build"
+    "start": "next start"
   },
   "repository": {
     "type": "git",
