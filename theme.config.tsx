@@ -49,7 +49,7 @@ const config: DocsThemeConfig = {
             <meta name="apple-mobile-web-app-status-bar-style" content="default" />
             <meta name="apple-mobile-web-app-title" content="Nan's Blog" />
             <meta name="mobile-web-app-capable" content="yes" />
-            <meta name="format-detection" content="telephone=no" />
+            <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
             <meta property="og:title" content="Blog" />
             <meta property="og:description" content="Personal Blog" />
             <link rel="icon" href="/leaves.svg" />
@@ -101,7 +101,7 @@ const config: DocsThemeConfig = {
             className={'ml-3 font-bold nx-font-mono text-xl md:text-2xl hover:underline hover:decoration-pink-500 transition-all ease'}>Nan's
           </div>
         </div>
-        <div className={'mt-3 font-sans font-thin text-sm md:text-base'}>
+        <div className={'mt-3 font-sans font-thin text-sm md:text-base'} suppressHydrationWarning>
           @{new Date().getFullYear()} Nan Sang. All rights reserved.
         </div>
       </div>

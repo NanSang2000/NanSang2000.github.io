@@ -143,7 +143,7 @@ export default function LarkList (): JSX.Element {
                     <div className={'mr-2 h-max w-max bg-gray-200 dark:bg-gray-800 opacity-70 py-1 px-1 rounded'}>
                       <LarkDocType type={post.obj_type} />
                     </div>
-                    <div className={'text-gray-500 nx-font-mono'}>
+                    <div className={'text-gray-500 nx-font-mono'} suppressHydrationWarning>
                       {new Date(Number(post.node_create_time) * 1000).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
                     </div>
                   </div>
