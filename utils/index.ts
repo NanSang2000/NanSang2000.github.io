@@ -6,62 +6,83 @@ export { default as generateContext } from './generateContext'
 
 // 移动端检测和优化工具
 export const isMobileDevice = () => {
-  if (typeof window === 'undefined') return false
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false
   
-  return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-         window.innerWidth <= 768 ||
-         'ontouchstart' in window ||
-         navigator.maxTouchPoints > 0
+  try {
+    return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           window.innerWidth <= 768 ||
+           'ontouchstart' in window ||
+           (navigator.maxTouchPoints && navigator.maxTouchPoints > 0)
+  } catch (error) {
+    console.warn('isMobileDevice detection error:', error)
+    return false
+  }
 }
 
 export const getDeviceType = () => {
-  if (typeof window === 'undefined') return 'desktop'
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return 'desktop'
   
-  const userAgent = navigator.userAgent
-  const screenWidth = window.screen.width
-  
-  if (/iPad/i.test(userAgent)) return 'tablet'
-  if (/iPhone|iPod/i.test(userAgent)) return 'mobile'
-  if (/Android/i.test(userAgent)) {
-    return screenWidth < 768 ? 'mobile' : 'tablet'
+  try {
+    const userAgent = navigator.userAgent
+    const screenWidth = window.screen?.width || window.innerWidth || 1920
+    
+    if (/iPad/i.test(userAgent)) return 'tablet'
+    if (/iPhone|iPod/i.test(userAgent)) return 'mobile'
+    if (/Android/i.test(userAgent)) {
+      return screenWidth < 768 ? 'mobile' : 'tablet'
+    }
+    if (screenWidth < 768) return 'mobile'
+    if (screenWidth < 1024) return 'tablet'
+    
+    return 'desktop'
+  } catch (error) {
+    console.warn('getDeviceType detection error:', error)
+    return 'desktop'
   }
-  if (screenWidth < 768) return 'mobile'
-  if (screenWidth < 1024) return 'tablet'
-  
-  return 'desktop'
 }
 
 export const isLowEndDevice = () => {
-  if (typeof window === 'undefined') return false
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false
   
-  const nav = navigator as any // 临时类型断言以使用新的Web API
-  
-  const checks = [
-    navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2,
-    nav.deviceMemory && nav.deviceMemory <= 2,
-    isMobileDevice(),
-    window.devicePixelRatio <= 1,
-    nav.connection && ['slow-2g', '2g', '3g'].includes(nav.connection.effectiveType)
-  ]
-  
-  return checks.filter(Boolean).length >= 2
+  try {
+    const nav = navigator as any // 临时类型断言以使用新的Web API
+    
+    const checks = [
+      navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2,
+      nav.deviceMemory && nav.deviceMemory <= 2,
+      isMobileDevice(),
+      window.devicePixelRatio && window.devicePixelRatio <= 1,
+      nav.connection && nav.connection.effectiveType && ['slow-2g', '2g', '3g'].includes(nav.connection.effectiveType)
+    ]
+    
+    return checks.filter(Boolean).length >= 2
+  } catch (error) {
+    console.warn('isLowEndDevice detection error:', error)
+    return false
+  }
 }
 
 export const optimizeForMobile = () => {
-  if (typeof window === 'undefined') return
+  if (typeof window === 'undefined' || typeof document === 'undefined' || typeof navigator === 'undefined') return
   
-  // 禁用iOS Safari的缩放
-  const viewport = document.querySelector('meta[name=viewport]')
-  if (viewport && /iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+  try {
+    // 禁用iOS Safari的缩放
+    const viewport = document.querySelector('meta[name=viewport]')
+    if (viewport && /iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    }
+    
+    // 添加触摸优化类
+    if (document.body) {
+      document.body.classList.add('mobile-optimized')
+      
+      // 优化滚动性能
+      const bodyStyle = document.body.style as any
+      bodyStyle.webkitOverflowScrolling = 'touch'
+    }
+  } catch (error) {
+    console.warn('optimizeForMobile error:', error)
   }
-  
-  // 添加触摸优化类
-  document.body.classList.add('mobile-optimized')
-  
-  // 优化滚动性能
-  const bodyStyle = document.body.style as any
-  bodyStyle.webkitOverflowScrolling = 'touch'
 }
 
 // 防抖函数，用于优化性能
