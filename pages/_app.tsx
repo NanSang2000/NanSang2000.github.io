@@ -6,6 +6,7 @@ import React from 'react'
 import localFont from 'next/font/local'
 import type { AppProps } from 'next/app'
 import { Analytics } from '@vercel/analytics/react'
+import ErrorBoundary from '../components/ErrorBoundary'
 
 const myFont = localFont({
   src: '../public/fonts/PingFangSC.ttf'
@@ -13,9 +14,11 @@ const myFont = localFont({
 
 export default function App ({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <main className={myFont.className}>
-      <Component {...pageProps} />
-      <Analytics />
-    </main>
+    <ErrorBoundary>
+      <main className={myFont.className}>
+        <Component {...pageProps} />
+        <Analytics />
+      </main>
+    </ErrorBoundary>
   )
 }

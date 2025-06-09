@@ -1,3 +1,5 @@
+'use client'
+
 // import { type Context as TypeContext } from '../../types'
 import { generateContext } from '../../utils'
 import React from 'react'
@@ -23,8 +25,8 @@ export default function Context ({ json, title }: {
                     item.children.map(
                       (item, index) => {
                         return (
-                          <Link href={item.title === 'index' ? '' : `${res.title}/${item.title}`} key={index} className={'flex border-gray-100 dark:border-gray-900 border-2 px-3 py-5 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 rounded-lg hover:dark:bg-gray-800 transition-all ease duration-800'}>
-                            {item.link}
+                          <Link href={item.title === 'index' ? `/${res.title.toLowerCase()}` : `/${res.title.toLowerCase()}/${item.title}`} key={index} className={'flex border-gray-100 dark:border-gray-900 border-2 px-3 py-5 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 rounded-lg hover:dark:bg-gray-800 transition-all ease duration-800'}>
+                            {item.link || item.title}
                           </Link>
                         )
                       }

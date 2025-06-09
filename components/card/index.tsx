@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { type NavItem } from '../../types'
 import Link from 'next/link'
@@ -5,6 +7,9 @@ import { Tooltip } from '@material-tailwind/react'
 
 // 卡片，用于展示友链、项目等
 export default function Card ({ item }: { item: NavItem }): JSX.Element {
+  // 确保link不为空或无效
+  const safeLink = item.link || '#'
+  
   return (
     <Tooltip
       content={item.desc}
@@ -14,7 +19,7 @@ export default function Card ({ item }: { item: NavItem }): JSX.Element {
       }}
       className={'bg-gray-100 text-black dark:bg-gray-800 dark:text-white'}
     >
-      <Link href={item.link} target={'_blank'} className={`w-full h-24 my-1 mr-1 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 hover:dark:bg-gray-800 rounded-md flex ${item.type === 'connection' ? 'flex-row items-center' : 'flex-col'}  py-2 px-3 transition-all ease duration-700 cursor-pointer`}>
+      <Link href={safeLink} target={'_blank'} className={`w-full h-24 my-1 mr-1 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 hover:dark:bg-gray-800 rounded-md flex ${item.type === 'connection' ? 'flex-row items-center' : 'flex-col'}  py-2 px-3 transition-all ease duration-700 cursor-pointer`}>
         <div>
           {item.type === 'connection' && (
             <img src={item.avatar} className={'w-16 hidden lg:flex h-16 mr-2 rounded-full opacity-80 cursor-pointer hover:opacity-90 transition-all ease-in-out duration-700'} alt={item.name} />

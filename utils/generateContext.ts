@@ -5,19 +5,25 @@ export default function generateContext (json: any, title: string): Context {
     title,
     children: []
   }
+  
+  // 确保json不为空
+  if (!json || typeof json !== 'object') {
+    return context
+  }
+  
   for (const key in json) {
     // eslint-disable-next-line
-    if (json.hasOwnProperty(key)) {
+    if (json.hasOwnProperty(key) && key) {
       const value = json[key]
       if (key.startsWith('--')) {
         const child: contextItems = {
-          title: value.title,
+          title: value?.title || '',
           children: []
         }
         context.children.push(child)
       } else {
         const child: contextChild = {
-          link: value,
+          link: value || key,
           title: key
         }
         if (context.children.length === 0) {

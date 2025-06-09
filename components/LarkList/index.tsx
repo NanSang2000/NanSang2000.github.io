@@ -92,7 +92,7 @@ export default function LarkList (): JSX.Element {
     <div className={'w-full'}>
       {fetched === false && (
         <div className={'w-full flex items-center justify-center'}>
-          {(isClient === true && animationData != null && typeof Lottie !== 'undefined')
+                            {(isClient === true && animationData != null && Lottie)
             ? (
             <Lottie
               className={'bg-gray-100 dark:bg-gray-600 opacity-40 dark:opacity-25 rounded-full p-2 flex items-center justify-center'}
@@ -110,9 +110,11 @@ export default function LarkList (): JSX.Element {
         <div className={'w-full lg:px-96'}>
           {
             postsGroup[nowPage]?.map((post, index) => {
+              // 确保node_token存在，避免无效链接
+              if (!post.node_token) return null
+              
               return (
                 <Link
-                  // eslint-disable-next-line
                   href={`https://x0v86ddnier.feishu.cn/wiki/${post.node_token}`}
                   target={'_blank'}
                   key={index}

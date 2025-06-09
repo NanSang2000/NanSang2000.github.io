@@ -1,6 +1,6 @@
 import React from 'react'
 import { Top } from '../../components/Top'
-import MotionWrapper from '../../components/MotionWrapper'
+import { motion } from 'framer-motion'
 
 
 <div className="w-full">
@@ -17,7 +17,7 @@ import MotionWrapper from '../../components/MotionWrapper'
   <div className="mt-10 space-y-12">
     {/* You can add your work experiences here */}
     
-     <MotionWrapper 
+     <motion.div 
       className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -35,9 +35,9 @@ import MotionWrapper from '../../components/MotionWrapper'
           <li>Track new features and increase DAU through data analysis</li>
         </ul>
       </div>
-    </MotionWrapper>
+    </motion.div>
      
-    <MotionWrapper 
+    <motion.div 
       className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -55,9 +55,9 @@ import MotionWrapper from '../../components/MotionWrapper'
           <li>Optimize the product demand management platform to ensure on-time delivery of customer needs</li>
         </ul>
       </div>
-    </MotionWrapper>
+    </motion.div>
     
-    <MotionWrapper 
+    <motion.div 
       className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ import MotionWrapper from '../../components/MotionWrapper'
           <li>Collaborated with the design team to create a game</li>
         </ul>
       </div>
-    </MotionWrapper>
+    </motion.div>
 
   </div>
   

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Top } from '../../components/Top'
-import MotionWrapper from '../../components/MotionWrapper'
+import { motion } from 'framer-motion'
 
 
 <div className="w-full">
@@ -17,7 +17,7 @@ import MotionWrapper from '../../components/MotionWrapper'
   <div className="mt-10 space-y-12">
     {/* Research experiences */}
     
-    <MotionWrapper 
+    <motion.div 
       className="rounded-lg border border-blue-400 p-6 shadow-md flex flex-row items-start gap-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -35,9 +35,9 @@ import MotionWrapper from '../../components/MotionWrapper'
           <li>Research achievement or contribution 3</li>
         </ul>
       </div>
-    </MotionWrapper>
+    </motion.div>
     
-    <MotionWrapper 
+    <motion.div 
       className="rounded-lg border border-blue-400 p-6 shadow-md flex flex-row items-start gap-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -55,9 +55,9 @@ import MotionWrapper from '../../components/MotionWrapper'
           <li>Research achievement or contribution 3</li>
         </ul>
       </div>
-    </MotionWrapper>
+    </motion.div>
 
-    <MotionWrapper 
+    <motion.div 
       className="rounded-lg border border-blue-400 p-6 shadow-md flex flex-row items-start gap-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ import MotionWrapper from '../../components/MotionWrapper'
           <li>Impact or citations</li>
         </ul>
       </div>
-    </MotionWrapper>
+    </motion.div>
   </div>
   
   <Top />
