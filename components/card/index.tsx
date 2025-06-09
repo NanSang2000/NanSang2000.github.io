@@ -1,25 +1,28 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { type NavItem } from '../../types'
-import Link from 'next/link'
-import { Tooltip } from '@material-tailwind/react'
 
 // 卡片，用于展示友链、项目等
 export default function Card ({ item }: { item: NavItem }): JSX.Element {
   // 确保link不为空或无效
   const safeLink = item.link || '#'
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  const handleClick = () => {
+    if (safeLink !== '#') {
+      window.open(safeLink, '_blank', 'noopener,noreferrer')
+    }
+  }
   
   return (
-    <Tooltip
-      content={item.desc}
-      animate={{
-        mount: { scale: 1, y: 0 },
-        unmount: { scale: 0, y: 25 }
-      }}
-      className={'bg-gray-100 text-black dark:bg-gray-800 dark:text-white'}
-    >
-      <Link href={safeLink} target={'_blank'} className={`w-full h-24 my-1 mr-1 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 hover:dark:bg-gray-800 rounded-md flex ${item.type === 'connection' ? 'flex-row items-center' : 'flex-col'}  py-2 px-3 transition-all ease duration-700 cursor-pointer`}>
+    <div className="relative">
+      <div 
+        className={`w-full h-24 my-1 mr-1 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 hover:dark:bg-gray-800 rounded-md flex ${item.type === 'connection' ? 'flex-row items-center' : 'flex-col'}  py-2 px-3 transition-all ease duration-700 cursor-pointer`}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        onClick={handleClick}
+      >
         <div>
           {item.type === 'connection' && (
             <img src={item.avatar} className={'w-16 hidden lg:flex h-16 mr-2 rounded-full opacity-80 cursor-pointer hover:opacity-90 transition-all ease-in-out duration-700'} alt={item.name} />
@@ -36,7 +39,15 @@ export default function Card ({ item }: { item: NavItem }): JSX.Element {
             {item.desc}
           </div>
         </div>
-      </Link>
-    </Tooltip>
+      </div>
+      
+      {/* 自定义tooltip */}
+      {showTooltip && (
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg shadow-lg z-10 max-w-xs whitespace-normal">
+          {item.desc}
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
+        </div>
+      )}
+    </div>
   )
 }

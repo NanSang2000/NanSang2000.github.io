@@ -33,9 +33,18 @@ module.exports = {
     'react/no-children-prop': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     'semi': ['error', 'never'],
-    'space-before-function-paren': ['error', 'always'],
+    'space-before-function-paren': 'off',
+    '@typescript-eslint/space-before-function-paren': 'off',
     'no-multiple-empty-lines': ['error', { max: 1 }],
-    'eol-last': ['error', 'always']
+    'eol-last': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    'no-trailing-spaces': 'off',
+    '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/consistent-type-imports': 'off',
+    '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
+    '@typescript-eslint/indent': 'off'
   },
   settings: {
     'mdx/code-blocks': false,

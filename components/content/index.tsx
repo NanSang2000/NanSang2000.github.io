@@ -45,7 +45,10 @@ export default function Content ({ nav }: { nav: NavCatagory[] }): JSX.Element {
                     })}
                     {
                       item.id === 0 && (
-                        <Link href={'https://github.com/NanSang2000/Blog/issues/1'} target={'_blank'} className={'relative overflow-hidden w-full h-24 my-1 mr-1  bg-orange-100 dark:bg-orange-900 hover:bg-gray-50 hover:dark:bg-gray-800 rounded-md flex flex-col py-2 px-3 transition-all ease duration-700 cursor-pointer'}>
+                        <div 
+                          className={'relative overflow-hidden w-full h-24 my-1 mr-1  bg-orange-100 dark:bg-orange-900 hover:bg-gray-50 hover:dark:bg-gray-800 rounded-md flex flex-col py-2 px-3 transition-all ease duration-700 cursor-pointer'}
+                          onClick={() => window.open('https://github.com/NanSang2000/Blog/issues/1', '_blank', 'noopener,noreferrer')}
+                        >
                           <div className={'z-10 card_title text-base lg:text-xl text-orange-500 h-min mb-3'}>
                             交换友链
                           </div>
@@ -58,7 +61,7 @@ export default function Content ({ nav }: { nav: NavCatagory[] }): JSX.Element {
                           <div className={'z-0 absolute bottom-3 right-3 opacity-60'}>
                             <TbBalloon color={'white'} className={'text-7xl'} />
                           </div>
-                        </Link>
+                        </div>
                       )
                     }
                 </div>
