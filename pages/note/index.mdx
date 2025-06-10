@@ -1,30 +1,235 @@
 import { Callout } from 'nextra-theme-docs'
-
+import { motion } from 'framer-motion'
 import dt from './_meta.json'
-
 import Context from '../../components/Context'
 
+<div className="relative min-h-screen w-full overflow-hidden">
+  {/* 动态背景装饰 */}
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute top-10 right-10 w-80 h-80 bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+    <div className="absolute bottom-20 left-10 w-64 h-64 bg-gradient-to-r from-green-400 via-cyan-500 to-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: '2s' }}></div>
+    <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '4s' }}></div>
+    
+    {/* 浮动的学习图标 */}
+    <div className="absolute top-20 left-20 text-6xl opacity-20 animate-bounce" style={{ animationDelay: '1s' }}>📚</div>
+    <div className="absolute top-40 right-32 text-4xl opacity-15 animate-bounce" style={{ animationDelay: '3s' }}>✏️</div>
+    <div className="absolute bottom-40 right-20 text-5xl opacity-20 animate-bounce" style={{ animationDelay: '2s' }}>💡</div>
+    <div className="absolute bottom-20 left-1/4 text-3xl opacity-15 animate-bounce" style={{ animationDelay: '4s' }}>🧠</div>
+    <div className="absolute top-3/4 right-1/4 text-4xl opacity-20 animate-bounce" style={{ animationDelay: '5s' }}>🎯</div>
+  </div>
 
-# 引入
+  {/* 主要内容 */}
+  <div className="relative z-10">
+    <motion.div
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="flex flex-col w-full justify-start items-center py-16 mt-8"
+    >
+      {/* 标题区域 */}
+      <div className="text-center mb-12">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+          className="relative"
+        >
+          <h1 className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight">
+            {"学习笔记"}
+          </h1>
+          <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent text-2xl md:text-3xl lg:text-4xl font-bold mb-8">
+            {"Knowledge Base"}
+          </div>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="relative"
+        >
+          <div className="bg-gradient-to-r from-gray-600 to-gray-800 dark:from-gray-300 dark:to-gray-100 bg-clip-text text-transparent text-xl md:text-2xl font-semibold max-w-3xl mx-auto leading-relaxed mb-8">
+            {"📖 系统化的知识体系与学习笔记 🚀"}
+          </div>
+          
+          {/* 学习领域标签 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="flex flex-wrap justify-center gap-3 mb-8"
+          >
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7, duration: 0.4 }}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              💻 编程技术
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8, duration: 0.4 }}
+              className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              🌐 网络知识
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.4 }}
+              className="px-4 py-2 bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              ⚛️ React生态
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.0, duration: 0.4 }}
+              className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              🔧 开发工具
+            </motion.span>
+          </motion.div>
+          
+          {/* 动态图标 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.6 }}
+            className="flex justify-center space-x-8 text-4xl mb-8"
+          >
+            <span className="animate-pulse hover:scale-110 transition-transform duration-300" style={{ animationDelay: '0s' }}>📝</span>
+            <span className="animate-pulse hover:scale-110 transition-transform duration-300" style={{ animationDelay: '0.5s' }}>🔬</span>
+            <span className="animate-pulse hover:scale-110 transition-transform duration-300" style={{ animationDelay: '1s' }}>🎯</span>
+            <span className="animate-pulse hover:scale-110 transition-transform duration-300" style={{ animationDelay: '1.5s' }}>💡</span>
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.div>
 
-<Context json={dt} title={'Note'} />
+    {/* 知识体系展示区域 */}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.2, duration: 0.8 }}
+      className="relative max-w-6xl mx-auto px-4 mb-16"
+    >
+      {/* 装饰性边框 */}
+      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl opacity-20 blur-xl"></div>
+      <div className="relative bg-white dark:bg-gray-900 rounded-xl p-8 shadow-2xl border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+            {"📚 知识体系导航"}
+          </h2>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+          </div>
+        </div>
+        <Context json={dt} title={'Note'} />
+      </div>
+    </motion.div>
 
-## 介绍
+    {/* 介绍和声明区域 */}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.4, duration: 0.8 }}
+      className="relative max-w-4xl mx-auto px-4 mb-16"
+    >
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* 介绍卡片 */}
+        <div className="relative group">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl opacity-20 blur-lg group-hover:opacity-30 transition-opacity duration-300"></div>
+          <div className="relative bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 group-hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center mb-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center text-white text-xl font-bold mr-4">
+                {"ℹ️"}
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">{"关于笔记"}</h3>
+            </div>
+            <div className="text-gray-600 dark:text-gray-400 leading-relaxed">
+              {"这里汇集了我在学习过程中整理的各类技术笔记，涵盖编程语言、框架、工具等多个领域。每篇笔记都经过精心整理，力求系统性和实用性。"}
+            </div>
+          </div>
+        </div>
 
-知识体系。
+        {/* 声明卡片 */}
+        <div className="relative group">
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl opacity-20 blur-lg group-hover:opacity-30 transition-opacity duration-300"></div>
+          <div className="relative bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 group-hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center mb-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center text-white text-xl font-bold mr-4">
+                {"⚠️"}
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">{"版权声明"}</h3>
+            </div>
+            <div className="text-gray-600 dark:text-gray-400 leading-relaxed">
+              <strong>{"知识相关内容系本人原创内容，未经授权不得转载"}</strong>{"。如需引用或转载，请先联系获得授权。"}
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
 
-## 声明
+    {/* 联系方式区域 */}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.6, duration: 0.8 }}
+      className="relative max-w-4xl mx-auto px-4 mb-16"
+    >
+      <div className="text-center mb-8">
+        <h3 className="text-3xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-300 dark:to-gray-100 bg-clip-text text-transparent mb-4">
+          {"📞 联系与支持"}
+        </h3>
+        <div className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          {"有问题或建议？欢迎与我交流！"}
+        </div>
+      </div>
+      
+      <div className="grid md:grid-cols-2 gap-6">
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Callout emoji="📧">
+            <div className="flex items-center justify-between">
+              <span>{"联系邮箱"}</span>
+              <a 
+                href="mailto:nansang2000@gmail.com" 
+                rel="noreferrer" 
+                target="_blank"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 font-medium transition-colors duration-200"
+              >
+                {"nansang2000@gmail.com"}
+              </a>
+            </div>
+          </Callout>
+        </motion.div>
 
-**知识相关内容系本人原创内容，未经授权不得转载**。
-
-## Contact Me
-
-<Callout emoji="📧">
-  <a href="mailto:nansang2000@gmail.com" rel="noreferrer" target="_blank">Email</a>
-</Callout>
-
-## Support Me
-
-<Callout emoji="⭐">
-  <a href="https://github.com/nansang2000/" rel="noreferrer" target="_blank">Github</a>
-</Callout>
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Callout emoji="⭐">
+            <div className="flex items-center justify-between">
+              <span>{"GitHub 支持"}</span>
+              <a 
+                href="https://github.com/nansang2000/" 
+                rel="noreferrer" 
+                target="_blank"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 font-medium transition-colors duration-200"
+              >
+                {"@nansang2000"}
+              </a>
+            </div>
+          </Callout>
+        </motion.div>
+      </div>
+    </motion.div>
+  </div>
+</div>
