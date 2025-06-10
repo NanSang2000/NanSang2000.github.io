@@ -26,6 +26,12 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Create .env.local file
+          run: |
+            echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> .env.local
+            echo "NEXT_PUBLIC_SUPABASE_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_KEY }}" >> .env.local
+            echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN_CUSTOM }}" >> .env.local
+            
       - name: Install pnpm
         run: npm install -g pnpm
 

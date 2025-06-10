@@ -4,9 +4,6 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
 // 确保环境变量存在，如果不存在则使用硬编码的值（仅用于生产环境）
-const SUPABASE_URL = 'lptqykocinwlojjzfqhy'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc'
-
 // 构建Supabase URL
 // 确保URL格式正确，避免undefined.supabase.co的问题
 const supabaseUrl = `https://${SUPABASE_URL}.supabase.co`
