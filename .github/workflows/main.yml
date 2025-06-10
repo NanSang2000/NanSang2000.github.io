@@ -59,7 +59,12 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm run build
+        run: |
+          echo "Checking environment variables..."
+          echo "SUPABASE_URL is set: $([[ -n "$NEXT_PUBLIC_SUPABASE_URL" ]] && echo "✅ YES" || echo "❌ NO")"
+          echo "SUPABASE_KEY is set: $([[ -n "$NEXT_PUBLIC_SUPABASE_KEY" ]] && echo "✅ YES" || echo "❌ NO")"
+          echo "GITHUB_TOKEN is set: $([[ -n "$GITHUB_TOKEN" ]] && echo "✅ YES" || echo "❌ NO")"      
+          pnpm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
