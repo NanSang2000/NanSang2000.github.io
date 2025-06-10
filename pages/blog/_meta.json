@@ -1,0 +1,12 @@
+{
+  "index": {
+    "title": "index",
+    "theme": {
+      "layout": "default",
+      "sidebar": false,
+      "toc": false,
+      "footer": true,
+      "breadcrumb": true
+    }
+  }
+} 

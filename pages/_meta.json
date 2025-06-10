@@ -26,14 +26,13 @@
   "blog": {
     "title": "Blog",
     "type": "page",
-    "href": "/blog",
     "theme": {
       "sidebar": false,
       "toc": false,
       "footer": true,
       "pagination": false,
       "breadcrumb": true,
-      "layout": "normal"
+      "layout": "default"
     }
   },
   "WorkExperience": {

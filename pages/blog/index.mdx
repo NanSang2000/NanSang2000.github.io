@@ -3,10 +3,51 @@ title: '博客'
 description: '记录技术学习过程中的思考与实践'
 ---
 
+import { motion } from 'framer-motion'
 import BlogPageWithData from '../../components/BlogPageWithData'
 
-# 我的博客
-
-记录技术学习过程中的思考与实践
-
-<BlogPageWithData /> 
+<div className="w-full min-h-screen">
+  <motion.div
+    initial={{ y: -50, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ duration: 0.8, ease: "easeOut" }}
+    className="text-center mb-12 py-10 mt-24"
+  >
+    <div className="animate-bounce py-10">
+      <h1 className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent text-5xl md:text-7xl lg:text-8xl font-black mb-20 leading-normal tracking-tight overflow-visible">
+       {"我的博客"}
+      </h1>
+    </div>
+    
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ delay: 0.3, duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+      className="mb-6"
+    >
+      <div className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent text-xl md:text-2xl lg:text-3xl font-semibold max-w-3xl mx-auto leading-relaxed">
+        {"✨ 记录技术学习过程中的思考与实践 🚀"}
+      </div>
+    </motion.div>
+    
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6, duration: 0.6 }}
+      className="flex justify-center space-x-6 text-4xl"
+    >
+      <span className="animate-pulse">💻</span>
+      <span className="animate-pulse" style={{ animationDelay: '0.2s' }}>📚</span>
+      <span className="animate-pulse" style={{ animationDelay: '0.4s' }}>🎯</span>
+      <span className="animate-pulse" style={{ animationDelay: '0.6s' }}>⚡</span>
+    </motion.div>
+  </motion.div>
+  
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.8, duration: 0.8 }}
+  >
+    <BlogPageWithData />
+  </motion.div>
+</div> 
