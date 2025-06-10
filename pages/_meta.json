@@ -32,8 +32,8 @@
       "toc": false,
       "footer": true,
       "pagination": false,
-      "breadcrumb": false,
-      "layout": "full"
+      "breadcrumb": true,
+      "layout": "normal"
     }
   },
   "WorkExperience": {

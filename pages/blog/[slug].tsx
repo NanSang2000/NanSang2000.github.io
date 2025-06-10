@@ -54,8 +54,8 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
         <meta property="og:type" content="article" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
           {/* 返回按钮 */}
           <motion.div
             initial={{ x: -50, opacity: 0 }}
