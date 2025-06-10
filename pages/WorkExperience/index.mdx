@@ -77,6 +77,27 @@ import { motion } from 'framer-motion'
       </div>
     </motion.div>
 
+    <motion.div 
+      className="rounded-lg border border-orange-400 p-6 shadow-md flex flex-row items-start gap-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+    >
+      <div className="flex-shrink-0 w-20 h-20">
+        <img src="https://th.bing.com/th/id/ODLS.7cf64e8f-4f76-42b1-b13d-ae1719e3ae61?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" alt="Previous Company Logo" className="w-full h-full object-contain" />
+      </div>
+      <div className="flex flex-col items-start text-left">
+        <h2 className="text-2xl font-bold">DiDi</h2>
+        <p className="text-gray-600 dark:text-gray-400">Beijing • Back-end developer • Nov 2023 - April 2024</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Leveraged DiDi's proprietary Go framework, Nvwa, to engineer a geo-fencing system, enhancing accuracy 
+of valid pick-up point validations by 35%</li>
+          <li>Diminished passenger 10% wait times by revamping geo-fencing system</li>
+          <li>Developed a mock service to simulate discrepancies between DiDi's Australian map and Google Maps, 
+achieving a 25% improvement in navigation accuracy and route optimization</li>
+        </ul>
+      </div>
+    </motion.div>
   </div>
   
   <Top />
