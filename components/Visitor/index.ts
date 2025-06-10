@@ -6,17 +6,33 @@ import { createClient } from '@supabase/supabase-js'
 // 确保环境变量存在，如果不存在则使用硬编码的值（仅用于生产环境）
 // 构建Supabase URL
 // 确保URL格式正确，避免undefined.supabase.co的问题
-const supabaseUrl = `https://${SUPABASE_URL}.supabase.co`
-const supabaseKey = SUPABASE_KEY
+const getSupabaseUrl = (): string => {
+  const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+  // 如果已经是完整的 URL，直接返回
+  if (envUrl.startsWith('https://')) {
+    return envUrl
+  }
+  // 如果是项目 ID，构建完整的 URL
+  if (envUrl && envUrl.length > 0) {
+    return `https://${envUrl}.supabase.co`
+  }
+  return ''
+}
+
+const supabaseUrl = getSupabaseUrl()
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || ''
 
 // 记录环境变量状态
 console.log(`Supabase 配置状态: URL=${process.env.NEXT_PUBLIC_SUPABASE_URL !== undefined && process.env.NEXT_PUBLIC_SUPABASE_URL !== '' ? '已设置' : '未设置'}, KEY=${process.env.NEXT_PUBLIC_SUPABASE_KEY !== undefined && process.env.NEXT_PUBLIC_SUPABASE_KEY !== '' ? '已设置' : '未设置'}`)
 
 // 检查环境变量是否正确设置
-if ((typeof process.env.NEXT_PUBLIC_SUPABASE_URL !== 'string' || process.env.NEXT_PUBLIC_SUPABASE_URL === '') || (typeof process.env.NEXT_PUBLIC_SUPABASE_KEY !== 'string' || process.env.NEXT_PUBLIC_SUPABASE_KEY === '')) {
-  console.error('Supabase 环境变量未正确设置，使用了硬编码的备用值')
+const hasValidConfig = supabaseUrl && supabaseKey && supabaseUrl.startsWith('https://')
+if (!hasValidConfig) {
+  console.error('Supabase 环境变量未正确设置，访问统计功能将被禁用')
 }
-const supabase = createClient(supabaseUrl, supabaseKey)
+
+// 只有在有效配置时才创建 Supabase 客户端
+const supabase = hasValidConfig ? createClient(supabaseUrl, supabaseKey) : null
 
 // 访问计数的本地存储键名和有效期配置
 const VISITOR_COUNT_KEY = 'visitor_counted'
@@ -51,9 +67,10 @@ function Visitors (): VisitorResult {
 
   useEffect(() => {
     const fetchAndUpdateVisitors = async (): Promise<void> => {
-      if (supabaseUrl === undefined || supabaseUrl === '') {
-        setError('Supabase配置无效')
+      if (!supabase || !hasValidConfig) {
+        setError('Supabase配置无效，访问统计功能已禁用')
         setLoading(false)
+        setVisitorCount(0)
         return
       }
 
