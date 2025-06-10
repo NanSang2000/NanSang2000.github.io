@@ -60,7 +60,7 @@ const GitHubProjectCard: React.FC<GitHubProjectCardProps> = ({ repo, index }) =>
       className="relative group h-auto min-h-[400px] w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700"
     >
       {/* 装饰性渐变边框 */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm pointer-events-none"></div>
 
       {/* 项目图片 */}
       <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
@@ -82,7 +82,7 @@ const GitHubProjectCard: React.FC<GitHubProjectCardProps> = ({ repo, index }) =>
         )}
         
         {/* 图片遮罩层 */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
         
         {/* 语言标签 */}
         {repo.language && (
@@ -140,7 +140,7 @@ const GitHubProjectCard: React.FC<GitHubProjectCardProps> = ({ repo, index }) =>
         </div>
 
         {/* 操作按钮 */}
-        <div className="flex space-x-2 pt-2">
+        <div className="relative z-10 flex space-x-2 pt-2">
           <motion.a
             href={repo.html_url}
             target="_blank"
