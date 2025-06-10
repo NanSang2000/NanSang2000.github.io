@@ -4,10 +4,13 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
 // 确保环境变量存在，如果不存在则使用硬编码的值（仅用于生产环境）
+const NEXT_PUBLIC_SUPABASE_URL = 'lptqykocinwlojjzfqhy'
+const NEXT_PUBLIC_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc'
+
 // 构建Supabase URL
 // 确保URL格式正确，避免undefined.supabase.co的问题
 const getSupabaseUrl = (): string => {
-  const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+  const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || NEXT_PUBLIC_SUPABASE_URL
   // 如果已经是完整的 URL，直接返回
   if (envUrl.startsWith('https://')) {
     return envUrl
@@ -20,7 +23,7 @@ const getSupabaseUrl = (): string => {
 }
 
 const supabaseUrl = getSupabaseUrl()
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || ''
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY || NEXT_PUBLIC_SUPABASE_KEY
 
 // 记录环境变量状态
 console.log(`Supabase 配置状态: URL=${process.env.NEXT_PUBLIC_SUPABASE_URL !== undefined && process.env.NEXT_PUBLIC_SUPABASE_URL !== '' ? '已设置' : '未设置'}, KEY=${process.env.NEXT_PUBLIC_SUPABASE_KEY !== undefined && process.env.NEXT_PUBLIC_SUPABASE_KEY !== '' ? '已设置' : '未设置'}`)
