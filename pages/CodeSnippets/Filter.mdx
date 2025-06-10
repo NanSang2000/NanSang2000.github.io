@@ -11,12 +11,11 @@ console.log(result); // [2, 4, 6, 8, 10]
 下面让我们来自己实现一个 filter 函数。
 
 ```js
-Arrary.prototype.myFilter(cb){
+Array.prototype.myFilter = function(cb) {
     // cb 是传入的参数，即一个函数即 item => item % 2 === 0
     let arr = []
-    for (let i=0;i< this.length;i++){
-        if (cb(this[i])) // 执行这个函数，因为函数最终返回的是 Boolean 对象
-        {
+    for (let i = 0; i < this.length; i++) {
+        if (cb(this[i])) { // 执行这个函数，因为函数最终返回的是 Boolean 对象
             arr.push(this[i])
         }
     }

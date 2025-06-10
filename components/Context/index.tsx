@@ -50,17 +50,26 @@ export default function Context ({ json, title }: {
                   {
                     item.children.map(
                       (childItem: contextChild, childIndex: number) => {
-                        const href = childItem.title === 'index' 
-                          ? `/${contextData.title.toLowerCase()}` 
-                          : `/${contextData.title.toLowerCase()}/${childItem.title}`
+                        // 修复路径生成逻辑 - 根据不同页面处理大小写
+                        let href: string
+                        const baseTitle = contextData.title === 'Note' ? 'note' : contextData.title
+                        
+                        if (childItem.title === 'index') {
+                          href = `/${baseTitle}`
+                        } else {
+                          // 检查是否存在对应的页面文件或目录
+                          href = `/${baseTitle}/${childItem.title}`
+                        }
                         
                         return (
                           <Link 
                             href={href} 
                             key={childIndex} 
-                            className={'flex border-gray-100 dark:border-gray-900 border-2 px-3 py-5 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 rounded-lg hover:dark:bg-gray-800 transition-all ease duration-800'}
+                            className={'flex items-center justify-center text-center border-gray-100 dark:border-gray-900 border-2 px-3 py-5 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 rounded-lg hover:dark:bg-gray-800 transition-all ease duration-800 min-h-[80px]'}
                           >
-                            {childItem.link || childItem.title}
+                            <span className="text-sm font-medium">
+                              {childItem.link || childItem.title}
+                            </span>
                           </Link>
                         )
                       }
