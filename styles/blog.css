@@ -1,0 +1,219 @@
+/* 博客页面专用样式 */
+
+/* 文本截断 */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 代码块滚动 */
+.prose pre {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* 表格响应式 */
+.prose table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .prose table {
+    font-size: 0.875rem;
+  }
+}
+
+/* 图片响应式 */
+.prose img {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: auto;
+}
+
+/* 代码高亮优化 */
+.prose code {
+  font-weight: 500;
+  font-size: 0.875em;
+}
+
+/* 列表样式优化 */
+.prose ul > li::marker {
+  color: #3b82f6;
+}
+
+.prose ol > li::marker {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* 链接悬停效果 */
+.prose a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-decoration-color: #3b82f6;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+/* 深色模式优化 */
+@media (prefers-color-scheme: dark) {
+  .prose a:hover {
+    color: #60a5fa;
+    text-decoration-color: #3b82f6;
+  }
+  
+  .prose ul > li::marker {
+    color: #60a5fa;
+  }
+  
+  .prose ol > li::marker {
+    color: #60a5fa;
+  }
+}
+
+/* 动画效果 */
+.blog-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* 渐变背景动画 */
+.gradient-bg {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 搜索框焦点效果 */
+.search-input:focus {
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+}
+
+/* 标签悬停效果 */
+.tag-button {
+  transition: all 0.2s ease;
+}
+
+.tag-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* 滚动条样式 */
+.prose::-webkit-scrollbar {
+  width: 6px;
+}
+
+.prose::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.prose::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.prose::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 深色模式滚动条 */
+@media (prefers-color-scheme: dark) {
+  .prose::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+  
+  .prose::-webkit-scrollbar-thumb {
+    background: #475569;
+  }
+  
+  .prose::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+}
+
+/* 打字机效果 */
+.typewriter {
+  overflow: hidden;
+  border-right: 0.15em solid #3b82f6;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.15em;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #3b82f6;
+  }
+}
+
+/* 加载动画 */
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+  .prose {
+    font-size: 0.875rem;
+  }
+  
+  .prose h1 {
+    font-size: 1.875rem;
+  }
+  
+  .prose h2 {
+    font-size: 1.5rem;
+  }
+  
+  .prose h3 {
+    font-size: 1.25rem;
+  }
+} 
