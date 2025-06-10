@@ -1,4 +1,5 @@
 import { Projects } from '../../data/projectdata'
+import GitHubProjects from '../../components/GitHubProjects'
 import Link from 'next/link'
 import { AiFillStar } from 'react-icons/ai'
 import { useEffect, useState } from 'react'
@@ -62,6 +63,64 @@ export function ProjectCard (item) {
       
       {/* 底部装饰线 */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+    </motion.div>
+  )
+}
+
+export function ProjectStats() {
+  const [stats, setStats] = useState({ repos: 0, stars: 0, languages: 0 })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/github-repos')
+        if (response.ok) {
+          const repos = await response.json()
+          const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0)
+          const uniqueLanguages = new Set(repos.filter(repo => repo.language).map(repo => repo.language))
+          
+          setStats({
+            repos: repos.length,
+            stars: totalStars,
+            languages: uniqueLanguages.size
+          })
+        }
+      } catch (error) {
+        console.error('Failed to fetch stats:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.1, duration: 0.6 }}
+      className="flex justify-center space-x-8 text-center mb-8"
+    >
+      <div className="flex flex-col items-center">
+        <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          {loading ? '...' : stats.repos}
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-400">项目</div>
+      </div>
+      <div className="flex flex-col items-center">
+        <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+          {loading ? '...' : stats.stars}
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-400">星标</div>
+      </div>
+      <div className="flex flex-col items-center">
+        <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+          {loading ? '...' : stats.languages}
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-400">语言</div>
+      </div>
     </motion.div>
   )
 }
@@ -238,38 +297,14 @@ export function ProjectView () {
           </motion.div>
           
           {/* 统计信息 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.6 }}
-            className="flex justify-center space-x-8 text-center mb-8"
-          >
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                {Projects.length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">{"项目"}</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                {"∞"}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">{"创意"}</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                {"🔥"}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">{"热情"}</div>
-            </div>
-          </motion.div>
+          <ProjectStats />
         </motion.div>
       </div>
     </motion.div>
 
     {/* 项目展示区域 */}
     <div className="relative max-w-7xl mx-auto px-4 mb-16">
-      <ProjectView />
+      <GitHubProjects />
     </div>
   </div>
 </div>

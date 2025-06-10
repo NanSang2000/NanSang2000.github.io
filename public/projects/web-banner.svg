@@ -1,0 +1,13 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="webGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4ecdc4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" fill="url(#webGradient)"/>
+  <text x="200" y="120" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="bold">WEB</text>
+  <circle cx="80" cy="60" r="15" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="320" cy="140" r="20" fill="rgba(255,255,255,0.15)"/>
+  <circle cx="350" cy="50" r="12" fill="rgba(255,255,255,0.1)"/>
+</svg> 
