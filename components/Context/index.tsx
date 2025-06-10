@@ -2,19 +2,45 @@
 
 // import { type Context as TypeContext } from '../../types'
 import { generateContext } from '../../utils'
-import React from 'react'
+import type { Context as ContextType, contextItems, contextChild } from '../../types'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Context ({ json, title }: {
   json: string
   title: string
 }): JSX.Element {
-  const res = generateContext(json, title)
+  const [isClient, setIsClient] = useState(false)
+  const [contextData, setContextData] = useState<ContextType | null>(null)
+
+  useEffect(() => {
+    // 只在客户端渲染时生成内容
+    setIsClient(true)
+    const res = generateContext(json, title)
+    setContextData(res)
+  }, [json, title])
+
+  // 在服务端渲染和hydration期间显示加载状态
+  if (!isClient || !contextData) {
+    return (
+      <div className={'w-full flex flex-col'}>
+        <div className="animate-pulse">
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="h-16 bg-gray-100 dark:bg-gray-800 rounded-lg"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={'w-full flex flex-col'}>
       {
-        res.children.map(
-          (item, index) => {
+        contextData.children.map(
+          (item: contextItems, index: number) => {
             return (
               <div key={index}>
                 <div className={'font-bold text-xl'}>
@@ -23,10 +49,18 @@ export default function Context ({ json, title }: {
                 <div className={'grid grid-cols-2 lg:grid-cols-3 my-3 gap-2'}>
                   {
                     item.children.map(
-                      (item, index) => {
+                      (childItem: contextChild, childIndex: number) => {
+                        const href = childItem.title === 'index' 
+                          ? `/${contextData.title.toLowerCase()}` 
+                          : `/${contextData.title.toLowerCase()}/${childItem.title}`
+                        
                         return (
-                          <Link href={item.title === 'index' ? `/${res.title.toLowerCase()}` : `/${res.title.toLowerCase()}/${item.title}`} key={index} className={'flex border-gray-100 dark:border-gray-900 border-2 px-3 py-5 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 rounded-lg hover:dark:bg-gray-800 transition-all ease duration-800'}>
-                            {item.link || item.title}
+                          <Link 
+                            href={href} 
+                            key={childIndex} 
+                            className={'flex border-gray-100 dark:border-gray-900 border-2 px-3 py-5 bg-gray-100 dark:bg-gray-900 hover:bg-gray-50 rounded-lg hover:dark:bg-gray-800 transition-all ease duration-800'}
+                          >
+                            {childItem.link || childItem.title}
                           </Link>
                         )
                       }

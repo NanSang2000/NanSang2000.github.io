@@ -1,6 +1,119 @@
 import dt from './_meta.json'
 import Context from '../../components/Context'
+import { motion } from 'framer-motion'
 
-# 代码片段和速查
+<div className="relative min-h-screen w-full overflow-hidden">
+  {/* 动态背景装饰 */}
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute top-10 right-10 w-72 h-72 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+    <div className="absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-pulse" style={{ animationDelay: '2s' }}></div>
+    <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '4s' }}></div>
+    
+    {/* 浮动的代码符号 */}
+    <div className="absolute top-20 left-20 text-6xl opacity-20 animate-bounce" style={{ animationDelay: '1s' }}>{'{'}</div>
+    <div className="absolute top-40 right-32 text-4xl opacity-15 animate-bounce" style={{ animationDelay: '3s' }}>{'</>'}</div>
+    <div className="absolute bottom-40 right-20 text-5xl opacity-20 animate-bounce" style={{ animationDelay: '2s' }}>{'}'}</div>
+    <div className="absolute bottom-20 left-1/3 text-3xl opacity-15 animate-bounce" style={{ animationDelay: '4s' }}>=></div>
+  </div>
 
-<Context json={dt} title={'CodeSnippets'} />
+  {/* 主要内容 */}
+  <div className="relative z-10">
+    <motion.div
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="flex flex-col w-full justify-start items-center py-16 mt-8"
+    >
+      {/* 标题区域 */}
+      <div className="text-center mb-12">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+          className="relative"
+        >
+          <h1 className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight">
+            {"Code"}
+          </h1>
+          <h1 className="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-clip-text text-transparent text-4xl md:text-6xl lg:text-7xl font-black mb-8 leading-tight tracking-tight">
+            {"Snippets"}
+          </h1>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="relative"
+        >
+          <div className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent text-xl md:text-2xl font-semibold max-w-3xl mx-auto leading-relaxed mb-8">
+            💾 一些实用的代码片段和速查手册 ⚡
+          </div>
+          
+          {/* 特色标签 */}
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6, duration: 0.4 }}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              🚀 JavaScript
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7, duration: 0.4 }}
+              className="px-4 py-2 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              ⚛️ React
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8, duration: 0.4 }}
+              className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              🎨 CSS
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.4 }}
+              className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              🔧 Utils
+            </motion.span>
+          </div>
+          
+          {/* 动态图标 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.6 }}
+            className="flex justify-center space-x-8 text-4xl mb-8"
+          >
+            <span className="animate-pulse hover:scale-110 transition-transform duration-300" style={{ animationDelay: '0s' }}>📝</span>
+            <span className="animate-pulse hover:scale-110 transition-transform duration-300" style={{ animationDelay: '0.5s' }}>⚡</span>
+            <span className="animate-pulse hover:scale-110 transition-transform duration-300" style={{ animationDelay: '1s' }}>🎯</span>
+            <span className="animate-pulse hover:scale-110 transition-transform duration-300" style={{ animationDelay: '1.5s' }}>💡</span>
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.div>
+
+    {/* 代码片段列表 */}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.2, duration: 0.8 }}
+      className="relative"
+    >
+      {/* 装饰性边框 */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg opacity-20 blur-xl"></div>
+      <div className="relative bg-white dark:bg-gray-900 rounded-lg p-8 mx-4 shadow-2xl border border-gray-200 dark:border-gray-700">
+        <Context json={dt} title={'CodeSnippets'} />
+      </div>
+    </motion.div>
+  </div>
+</div>

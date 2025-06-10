@@ -79,7 +79,7 @@
       "toc": false,
       "footer": true,
       "pagination": true,
-      "breadcrumb": false,
+      "breadcrumb": true,
       "layout": "full"
     }
   },
