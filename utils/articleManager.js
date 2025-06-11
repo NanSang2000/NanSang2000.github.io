@@ -10,15 +10,42 @@ try {
   console.warn('无法加载.env.local文件:', error.message);
 }
 
-// 使用与Visitor组件相同的Supabase配置
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'lptqykocinwlojjzfqhy';
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc';
+// Supabase 配置 - 硬编码作为 fallback
+const SUPABASE_PROJECT_ID = 'lptqykocinwlojjzfqhy';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc';
 
-// 构建Supabase URL
-const supabaseUrl = `https://${SUPABASE_URL}.supabase.co`;
-const supabaseKey = String(SUPABASE_KEY);
+// 构建 Supabase URL
+const getSupabaseUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  
+  // 如果环境变量存在且是完整 URL
+  if (envUrl && envUrl.startsWith('https://')) {
+    return envUrl;
+  }
+  
+  // 如果环境变量存在且是项目 ID
+  if (envUrl && envUrl.length > 0 && !envUrl.startsWith('https://')) {
+    return `https://${envUrl}.supabase.co`;
+  }
+  
+  // 否则使用硬编码的项目 ID
+  return `https://${SUPABASE_PROJECT_ID}.supabase.co`;
+};
 
-console.log(`Supabase配置: URL=${supabaseUrl}`);
+// 获取 Supabase key
+const getSupabaseKey = () => {
+  return process.env.NEXT_PUBLIC_SUPABASE_KEY || SUPABASE_ANON_KEY;
+};
+
+const supabaseUrl = getSupabaseUrl();
+const supabaseKey = getSupabaseKey();
+
+console.log('ArticleManager(JS) Supabase 配置:', {
+  url: supabaseUrl,
+  keySet: supabaseKey ? '✅ 已设置' : '❌ 未设置',
+  envUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ 环境变量存在' : '❌ 使用硬编码',
+  envKey: process.env.NEXT_PUBLIC_SUPABASE_KEY ? '✅ 环境变量存在' : '❌ 使用硬编码'
+});
 
 // 初始化Supabase客户端
 const supabase = createClient(supabaseUrl, supabaseKey);
