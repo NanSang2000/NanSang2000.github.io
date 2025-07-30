@@ -2,14 +2,44 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { getSupabaseUrl, getSupabaseKey, logSupabaseConfig } from '../../utils/supabaseConfig'
 
-// 获取 Supabase 配置
-const supabaseUrl = getSupabaseUrl()
-const supabaseKey = getSupabaseKey()
+// Supabase 配置 - 硬编码作为 fallback
+const SUPABASE_PROJECT_ID = 'lptqykocinwlojjzfqhy'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc'
+
+// 构建Supabase URL - 确保URL格式正确，避免undefined.supabase.co的问题
+const getSupabaseUrl = (): string => {
+  const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  
+  // 如果环境变量存在且是完整 URL
+  if (envUrl?.startsWith('https://')) {
+    return envUrl
+  }
+  
+  // 如果环境变量存在且是项目 ID
+  if (envUrl && envUrl.length > 0 && !envUrl.startsWith('https://')) {
+    return `https://${envUrl}.supabase.co`
+  }
+  
+  // 否则使用硬编码的项目 ID
+  return `https://${SUPABASE_PROJECT_ID}.supabase.co`
+}
+
+// 获取 Supabase key
+const getSupabaseKey = (): string => {
+  return process.env.NEXT_PUBLIC_SUPABASE_KEY || SUPABASE_ANON_KEY
+}
+
+const supabaseUrl = 'https://lptqykocinwlojjzfqhy.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwdHF5a29jaW53bG9qanpmcWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3NDYxMjUsImV4cCI6MjA1NjMyMjEyNX0.GrsnEE1IQz8_4ZkjbkYMJSVm_Cu2fFi42RJQ9g41lSc'
 
 // 记录配置状态
-logSupabaseConfig('Visitor')
+console.log('Visitor Supabase 配置:', {
+  url: supabaseUrl,
+  keySet: supabaseKey ? '✅ 已设置' : '❌ 未设置',
+  envUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ 环境变量存在' : '❌ 使用硬编码',
+  envKey: process.env.NEXT_PUBLIC_SUPABASE_KEY ? '✅ 环境变量存在' : '❌ 使用硬编码'
+})
 
 // 检查环境变量是否正确设置
 const hasValidConfig = supabaseUrl && supabaseKey && supabaseUrl.startsWith('https://')
