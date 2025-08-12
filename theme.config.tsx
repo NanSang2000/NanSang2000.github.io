@@ -52,8 +52,8 @@ const config: DocsThemeConfig = {
             <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
             <meta property="og:title" content="Blog" />
             <meta property="og:description" content="Personal Blog" />
-            <link rel="icon" href="/leaves.svg" />
-            <link rel="apple-touch-icon" href="/leaves.svg" />
+            <link rel="icon" href="/leaves.png" />
+            <link rel="apple-touch-icon" href="/leaves.png" />
         </>
   ),
   project: {
