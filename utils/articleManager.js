@@ -1,14 +1,5 @@
 // CommonJS版本的articleManager模块
 const { createClient } = require('@supabase/supabase-js');
-const dotenv = require('dotenv');
-
-// 加载.env.local文件中的环境变量
-try {
-  dotenv.config({ path: '.env.local' });
-  console.log('已加载.env.local环境变量');
-} catch (error) {
-  console.warn('无法加载.env.local文件:', error.message);
-}
 
 // Supabase 配置 - 硬编码作为 fallback
 const SUPABASE_PROJECT_ID = 'lptqykocinwlojjzfqhy';
@@ -16,25 +7,13 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // 构建 Supabase URL
 const getSupabaseUrl = () => {
-  const envUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  
-  // 如果环境变量存在且是完整 URL
-  if (envUrl && envUrl.startsWith('https://')) {
-    return envUrl;
-  }
-  
-  // 如果环境变量存在且是项目 ID
-  if (envUrl && envUrl.length > 0 && !envUrl.startsWith('https://')) {
-    return `https://${envUrl}.supabase.co`;
-  }
-  
-  // 否则使用硬编码的项目 ID
+  // 在GitHub Pages部署后，直接使用硬编码的项目ID
   return `https://${SUPABASE_PROJECT_ID}.supabase.co`;
 };
 
 // 获取 Supabase key
 const getSupabaseKey = () => {
-  return process.env.NEXT_PUBLIC_SUPABASE_KEY || SUPABASE_ANON_KEY;
+  return SUPABASE_ANON_KEY;
 };
 
 const supabaseUrl = getSupabaseUrl();
@@ -43,8 +22,8 @@ const supabaseKey = getSupabaseKey();
 console.log('ArticleManager(JS) Supabase 配置:', {
   url: supabaseUrl,
   keySet: supabaseKey ? '✅ 已设置' : '❌ 未设置',
-  envUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ 环境变量存在' : '❌ 使用硬编码',
-  envKey: process.env.NEXT_PUBLIC_SUPABASE_KEY ? '✅ 环境变量存在' : '❌ 使用硬编码'
+  projectId: SUPABASE_PROJECT_ID,
+  keyLength: supabaseKey?.length || 0
 });
 
 // 初始化Supabase客户端
