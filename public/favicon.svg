@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="g" x1="64" y1="32" x2="448" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2979E3"/>
+      <stop offset="1" stop-color="#86EFAC"/>
+    </linearGradient>
+    <filter id="s" x="0" y="0" width="512" height="512" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12" result="blur"/>
+      <feOffset dy="6"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.25"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="r">
+      <rect x="32" y="32" width="448" height="448" rx="112"/>
+    </clipPath>
+  </defs>
+  <g filter="url(#s)">
+    <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#g)"/>
+    <g clip-path="url(#r)">
+      <!-- Stylized N -->
+      <path fill="#FFFFFF" d="M160 360V164c0-6.627 5.373-12 12-12h20c5.027 0 9.624 3.016 11.46 7.62L312 332.3V164c0-6.627 5.373-12 12-12h20c6.627 0 12 5.373 12 12v208c0 6.627-5.373 12-12 12h-20c-5.027 0-9.624-3.016-11.46-7.62L204 195.7V360c0 6.627-5.373 12-12 12h-20c-6.627 0-12-5.373-12-12Z"/>
+      <!-- Leaf accent -->
+      <path fill="#FFFFFF" opacity="0.9" d="M374 170c-36 4-66 26-80 58 30 14 70 8 96-18 11-11 18-25 22-40-12-3-25-4-38 0Z"/>
+    </g>
+  </g>
+</svg>
+
+

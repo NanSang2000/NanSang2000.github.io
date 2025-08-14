@@ -52,8 +52,9 @@ const config: DocsThemeConfig = {
             <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
             <meta property="og:title" content="Blog" />
             <meta property="og:description" content="Personal Blog" />
-            <link rel="icon" href="/leaves.png" />
-            <link rel="apple-touch-icon" href="/leaves.png" />
+            <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+            <link rel="alternate icon" href="/favicon.png" type="image/png" />
+            <link rel="apple-touch-icon" href="/favicon.png" />
         </>
   ),
   project: {
