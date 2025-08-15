@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { fallbackRepos } from '../../utils/fallbackRepos'
 
 interface GitHubRepo {
   id: number
@@ -46,9 +47,17 @@ export default async function handler(
   }
 
   try {
+    // 添加详细的环境信息日志
+    console.log('GitHub API Debug Info:', {
+      username: GITHUB_USERNAME,
+      hasToken: !!GITHUB_TOKEN,
+      tokenLength: GITHUB_TOKEN?.length || 0,
+      nodeEnv: process.env.NODE_ENV
+    })
+
     const headers: Record<string, string> = {
       Accept: 'application/vnd.github.v3+json',
-      'User-Agent': 'Portfolio-Website'
+      'User-Agent': 'Portfolio-Website-NanSang2000'
     }
 
     if (GITHUB_TOKEN) {
@@ -58,11 +67,23 @@ export default async function handler(
     // 获取用户的所有公开仓库
     const response = await fetch(
       `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=50`,
-      { headers }
+      { 
+        headers,
+        // 添加超时和错误处理
+        signal: AbortSignal.timeout(10000) // 10秒超时
+      }
     )
 
+    console.log('GitHub API Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries())
+    })
+
     if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status}`)
+      const errorText = await response.text()
+      console.error('GitHub API Error Details:', errorText)
+      throw new Error(`GitHub API error: ${response.status} - ${errorText}`)
     }
 
     const repos: GitHubRepo[] = await response.json()
@@ -91,13 +112,31 @@ export default async function handler(
         banner: generateBanner(repo)
       }))
 
+    // 添加缓存头
+    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600')
     res.status(200).json(projectRepos)
   } catch (error) {
     console.error('Error fetching GitHub repos:', error)
-    res.status(500).json({ 
-      message: 'Failed to fetch repositories',
-      error: error instanceof Error ? error.message : 'Unknown error'
-    })
+    console.log('Using fallback repositories...')
+    
+    // 使用后备数据确保页面功能正常
+    const fallbackProjectRepos: ProjectRepo[] = fallbackRepos.map(repo => ({
+      id: repo.id,
+      name: repo.name,
+      description: repo.description || '暂无描述',
+      html_url: repo.html_url,
+      homepage: repo.homepage,
+      stargazers_count: repo.stargazers_count,
+      language: repo.language,
+      topics: repo.topics,
+      updated_at: repo.updated_at,
+      banner: repo.banner
+    }))
+    
+    // 添加警告头标识使用了后备数据
+    res.setHeader('X-Data-Source', 'fallback')
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300') // 较短缓存
+    res.status(200).json(fallbackProjectRepos)
   }
 }
 
