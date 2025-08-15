@@ -1,4 +1,5 @@
 import React from 'react'
+import { LangToggle } from './components/I18nProvider'
 import { type DocsThemeConfig } from 'nextra-theme-docs'
 import Link from 'next/link'
 // import Link from 'next/link'
@@ -50,17 +51,18 @@ const config: DocsThemeConfig = {
             <meta name="apple-mobile-web-app-title" content="Nan's Blog" />
             <meta name="mobile-web-app-capable" content="yes" />
             <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
-            <meta property="og:title" content="Blog" />
-            <meta property="og:description" content="Personal Blog" />
+            <meta name="description" content="南桑｜个人网站：项目、博客、笔记与简历。Nan Sang | Personal site: projects, blog, notes and CV." />
+            <meta property="og:title" content="Nan Sang · Portfolio & Blog" />
+            <meta property="og:description" content="个人项目与技术文章，数据科学与全栈工程。Projects & writings on Data Science and Full‑Stack." />
             <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
             <link rel="alternate icon" href="/favicon.png" type="image/png" />
             <link rel="apple-touch-icon" href="/favicon.png" />
         </>
   ),
   project: {
-    link: 'https://github.com/nansang2000/blog'
+    link: 'https://github.com/NanSang2000/NanSang2000.github.io'
   },
-  docsRepositoryBase: 'https://github.com/nangsang2000/blog/main',
+  docsRepositoryBase: 'https://github.com/NanSang2000/NanSang2000.github.io',
   banner: {
     key: 'beta 0.0.1',
     text: <a href="https://nextra.site" target="_blank" rel="noreferrer">
@@ -84,10 +86,13 @@ const config: DocsThemeConfig = {
     text: '帮我在 GitHub 改进文章'
   },
   primaryHue: { dark: 205, light: 205 },
-  logo: (<>
+  logo: (<div className={'flex items-center gap-3'}>
       <Logo height={30} color={'#2979E3'} />
-      <div className={'ml-3 nx-font-mono text-2xl hover:underline hover:decoration-pink-500 transition-all ease'}>Nan's</div>
-  </>),
+      <div className={'nx-font-mono text-2xl hover:underline hover:decoration-pink-500 transition-all ease'}>Nan's</div>
+      <div className={'ml-2'}>
+        <LangToggle />
+      </div>
+  </div>),
   useNextSeoProps () {
     return {
       titleTemplate: ' %s | Nan Sang Blog 🍃'

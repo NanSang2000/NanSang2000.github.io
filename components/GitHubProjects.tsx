@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { AiFillStar, AiOutlineLink, AiOutlineGithub } from 'react-icons/ai'
 import { BiGitRepoForked } from 'react-icons/bi'
+import ProjectCard, { ProjectMeta } from './ProjectCard'
+import ProjectCarousel from './ProjectCarousel'
 
 interface GitHubRepo {
   id: number
@@ -62,31 +64,47 @@ const GitHubProjectCard: React.FC<GitHubProjectCardProps> = ({ repo, index }) =>
       {/* 装饰性渐变边框 */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm pointer-events-none"></div>
 
-      {/* 项目图片 */}
+      {/* 项目图片 - 动态 GitHub 联动 */}
       <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
         {/* eslint-disable-next-line multiline-ternary */}
         {!imageError ? (
           <img
             src={repo.banner}
-            className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-110"
-            alt={repo.name}
+            className="h-48 w-full object-contain transition-transform duration-500 group-hover:scale-105 bg-white"
+            alt={`${repo.name} - ${repo.description || 'GitHub Repository'}`}
             onError={handleImageError}
+            style={{ 
+              objectPosition: 'center',
+              // 为动态生成的卡片提供更好的展示
+              padding: repo.banner.includes('github-readme-stats') ? '8px' : '0'
+            }}
           />
         ) : (
-          <div className="h-48 w-full flex items-center justify-center">
-            <div className="text-center">
+          <div className="h-48 w-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900">
+            <div className="text-center p-4">
               <AiOutlineGithub className="mx-auto text-6xl text-gray-400 dark:text-gray-500 mb-2" />
-              <p className="text-gray-500 dark:text-gray-400 text-sm">{repo.language || 'Repository'}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{repo.name}</p>
+              <p className="text-gray-500 dark:text-gray-500 text-xs mt-1">{repo.language || 'Repository'}</p>
             </div>
           </div>
         )}
         
-        {/* 图片遮罩层 */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+        {/* 渐变遮罩 - 为动态图片优化 */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+        
+        {/* 实时数据徽章 */}
+        <div className="absolute top-3 left-3 flex gap-2">
+          {repo.stargazers_count > 0 && (
+            <div className="px-2 py-1 bg-black/70 backdrop-blur-sm rounded-full text-xs font-medium text-white shadow-lg flex items-center gap-1">
+              <AiFillStar className="text-yellow-400" />
+              {repo.stargazers_count}
+            </div>
+          )}
+        </div>
         
         {/* 语言标签 */}
         {repo.language && (
-          <div className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium text-white shadow-lg" 
+          <div className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium text-white shadow-lg backdrop-blur-sm" 
                style={{ backgroundColor: languageColors[repo.language] || '#6b7280' }}>
             {repo.language}
           </div>
@@ -174,10 +192,25 @@ const GitHubProjectCard: React.FC<GitHubProjectCardProps> = ({ repo, index }) =>
   )
 }
 
-const GitHubProjects: React.FC = () => {
+interface GitHubProjectsProps {
+  onActiveChange?: (index: number, repo: GitHubRepo) => void
+  onLoaded?: (repos: GitHubRepo[]) => void
+  variant?: 'grid' | 'carousel'
+  autoPlay?: boolean
+  intervalMs?: number
+}
+
+const GitHubProjects: React.FC<GitHubProjectsProps> = ({ 
+  onActiveChange, 
+  onLoaded, 
+  variant = 'grid',
+  autoPlay = true,
+  intervalMs = 4000 
+}) => {
   const [repos, setRepos] = useState<GitHubRepo[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
     const fetchRepos = async () => {
@@ -187,6 +220,7 @@ const GitHubProjects: React.FC = () => {
           throw new Error('Failed to fetch repositories')
         }
         const data = await response.json()
+        onLoaded?.(data)
         setRepos(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error')
@@ -236,6 +270,46 @@ const GitHubProjects: React.FC = () => {
     )
   }
 
+  // 转换数据格式
+  const projects: ProjectMeta[] = repos.map(repo => ({
+    id: repo.id,
+    name: repo.name,
+    description: repo.description,
+    stars: repo.stargazers_count,
+    forks: 0, // TODO: 从 API 获取 forks 数据
+    language: repo.language,
+    topics: repo.topics,
+    updatedAt: repo.updated_at,
+    htmlUrl: repo.html_url,
+    homepage: repo.homepage,
+    bannerUrl: repo.banner,
+    author: repo.html_url.split('/')[3] // 从 URL 提取用户名
+  }))
+
+  if (variant === 'carousel') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+      >
+        <ProjectCarousel 
+          projects={projects}
+          autoPlay={autoPlay}
+          intervalMs={intervalMs}
+          itemsPerView={3}
+          onActiveChange={(index, project) => {
+            setActiveIndex(index)
+            const originalRepo = repos[index]
+            if (originalRepo) {
+              onActiveChange?.(index, originalRepo)
+            }
+          }}
+        />
+      </motion.div>
+    )
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -243,8 +317,20 @@ const GitHubProjects: React.FC = () => {
       transition={{ duration: 0.8, delay: 0.6 }}
       className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 mt-8"
     >
-      {repos.map((repo, index) => (
-        <GitHubProjectCard key={repo.id} repo={repo} index={index} />
+      {projects.map((project, index) => (
+        <div
+          key={project.id}
+          onMouseEnter={() => {
+            setActiveIndex(index)
+            onActiveChange?.(index, repos[index])
+          }}
+          onFocus={() => {
+            setActiveIndex(index)
+            onActiveChange?.(index, repos[index])
+          }}
+        >
+          <ProjectCard project={project} index={index} />
+        </div>
       ))}
     </motion.div>
   )

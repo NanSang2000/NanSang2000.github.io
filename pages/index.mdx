@@ -10,6 +10,8 @@ import { FaReact } from 'react-icons/fa'
 import { MdOutlineScience } from 'react-icons/md'
 import { SiNestjs } from 'react-icons/si'
 import { Logo } from '../theme.config'
+import { T } from '../components/I18nProvider'
+import GitHubProjects from '../components/GitHubProjects'
 import { Stacks } from '../components/TextSwiper'
 import { frontEnd, OtherStacks } from '../components/TextSwiper/data'
 import TextTurn from '../components/TextTurn'
@@ -26,6 +28,7 @@ export function Cloud () {
   const vantaRef = useRef(null)
   const { theme } = useTheme()
   const initTimeoutRef = useRef(null)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   // 简单的设备检测
   const isLowEndDevice = useMemo(() => {
@@ -60,6 +63,12 @@ export function Cloud () {
 
   // 使用 Intersection Observer 来检测组件是否可见
   useEffect(() => {
+    if (typeof window !== 'undefined' && 'matchMedia' in window) {
+      try {
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+        setPrefersReducedMotion(mq.matches)
+      } catch {}
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsVisible(entry.isIntersecting)
@@ -149,7 +158,7 @@ export function Cloud () {
       }
     }
 
-    if (!isVisible || typeof window === 'undefined' || !vantaRef.current || useSimpleMode) return
+    if (!isVisible || typeof window === 'undefined' || !vantaRef.current || useSimpleMode || prefersReducedMotion) return
 
     // 清理之前的超时
     if (initTimeoutRef.current) {
@@ -183,7 +192,7 @@ export function Cloud () {
         setUseSimpleMode(true)
       }
     }, isLowEndDevice ? 500 : 100)
-  }, [isVisible, vantaConfig, vantaEffect, isLowEndDevice, useSimpleMode])
+  }, [isVisible, vantaConfig, vantaEffect, isLowEndDevice, useSimpleMode, prefersReducedMotion])
 
   useEffect(() => {
     initEffect()
@@ -215,7 +224,7 @@ export function Cloud () {
   }, [isVisible, vantaEffect])
 
   // 如果使用简单模式，显示静态背景
-  if (useSimpleMode || isLowEndDevice) {
+  if (useSimpleMode || isLowEndDevice || prefersReducedMotion) {
     return (
       <motion.div 
         className={'h-[15rem] w-full rounded-2xl flex overflow-hidden relative'}
@@ -231,7 +240,7 @@ export function Cloud () {
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ repeat: Infinity, duration: 3 }}
           >
-            Dream on the sky
+            <T k={'dream'} />
           </motion.div>
         </div>
       </motion.div>
@@ -255,7 +264,7 @@ export function Cloud () {
           animate={isVisible ? { opacity: [0.7, 1, 0.7] } : { opacity: 0.7 }}
           transition={isVisible ? { repeat: Infinity, duration: 2.5 } : { duration: 0.5 }}
         >
-          Dream on the sky
+          <T k={'dream'} />
         </motion.div>
       </div>
     </motion.div>
@@ -266,7 +275,7 @@ export function TopTag () {
   return (
         <div className={'w-max px-3 h-8 gap-2 bg-sky-300 bg-opacity-30 border-2 border-solid border-blue-400 rounded-lg flex justify-center items-center text-center'}>
             <FiLoader className={'animate-spin'} />
-          Runing
+          <span className={'ml-1'}><T k={'running'} /></span>
         </div>
   )
 
@@ -590,9 +599,7 @@ export function WakaTime () {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-            <div>I'm&nbsp;</div>
-            <div className={'linear-gradient-text leading-loose'}>Nan&nbsp;</div>
-            <div>Sang</div>
+            <div className={'linear-gradient-text leading-loose'}><T k={'hero_name'} /></div>
         </motion.div>
         <motion.div 
           className={'text-lg sm:text-xl md:text-2xl lg:text-4xl font-bold text-gray-600 dark:text-gray-320 mt-2 md:-mt-2 leading-relaxed'}
@@ -600,7 +607,7 @@ export function WakaTime () {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.4 }}
         >
-            An energetic <b className={'underline decoration-wavy underline-offset-2 decoration-blue-500'}>Data Science</b> learner.
+            <T k={'hero_sub'} />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -608,7 +615,7 @@ export function WakaTime () {
           transition={{ duration: 0.5, delay: 0.6 }}
         >
           <Button href={'/note'} className={'mt-4 md:mt-6'}>
-              Get Started
+              <T k={'get_started'} />
           </Button>
         </motion.div>
 
@@ -1142,14 +1149,6 @@ export function VistorDemo () {
       transition={{ duration: 1.5, delay: 3.8 }}
       className={'w-96 h-96 bg-purple-800 rounded-full absolute blur-3xl right-24 opacity-20'}
     ></motion.div>
-    <motion.div 
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 4.0 }}
-      className={'absolute z-[11] top-32 p-6 w-full'}
-    >
-      <TextTurn />
-    </motion.div>
     <div className={'h-full z-10 p-6 grid w-full items-stretch content-start'}>
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
@@ -1157,14 +1156,43 @@ export function VistorDemo () {
         transition={{ duration: 0.5, delay: 3.6 }}
         className={'text-3xl font-bold text-black underline decoration-cyan-600 underline-offset-4'}
       >
-        Projects
+        <T k={'projects'} />
       </motion.div>
+      {/* 将 TextTurn 放到标题下方作为副标题，避免覆盖卡片 */}
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 3.8 }}
+        className={'mb-2'}
+      >
+        <TextTurn items={undefined} autoPlay={false} compact={true} />
+      </motion.div>
+      <GitHubProjects 
+        variant="carousel"
+        autoPlay={true}
+        intervalMs={4000}
+        onLoaded={(list) => {
+          if (Array.isArray(list) && list.length > 0 && typeof window !== 'undefined') {
+            const event = new CustomEvent('projects-active-change', { detail: { index: 0, repo: list[0] } })
+            window.dispatchEvent(event)
+          }
+        }}
+        onActiveChange={(i, repo) => {
+        // 通过自定义事件广播给 TextTurn（简单无依赖实现）
+        const event = new CustomEvent('projects-active-change', { detail: { index: i, repo } })
+        window.dispatchEvent(event)
+      }} />
+      <div className={'mt-4 flex justify-end'}>
+        <Link href={'/projects'} className={'text-blue-600 hover:underline text-sm md:text-base'}>
+          <T k={'project_more'} />
+        </Link>
+      </div>
       <motion.div 
         initial={{ opacity: 0, rotate: -10 }}
         animate={{ opacity: 0.1, rotate: 0 }}
         whileHover={{ opacity: 0.2, rotate: 5 }}
         transition={{ duration: 0.7, delay: 4.0 }}
-        className={'opacity-10 hover:opacity-20 transition-all ease duration-700 absolute -bottom-12 -right-16 z-0'}
+        className={'opacity-10 hover:opacity-20 transition-all ease duration-700 absolute -bottom-12 -right-16 z-0 pointer-events-none'}
       >
         <img alt={'tech stack'} src={'/stack/html.svg'} className={'w-96 h-96'} />
       </motion.div>

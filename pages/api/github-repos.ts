@@ -101,44 +101,53 @@ export default async function handler(
   }
 }
 
-// 生成项目横幅图片
+// 生成基于 GitHub 数据的动态横幅 URL
 function generateBanner(repo: GitHubRepo): string {
-  // 根据主要编程语言生成不同的横幅
-  const languageImages: Record<string, string> = {
-    JavaScript: '/projects/js-banner.svg',
-    TypeScript: '/projects/ts-banner.svg',
-    React: '/projects/react-banner.svg',
-    'Next.js': '/projects/nextjs-banner.svg',
-    Python: '/projects/python-banner.svg',
-    Go: '/projects/go-banner.svg',
-    Java: '/projects/java-banner.svg',
-    'C++': '/projects/cpp-banner.svg',
-    HTML: '/projects/web-banner.svg',
-    CSS: '/projects/web-banner.svg'
+  // 使用 GitHub 的 OpenGraph 预览图或动态生成服务
+  
+  // 方案1: 使用 GitHub 的社交预览图（如果仓库设置了）
+  // 很多仓库都有自定义的 OpenGraph 图片
+  const githubSocialImage = `https://opengraph.githubassets.com/1/${repo.full_name}`
+  
+  // 方案2: 使用在线动态横幅生成服务（如 shields.io, readme-stats 等）
+  const dynamicBanner = generateDynamicBanner(repo)
+  
+  // 优先使用动态生成，如果服务不可用则回退到 GitHub 官方图
+  return dynamicBanner || githubSocialImage
+}
+
+// 动态生成横幅的辅助函数
+function generateDynamicBanner(repo: GitHubRepo): string {
+  const name = encodeURIComponent(repo.name)
+  const description = encodeURIComponent(repo.description?.slice(0, 60) || 'GitHub Repository')
+  const language = repo.language || 'Code'
+  const stars = repo.stargazers_count
+  
+  // 语言颜色映射（基于 GitHub 官方颜色）
+  const languageColors: Record<string, string> = {
+    JavaScript: 'f7df1e',
+    TypeScript: '3178c6',
+    Python: '3776ab',
+    Go: '00add8',
+    Java: 'ed8b00',
+    'C++': '00599c',
+    HTML: 'e34f26',
+    CSS: '1572b6',
+    React: '61dafb',
+    Vue: '4fc08d',
+    PHP: '777bb4',
+    Ruby: 'cc342d',
+    Rust: 'dea584',
+    Swift: 'fa7343',
+    Kotlin: '7f52ff'
   }
-
-  // 如果有特定语言的图片，使用它
-  if (repo.language && languageImages[repo.language]) {
-    return languageImages[repo.language]
-  }
-
-  // 根据topics生成横幅
-  for (const topic of repo.topics) {
-    if (languageImages[topic]) {
-      return languageImages[topic]
-    }
-  }
-
-  // 根据仓库名称生成横幅
-  const name = repo.name.toLowerCase()
-  if (name.includes('react')) return '/projects/react-banner.svg'
-  if (name.includes('vue')) return '/projects/vue-banner.svg'
-  if (name.includes('next')) return '/projects/nextjs-banner.svg'
-  if (name.includes('web')) return '/projects/web-banner.svg'
-  if (name.includes('api')) return '/projects/api-banner.svg'
-  if (name.includes('bot')) return '/projects/bot-banner.svg'
-  if (name.includes('cli')) return '/projects/cli-banner.svg'
-
-  // 默认横幅
-  return '/projects/default-banner.svg'
+  
+  const color = languageColors[language] || '586069'
+  
+  // 使用 GitHub README stats 生成仓库卡片
+  // 这个服务会根据真实的 GitHub 数据生成美观的卡片图片
+  const username = repo.full_name.split('/')[0]
+  const repoCard = `https://github-readme-stats.vercel.app/api/pin/?username=${username}&repo=${repo.name}&theme=default&show_owner=false&bg_color=ffffff&title_color=2f80ed&text_color=333333&icon_color=${color}`
+  
+  return repoCard
 } 
